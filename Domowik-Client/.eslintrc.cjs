@@ -24,7 +24,8 @@ module.exports = {
         useTabs: false,
         tabWidth: 2,
         trailingComma: 'all',
+        endOfLine: 'auto',
       },
     ],
   },
-};
+}
