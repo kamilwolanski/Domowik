@@ -10,6 +10,6 @@ namespace Domowik___WebAPI.Models
         public DateTime DateOfBirth { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int RoleId { get; set; } = 5;
+        public int RoleId { get; set; } = 1;
     }
 }
