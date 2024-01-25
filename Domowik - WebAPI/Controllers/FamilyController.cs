@@ -8,8 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Domowik___WebAPI.Controllers
 {
-    [ApiController]
     [Route("api/family")]
+    [ApiController]
+
     public class FamilyController : ControllerBase
     {
         private readonly IFamilyService _familyService;
@@ -22,17 +23,8 @@ namespace Domowik___WebAPI.Controllers
         [HttpPut("{id}")]
         public ActionResult Update([FromBody] UpdateFamilyDto dto, [FromRoute] int id)
         {
-            if(!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+            _familyService.Update(id, dto);
 
-            var isUpdated = _familyService.Update(id, dto);
-
-            if (!isUpdated)
-            {
-                return NotFound();
-            }
 
             return Ok();
         }
@@ -40,23 +32,13 @@ namespace Domowik___WebAPI.Controllers
         [HttpDelete("{id}")]
         public ActionResult Delete([FromRoute] int id)
         {
-            var isDeleted = _familyService.Delete(id);
-
-            if (!isDeleted)
-            {
-                return NotFound();
-            }
+            _familyService.Delete(id);
 
             return NoContent();
         }
         [HttpPost]
         public ActionResult CreateFamily([FromBody] CreateFamilyDto dto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             var familyId = _familyService.Create(dto);
 
             return Created($"/api/family/{familyId}", null);
@@ -74,11 +56,6 @@ namespace Domowik___WebAPI.Controllers
         public ActionResult<FamilyDto> Get([FromRoute] int id)
         {
             var family = _familyService.GetById(id);
-
-            if (family == null)
-            {
-                return NotFound();
-            }
 
 
             return Ok(family);

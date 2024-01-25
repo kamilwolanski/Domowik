@@ -2,11 +2,18 @@ using AutoMapper;
 using Domowik___WebAPI;
 using Domowik___WebAPI.Data;
 using Domowik___WebAPI.Entities;
+using Domowik___WebAPI.Middleware;
 using Domowik___WebAPI.Services;
 using Microsoft.AspNetCore.Identity;
+using NLog.Web;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Nlog: Setup NLog for Dependency injection
+builder.Logging.ClearProviders();
+builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
+builder.Host.UseNLog();
 
 // Add services to the container.
 builder.Services.AddDbContext<DomowikDbContext>();
@@ -15,6 +22,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IFamilyService, FamilyService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
+builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -38,7 +46,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
+app.UseMiddleware<ErrorHandlingMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

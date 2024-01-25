@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Domowik___WebAPI.Data;
 using Domowik___WebAPI.Entities;
+using Domowik___WebAPI.Exceptions;
 using Domowik___WebAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,50 +12,49 @@ namespace Domowik___WebAPI.Services
         FamilyDto GetById(int id);
         IEnumerable<FamilyDto> GetAll();
         int Create(CreateFamilyDto createFamilyDto);
-        bool Delete(int id);
-        bool Update(int id, UpdateFamilyDto updateFamilyDto);
+        void Delete(int id);
+        void Update(int id, UpdateFamilyDto updateFamilyDto);
     }
     public class FamilyService : IFamilyService
     {
         private readonly DomowikDbContext _dbContext;
         private readonly IMapper _mapper;
+        private readonly ILogger<FamilyService> _logger;
 
-        public FamilyService(DomowikDbContext dbContext, IMapper mapper)
+        public FamilyService(DomowikDbContext dbContext, IMapper mapper, ILogger<FamilyService> logger)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _logger = logger;
         }
 
-        public bool Update(int id, UpdateFamilyDto updateFamilyDto)
+        public void Update(int id, UpdateFamilyDto updateFamilyDto)
         {
             var family = _dbContext.Families.FirstOrDefault(f => f.Id == id);
 
-            if(family == null)
+            if (family == null)
             {
-                return false;
+                throw new NotFoundException("Family not Found");
             }
 
             family.Name = updateFamilyDto.Name;
 
             _dbContext.SaveChanges();
 
-            return true;
-
         }
 
-        public bool Delete(int id)
+        public void Delete(int id)
         {
+            _logger.LogError($"Family with id: {id} DELETE action invoked");
             var family = _dbContext.Families.FirstOrDefault(f => f.Id == id);
 
-            if(family == null)
+            if (family == null)
             {
-                return false;
+                throw new NotFoundException("Family not Found");
             }
 
             _dbContext.Families.Remove(family);
             _dbContext.SaveChanges();
-
-            return true;
 
         }
         public FamilyDto GetById(int id)
@@ -63,7 +63,7 @@ namespace Domowik___WebAPI.Services
 
             if(family == null)
             {
-                return null;
+                throw new NotFoundException("Family not Found");
             }
 
             var result = _mapper.Map<FamilyDto>(family);
