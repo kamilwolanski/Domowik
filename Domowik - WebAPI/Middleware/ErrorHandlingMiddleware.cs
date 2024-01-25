@@ -20,6 +20,11 @@ namespace Domowik___WebAPI.Middleware
                 context.Response.StatusCode = 404;
                 context.Response.WriteAsync(notFoundException.Message);
             }
+            catch(BadRequestException badRequestException)
+            {
+                context.Response.StatusCode = 400;
+                await context.Response.WriteAsync(badRequestException.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
