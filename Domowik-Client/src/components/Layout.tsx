@@ -1,4 +1,5 @@
 import { Link, Outlet } from 'react-router-dom';
+import { Container } from 'reactstrap';
 
 const Layout = () => {
   return (
@@ -13,7 +14,11 @@ const Layout = () => {
           </li>
         </ul>
       </nav>
-      <Outlet />
+      <main className="py-5">
+        <Container>
+          <Outlet />
+        </Container>
+      </main>
       <footer>
         <h3>footer</h3>
       </footer>
