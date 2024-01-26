@@ -15,6 +15,10 @@ namespace Domowik___WebAPI.Middleware
             {
                 await next.Invoke(context);
             }
+            catch(ForbidException)
+            {
+                context.Response.StatusCode = 403;
+            }
             catch(NotFoundException notFoundException)
             {
                 context.Response.StatusCode = 404;

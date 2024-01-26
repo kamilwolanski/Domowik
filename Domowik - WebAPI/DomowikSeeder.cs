@@ -6,15 +6,17 @@ namespace Domowik___WebAPI
     public class DomowikSeeder
     {
         private readonly DomowikDbContext _dbContext;
+
         public DomowikSeeder(DomowikDbContext dbContext)
         {
-               _dbContext = dbContext;
+            _dbContext = dbContext;
         }
+
         public void Seed()
         {
-            if(_dbContext.Database.CanConnect())
+            if (_dbContext.Database.CanConnect())
             {
-                if(!_dbContext.Roles.Any())
+                if (!_dbContext.Roles.Any())
                 {
                     var roles = GetRoles();
 
@@ -22,9 +24,23 @@ namespace Domowik___WebAPI
                     _dbContext.SaveChanges();
                 }
 
-                if(!_dbContext.Families.Any())
+                if (!_dbContext.Families.Any())
                 {
-                    var families = GetFamilies();
+                    var user = new User()
+                    {
+                        FirstName = "Kamil",
+                        LastName = "Wolański",
+                        DateOfBirth = new DateTime(1998, 4, 23),
+                        Email = "kwolanski3@gmail.com",
+                        PasswordHash = "123",
+                        Role = GetRoles().FirstOrDefault(r => r.Name == "User")
+                    };
+
+                    _dbContext.Users.Add(user);
+                    _dbContext.SaveChanges();
+
+                    var families = GetFamilies(user);
+
                     _dbContext.Families.AddRange(families);
                     _dbContext.SaveChanges();
                 }
@@ -34,46 +50,41 @@ namespace Domowik___WebAPI
         private IEnumerable<Role> GetRoles()
         {
             var roles = new List<Role>()
+        {
+            new Role()
             {
-                new Role()
-                {
-                    Name = "User",
-                },
-                new Role()
-                {
-                    Name = "FamilyMember"
-                },
-                new Role()
-                {
-                    Name = "FamilyHead"
-                }
-            };
+                Name = "User",
+            },
+            new Role()
+            {
+                Name = "FamilyMember"
+            },
+            new Role()
+            {
+                Name = "FamilyHead"
+            }
+        };
 
             return roles;
         }
-        private IEnumerable<Family> GetFamilies()
+
+        private IEnumerable<Family> GetFamilies(User user)
         {
             var families = new List<Family>()
+        {
+            new Family()
             {
-                new Family()
+                Name = "Wolańscy",
+                HeadId = user.Id,
+                Members = new List<User>()
                 {
-                    Name = "Wolańscy",
-                    Members = new List<User>()
-                    {
-                        new User()
-                        {
-                            FirstName = "Kamil",
-                            LastName = "Wolański",
-                            DateOfBirth = new DateTime(1998, 4, 23),
-                            Email = "kwolanski3@gmail.com",
-                            PasswordHash = "123",
-                            Role = GetRoles().FirstOrDefault(r => r.Name == "User")
-                        }
-                    }
+                    user
                 }
-            };
+            }
+        };
 
             return families;
         }
     }
+
 }

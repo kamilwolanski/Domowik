@@ -3,13 +3,16 @@ using Domowik___WebAPI.Data;
 using Domowik___WebAPI.Entities;
 using Domowik___WebAPI.Models;
 using Domowik___WebAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Domowik___WebAPI.Controllers
 {
     [Route("api/family")]
     [ApiController]
+    [Authorize]
 
     public class FamilyController : ControllerBase
     {
@@ -37,8 +40,10 @@ namespace Domowik___WebAPI.Controllers
             return NoContent();
         }
         [HttpPost]
+        [Authorize(Roles = "User")]
         public ActionResult CreateFamily([FromBody] CreateFamilyDto dto)
         {
+            var userId = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
             var familyId = _familyService.Create(dto);
 
             return Created($"/api/family/{familyId}", null);

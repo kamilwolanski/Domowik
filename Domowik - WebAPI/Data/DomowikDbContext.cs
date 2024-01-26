@@ -25,6 +25,16 @@ namespace Domowik___WebAPI.Data
                 .Property(f => f.Name)
                 .IsRequired()
                 .HasMaxLength(25);
+
+            modelBuilder.Entity<Family>()
+                .HasOne(f => f.Head)
+                .WithMany()
+                .HasForeignKey(f => f.HeadId);
+
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.Family)
+                .WithMany(f => f.Members)
+                .HasForeignKey(u => u.FamilyId);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
