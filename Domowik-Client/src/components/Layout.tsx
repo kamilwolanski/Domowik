@@ -1,4 +1,5 @@
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
+import { CiLogout } from 'react-icons/ci';
 import React, { useState } from 'react';
 import {
   MenuFoldOutlined,
@@ -51,6 +52,15 @@ const Layoutx = () => {
         <PieChartOutlined />
       </NavLink>,
     ),
+    getItem(
+      'Wyloguj się',
+      '/auth/logout',
+      <div className="logout-btn">
+        <NavLink to="/auth/logout">
+          <CiLogout color="white" strokeWidth={0.5} size={18} />
+        </NavLink>
+      </div>,
+    ),
   ];
 
   return (
@@ -63,6 +73,12 @@ const Layoutx = () => {
           defaultSelectedKeys={[location.pathname]}
           items={items}
         />
+        {/* <div className="logout-btn">
+          <NavLink to="/auth/logout">
+            <CiLogout color="white" strokeWidth={1} size={20} />
+            <span>Wyloguj</span>
+          </NavLink>
+        </div> */}
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }}>

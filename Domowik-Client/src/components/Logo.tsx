@@ -1,12 +1,12 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import logo from '../Assets/logo.png';
 
 const Logo: React.FC = () => {
   return (
     <div className="logo">
-      <Link to="/">
+      <NavLink to="/family">
         <img src={logo} alt="logo" />
-      </Link>
+      </NavLink>
     </div>
   );
 };

@@ -4,6 +4,7 @@ body {
 
 a {
   text-decoration: none;
+  color: white;
 }
 
 h1, h2, h3, h4, p, span {
@@ -22,6 +23,19 @@ h1, h2, h3, h4, p, span {
 
 .ant-layout {
     height: 100vh;
+
+    .ant-layout-sider-children {
+        position: relative;
+
+        .ant-menu {
+            height: 100%;
+
+            [data-menu-id="rc-menu-uuid-29232-2-/auth/logout"] {
+               position: absolute;
+               bottom: 60px;
+              }
+        }
+    }
 
     .ant-menu {
         .ant-menu-item {
