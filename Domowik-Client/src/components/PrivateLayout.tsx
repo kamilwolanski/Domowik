@@ -13,7 +13,7 @@ import type { MenuProps } from 'antd';
 
 const { Header, Sider, Content, Footer } = Layout;
 
-const Layoutx = () => {
+const PrivateLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -73,12 +73,6 @@ const Layoutx = () => {
           defaultSelectedKeys={[location.pathname]}
           items={items}
         />
-        {/* <div className="logout-btn">
-          <NavLink to="/auth/logout">
-            <CiLogout color="white" strokeWidth={1} size={20} />
-            <span>Wyloguj</span>
-          </NavLink>
-        </div> */}
       </Sider>
       <Layout>
         <Header style={{ padding: 0, background: colorBgContainer }}>
@@ -112,4 +106,4 @@ const Layoutx = () => {
   );
 };
 
-export default Layoutx;
+export default PrivateLayout;

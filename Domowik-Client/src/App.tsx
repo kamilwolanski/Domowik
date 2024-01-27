@@ -1,7 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import Books from './Pages/Books';
 import Book from './Pages/Book';
-import Layout from './Components/Layout';
+import RegularLayout from './Components/RegularLayout';
+import PrivateLayout from './Components/PrivateLayout';
 import Login from './Pages/Login/Login';
 import PrivateRoute from './Routing/PrivateRoute';
 import Logout from './Pages/Logout';
@@ -11,10 +12,12 @@ const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/auth/login" element={<Login />} />
-        <Route path="/auth/register" element={<Register />} />
+        <Route element={<RegularLayout />}>
+          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/register" element={<Register />} />
+        </Route>
         <Route element={<PrivateRoute />}>
-          <Route element={<Layout />}>
+          <Route element={<PrivateLayout />}>
             <Route path="/family" element={<h1>family</h1>} />
             <Route path="/auth/logout" element={<Logout />} />
             <Route path="/books">
