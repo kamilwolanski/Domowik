@@ -11,7 +11,11 @@ import { useEffect } from 'react';
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const redirectToPathAfterSuccess = location.state?.from?.pathname || '/';
+  let redirectToPathAfterSuccess = location.state?.from?.pathname || '/';
+
+  if (redirectToPathAfterSuccess === '/auth/logout') {
+    redirectToPathAfterSuccess = '/';
+  }
   const isLoggedIn = !!localStorage.getItem('token');
 
   useEffect(() => {
@@ -20,11 +24,6 @@ const Login = () => {
     }
   }, [isLoggedIn, navigate, redirectToPathAfterSuccess]);
 
-  const initialValues = {
-    email: '',
-    password: '',
-  };
-
   const loginMutation = useMutation(login, {
     onSuccess: ({ data: token }) => {
       if (token) {
@@ -32,6 +31,12 @@ const Login = () => {
       }
     },
   });
+
+  const initialValues = {
+    email: '',
+    password: '',
+  };
+
   const handleSubmit = (values: typeof initialValues) => {
     loginMutation.mutate({
       email: values.email,
@@ -45,7 +50,6 @@ const Login = () => {
       onSubmit={handleSubmit}
     >
       {({ isValid }) => {
-        console.log('isValid', isValid);
         return (
           <Form>
             <EmailInput label="Adres email" id="email" name="email" />

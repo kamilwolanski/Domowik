@@ -1,0 +1,35 @@
+body {
+  font-family: 'Asap', sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, p, span {
+    color: $font-color;
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+
+    img {
+        max-width: 50px;
+    }
+}
+
+.ant-layout {
+    height: 100vh;
+
+    .ant-menu {
+        .ant-menu-item {
+            span {
+                color: white;
+            }
+        }
+    }
+}
+
+
