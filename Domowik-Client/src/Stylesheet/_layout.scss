@@ -10,8 +10,7 @@ h1,
 h2,
 h3,
 h4,
-p,
-span {
+p {
   color: $font-color;
 }
 
@@ -67,7 +66,6 @@ input[type='date'] {
     position: relative;
 
     .ant-menu {
-      height: 100%;
 
       li:last-child {
         position: absolute;

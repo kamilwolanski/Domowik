@@ -8,6 +8,7 @@ import PrivateRoute from './Routing/PrivateRoute';
 import Logout from './Pages/Logout';
 import Register from './Pages/Register/Register';
 import RegistrationSuccess from './Pages/Register/RegistrationSuccess';
+import Family from './Pages/Family/Family';
 
 const App = () => {
   return (
@@ -23,7 +24,7 @@ const App = () => {
         </Route>
         <Route element={<PrivateRoute />}>
           <Route element={<PrivateLayout />}>
-            <Route path="/family" element={<h1>family</h1>} />
+            <Route path="/family" element={<Family />} />
             <Route path="/auth/logout" element={<Logout />} />
             <Route path="/books">
               <Route index element={<Books />} />
@@ -32,7 +33,10 @@ const App = () => {
           </Route>
         </Route>
         <Route path="/" element={<Navigate replace to="/family" />} />
-        <Route path="*" element={<h1>Not Found Page</h1>} />
+        <Route
+          path="*"
+          element={<h1>Strona o podanym adresie nie istnieje.</h1>}
+        />
       </Routes>
     </>
   );

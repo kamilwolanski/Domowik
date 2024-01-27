@@ -61,7 +61,7 @@ const Login = () => {
     );
   };
   return (
-    <Container>
+    <Container className="login-page">
       <h1 className="text-center">Zaloguj się</h1>
       <Row>
         <Col xs="12" md={{ size: 6, offset: 3 }}>

@@ -40,7 +40,7 @@ const Register = () => {
   };
 
   return (
-    <Container>
+    <Container className="register-page">
       <h1 className="text-center">Załóż konto</h1>
       <Row>
         <Col xs="12" md={{ size: 10, offset: 1 }}>
