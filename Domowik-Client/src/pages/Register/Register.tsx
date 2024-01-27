@@ -8,9 +8,11 @@ import DateInput from '../../Components/FormikInputs/FormikDateInput';
 import { Button } from 'reactstrap';
 import validationSchema from './validationSchema';
 import { register } from '../../Api/api';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const initialValues = {
     email: '',
     password: '',
@@ -21,8 +23,8 @@ const Register = () => {
   };
 
   const registerMutation = useMutation(register, {
-    onSuccess: ({ data }) => {
-      console.log('data', data);
+    onSuccess: () => {
+      navigate('/auth/register/success', { state: { from: 'register' } });
     },
   });
 

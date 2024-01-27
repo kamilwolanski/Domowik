@@ -7,6 +7,7 @@ import Login from './Pages/Login/Login';
 import PrivateRoute from './Routing/PrivateRoute';
 import Logout from './Pages/Logout';
 import Register from './Pages/Register/Register';
+import RegistrationSuccess from './Pages/Register/RegistrationSuccess';
 
 const App = () => {
   return (
@@ -15,6 +16,10 @@ const App = () => {
         <Route element={<RegularLayout />}>
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/register" element={<Register />} />
+          <Route
+            path="/auth/register/success"
+            element={<RegistrationSuccess />}
+          />
         </Route>
         <Route element={<PrivateRoute />}>
           <Route element={<PrivateLayout />}>
