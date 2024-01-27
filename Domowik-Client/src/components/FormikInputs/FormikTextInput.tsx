@@ -1,13 +1,13 @@
 import { useField } from 'formik';
 import { FormFeedback, FormGroup, Input, InputGroup, Label } from 'reactstrap';
 
-interface IFormikPasswordInput {
+interface IFormikEmailInput {
   label: string;
   name: string;
   id: string;
 }
 
-const FormikPasswordInput: React.FC<IFormikPasswordInput> = ({
+const FormikTextInput: React.FC<IFormikEmailInput> = ({
   label,
   name,
   id,
@@ -22,7 +22,7 @@ const FormikPasswordInput: React.FC<IFormikPasswordInput> = ({
         <Input
           {...field}
           {...props}
-          type="password"
+          type="text"
           invalid={!!(meta.touched && meta.error)}
         />
         {meta.touched && meta.error && (
@@ -33,4 +33,4 @@ const FormikPasswordInput: React.FC<IFormikPasswordInput> = ({
   );
 };
 
-export default FormikPasswordInput;
+export default FormikTextInput;
