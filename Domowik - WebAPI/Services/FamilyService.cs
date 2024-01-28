@@ -15,7 +15,7 @@ namespace Domowik___WebAPI.Services
         FamilyDto GetById(int id);
         IEnumerable<FamilyDto> GetAll();
         int Create(CreateFamilyDto createFamilyDto);
-        void Delete(int id);
+        void Delete();
         void Update(int id, UpdateFamilyDto updateFamilyDto);
         void Add(AddUserToFamilyDto dto);
         void DeleteUser(int id);
@@ -96,18 +96,20 @@ namespace Domowik___WebAPI.Services
 
         }
 
-        public void Delete(int id)
+        public void Delete()
         {
-            
-            var family = _dbContext.Families.FirstOrDefault(f => f.Id == id);
+            var userId = _userContextService.GetUserId;
+            var family = _dbContext.Families.FirstOrDefault(f => f.HeadId == userId);
+            var headOfFamily = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
 
-            if (family == null)
+
+            var usersToUpdate = _dbContext.Users.Where(u => u.FamilyId == family.Id).ToList();
+            foreach (var user in usersToUpdate)
             {
-                throw new NotFoundException("Family not Found");
+                user.FamilyId = null; 
             }
 
-            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, family, new ResourceOperationRequirement(ResourceOperation.Delete)).Result;
-
+            headOfFamily.RoleId = 1;
 
             _dbContext.Families.Remove(family);
             _dbContext.SaveChanges();
@@ -115,7 +117,7 @@ namespace Domowik___WebAPI.Services
         }
         public FamilyDto GetById(int id)
         {
-            var family = _dbContext.Families.Include(f => f.Members).Include(f => f.Head).FirstOrDefault(x => x.Id == id);
+            var family = _dbContext.Families.Include(f => f.Members).Include(f => f.Head).AsNoTracking().FirstOrDefault(x => x.Id == id);
 
             if(family == null)
             {
@@ -140,11 +142,14 @@ namespace Domowik___WebAPI.Services
         {
             var family = _mapper.Map<Family>(createFamilyDto);
             var userId = _userContextService.GetUserId;
-            var user = _dbContext.Users.FirstOrDefault(x => x.Id == userId);
             family.HeadId = userId;
-            _dbContext.Families.Add(family);
-            user.FamilyId = userId;
+            _dbContext.Add(family);
+            _dbContext.SaveChanges();
+
+            var user = _dbContext.Users
+                .FirstOrDefault(x => x.Id == userId);
             user.RoleId = 3;
+            user.FamilyId = family.Id;
             _dbContext.SaveChanges();
 
             return family.Id;
