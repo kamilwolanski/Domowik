@@ -6,6 +6,7 @@ import validationSchema from './validationSchema';
 import { Button } from 'reactstrap';
 import { useMutation, useQueryClient } from 'react-query';
 import { editUser } from '../../../Api/api';
+import formatDate from '../../../Helpers/formatDate';
 
 interface IEditUserForm {
   handleCancel: () => void;
@@ -18,7 +19,7 @@ interface IEditUserForm {
 
 const EditUserForm: React.FC<IEditUserForm> = ({ handleCancel, user }) => {
   const inputDate = new Date(user.dateOfBirth);
-  const formattedDate = `${inputDate.getFullYear()}-${(inputDate.getMonth() + 1).toString().padStart(2, '0')}-${inputDate.getDate().toString().padStart(2, '0')}`;
+  const formattedDate = formatDate(inputDate);
 
   const initialValues = {
     firstName: user.firstName,

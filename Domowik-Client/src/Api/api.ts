@@ -84,3 +84,9 @@ export const addUser = async (body: AddUser) => {
 
   return response;
 };
+
+export const removeFamilyMember = async (id: number) => {
+  const response = await api.delete(`/family/user/${id}`);
+
+  return response;
+};
