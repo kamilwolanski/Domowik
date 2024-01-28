@@ -26,6 +26,14 @@ namespace Domowik___WebAPI.Controllers
             _validator = validator;
         }
 
+        [HttpDelete("user/{id}")]
+        public ActionResult DeleteUser([FromRoute] int id)
+        {
+            _familyService.DeleteUser(id);
+
+            return Ok();
+        }
+
         [HttpPost("add")]
         public ActionResult Add([FromBody] AddUserToFamilyDto dto)
         {

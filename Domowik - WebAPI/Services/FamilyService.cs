@@ -18,6 +18,7 @@ namespace Domowik___WebAPI.Services
         void Delete(int id);
         void Update(int id, UpdateFamilyDto updateFamilyDto);
         void Add(AddUserToFamilyDto dto);
+        void DeleteUser(int id);
     }
     public class FamilyService : IFamilyService
     {
@@ -34,6 +35,19 @@ namespace Domowik___WebAPI.Services
             _logger = logger;
             _authorizationService = authorizationService;
             _userContextService = userContextService;
+        }
+
+        public void DeleteUser(int id)
+        {
+
+            var userToDelete = _dbContext.Users.SingleOrDefault(u => u.Id == id);
+            var userToDeleteFamily = _dbContext.Families
+                 .Include(x => x.Members)
+                 .SingleOrDefault(x => x.Members.Any(x => id == x.Id));
+
+
+            userToDeleteFamily.Members.Remove(userToDelete);
+            _dbContext.SaveChanges();
         }
 
         public void Add(AddUserToFamilyDto dto)
