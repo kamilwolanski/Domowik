@@ -42,8 +42,6 @@ const LeaveFamily: React.FC<ILeaveFamily> = ({ member, userId }) => {
   return (
     <>
       <ImCross color="#bf2015" size={20} onClick={showModal} />
-      {/* {member.id === userId && <p>twoje konto</p>}
-      {member.id !== userId && <p>nie twoje konto</p>} */}
       <Modal
         title={
           member.id !== userId ? 'Usuń członka rodziny' : 'Wyjdź z rodziny'

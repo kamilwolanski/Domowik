@@ -57,6 +57,12 @@ export const createFamily = async (body: CreateFamily) => {
   return response;
 };
 
+export const deleteFamily = async () => {
+  const response = await api.delete('/family');
+
+  return response;
+};
+
 export const getUserFamily = async () => {
   const response = await api.get('/user/family');
 
