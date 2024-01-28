@@ -25,3 +25,8 @@ export type EditUser = {
 export type AddUser = {
   email: string;
 };
+
+export type UpdateShoppingList = {
+  name: string;
+  count: number;
+};

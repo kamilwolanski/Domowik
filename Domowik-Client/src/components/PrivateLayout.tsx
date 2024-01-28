@@ -10,6 +10,7 @@ import {
 import { Layout, Menu, Button, theme } from 'antd';
 import Logo from './Logo';
 import type { MenuProps } from 'antd';
+import { CiShoppingBasket } from 'react-icons/ci';
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -46,10 +47,17 @@ const PrivateLayout: React.FC = () => {
       </NavLink>,
     ),
     getItem(
-      'Wydatki',
-      '/books',
-      <NavLink to="/books">
+      'Finanse',
+      '/finances',
+      <NavLink to="/finances">
         <PieChartOutlined />
+      </NavLink>,
+    ),
+    getItem(
+      'Lista zakupów',
+      '/shopping-list',
+      <NavLink to="/shopping-list">
+        <CiShoppingBasket size={17} color="white" />
       </NavLink>,
     ),
     getItem(

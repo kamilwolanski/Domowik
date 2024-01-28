@@ -5,6 +5,7 @@ import {
   EditUser,
   LoginBody,
   RegisterBody,
+  UpdateShoppingList,
 } from './types';
 
 const api = axios.create({
@@ -93,6 +94,18 @@ export const addUser = async (body: AddUser) => {
 
 export const removeFamilyMember = async (id: number) => {
   const response = await api.delete(`/family/user/${id}`);
+
+  return response;
+};
+
+export const updateShoppingList = async (body: UpdateShoppingList[]) => {
+  const response = await api.put('/family/shopping-list', [...body]);
+
+  return response;
+};
+
+export const getShoppingList = async () => {
+  const response = await api.get('/family/shopping-list');
 
   return response;
 };
