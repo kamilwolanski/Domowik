@@ -85,6 +85,21 @@ namespace Domowik___WebAPI.Controllers
             return Ok(family);
         }
 
+        [HttpPut("shopping-list")]
+        public ActionResult UpdateShoppingList([FromBody] List<CreateShoppingListProductDto> dto)
+        {
+            _familyService.UpdateShoppingList(dto);
+            return Ok();
+        }
+
+        [HttpGet("shopping-list")]
+        public ActionResult<List<ShoppingListProductDto>> GetShoppingList()
+        {
+            var products = _familyService.GetShoppingListProducts();
+
+            return Ok(products);
+        }
+
 
     }
 }

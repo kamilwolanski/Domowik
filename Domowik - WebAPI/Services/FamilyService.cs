@@ -19,6 +19,8 @@ namespace Domowik___WebAPI.Services
         void Update(int id, UpdateFamilyDto updateFamilyDto);
         void Add(AddUserToFamilyDto dto);
         void DeleteUser(int id);
+        void UpdateShoppingList(List<CreateShoppingListProductDto> shoppingListProductDto);
+        List<ShoppingListProductDto> GetShoppingListProducts();
     }
     public class FamilyService : IFamilyService
     {
@@ -49,6 +51,45 @@ namespace Domowik___WebAPI.Services
             userToDeleteFamily.Members.Remove(userToDelete);
             _dbContext.SaveChanges();
         }
+
+        public List<ShoppingListProductDto> GetShoppingListProducts()
+        {
+            var userId = _userContextService.GetUserId;
+            var userFamily = _dbContext.Families
+                 .Include(x => x.Members)
+                 .Include(x => x.ShoppingList).ThenInclude(x => x.Products)
+                 .AsNoTracking()
+                 .SingleOrDefault(x => x.Members.Any(x => userId == x.Id));
+
+            var products = _mapper.Map<List<ShoppingListProductDto>>(userFamily.ShoppingList.Products);
+
+            return products;
+
+        }
+
+        public void UpdateShoppingList(List<CreateShoppingListProductDto> shoppingListProductDto)
+        {
+            var userId = _userContextService.GetUserId;
+            var userFamily = _dbContext.Families
+                .Include(x => x.Members)
+                .Include(x => x.ShoppingList)
+                    .ThenInclude(sl => sl.Products)
+                .SingleOrDefault(x => x.Members.Any(x => userId == x.Id));
+
+            // Usuń wszystkie produkty z bazy danych, które są związane z daną listą zakupów
+            _dbContext.Products.RemoveRange(userFamily.ShoppingList.Products ?? new List<Product>());
+
+            // Zapisz zmiany w bazie danych
+            _dbContext.SaveChanges();
+
+            // Mapuj nowe produkty i przypisz je do listy zakupów w rodzinie
+            var result = _mapper.Map<List<Product>>(shoppingListProductDto);
+            userFamily.ShoppingList.Products = result;
+
+            // Zapisz zmiany w bazie danych
+            _dbContext.SaveChanges();
+        }
+
 
         public void Add(AddUserToFamilyDto dto)
         {
@@ -117,7 +158,9 @@ namespace Domowik___WebAPI.Services
         }
         public FamilyDto GetById(int id)
         {
-            var family = _dbContext.Families.Include(f => f.Members).Include(f => f.Head).AsNoTracking().FirstOrDefault(x => x.Id == id);
+            var family = _dbContext.Families.Include(f => f.Members).Include(f => f.Head)
+                .AsNoTracking()
+                .FirstOrDefault(x => x.Id == id);
 
             if(family == null)
             {
@@ -143,6 +186,7 @@ namespace Domowik___WebAPI.Services
             var family = _mapper.Map<Family>(createFamilyDto);
             var userId = _userContextService.GetUserId;
             family.HeadId = userId;
+            family.ShoppingList = new ShoppingList();
             _dbContext.Add(family);
             _dbContext.SaveChanges();
 

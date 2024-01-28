@@ -10,6 +10,8 @@ namespace Domowik___WebAPI.Data
         public DbSet<Family> Families { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<ShoppingList> ShoppingLists { get; set; }
+        public DbSet<Product> Products { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +37,11 @@ namespace Domowik___WebAPI.Data
                 .HasOne(u => u.Family)
                 .WithMany(f => f.Members)
                 .HasForeignKey(u => u.FamilyId);
+
+            modelBuilder.Entity<Family>()
+                .HasOne(f => f.ShoppingList) 
+                .WithOne(sl => sl.Family)    
+                .HasForeignKey<ShoppingList>(sl => sl.FamilyId);
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

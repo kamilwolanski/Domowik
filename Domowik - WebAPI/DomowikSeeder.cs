@@ -79,7 +79,20 @@ namespace Domowik___WebAPI
                 Members = new List<User>()
                 {
                     user
+                },
+                ShoppingList = new ShoppingList()
+                {
+                    Products = new List<Product>()
+                    {
+                        new Product()
+                        {
+                            Name = "Cytryna",
+                            Count = 2
+                        }
+                    }
                 }
+                
+                    
             }
         };
 

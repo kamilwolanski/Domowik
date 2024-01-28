@@ -4,6 +4,7 @@ using Domowik___WebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domowik___WebAPI.Migrations
 {
     [DbContext(typeof(DomowikDbContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240128204248_shopping-list")]
+    partial class shoppinglist
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,6 +39,9 @@ namespace Domowik___WebAPI.Migrations
                         .IsRequired()
                         .HasMaxLength(25)
                         .HasColumnType("nvarchar(25)");
+
+                    b.Property<int>("ShoppingListId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
