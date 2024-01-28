@@ -2,6 +2,8 @@ import { Formik, Form, FormikHelpers } from 'formik';
 import TextInput from '../../Components/FormikInputs/FormikTextInput';
 
 import { Button } from 'reactstrap';
+import { useMutation, useQueryClient } from 'react-query';
+import { addUser } from '../../Api/api';
 
 interface IAddFamilyMemberForm {
   handleCancel: () => void;
@@ -13,12 +15,29 @@ const AddFamilyMemberForm: React.FC<IAddFamilyMemberForm> = ({
     email: '',
   };
 
+  const queryClient = useQueryClient();
+  const addFamilyMemberMutation = useMutation(addUser);
+
   const handleSubmit = (
     values: typeof initialValues,
     formikHelpers: FormikHelpers<{ email: string }>,
   ) => {
-    console.log('formikHelpers', formikHelpers);
-    console.log('values', values)
+    addFamilyMemberMutation.mutate(
+      {
+        email: values.email,
+      },
+      {
+        onSuccess: () => {
+          formikHelpers.resetForm();
+          queryClient.invalidateQueries({ queryKey: ['family'] });
+          handleCancel();
+        },
+        // @ts-expect-error
+        onError: (err: { response: { data: string } }) => {
+          formikHelpers.setFieldError('email', err.response.data);
+        },
+      },
+    );
   };
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>

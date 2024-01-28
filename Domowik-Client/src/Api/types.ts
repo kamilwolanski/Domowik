@@ -21,3 +21,7 @@ export type EditUser = {
   lastName: string;
   dateOfBirth: string;
 };
+
+export type AddUser = {
+  email: string;
+};
