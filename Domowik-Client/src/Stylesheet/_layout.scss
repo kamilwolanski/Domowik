@@ -1,0 +1,88 @@
+body {
+  font-family: 'Asap', sans-serif;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+p {
+  color: $font-color;
+}
+
+.logo {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+
+  img {
+    max-width: 50px;
+  }
+}
+
+label {
+  font-weight: 600;
+  color: $primary-text;
+}
+
+input {
+  border-radius: 10px !important;
+}
+
+input[type='date'] {
+    -webkit-text-fill-color: black;
+}
+
+.regular-layout {
+  nav {
+    padding: 15px;
+    background-color: white;
+
+    img {
+      max-width: 100px;
+    }
+  }
+  main {
+    height: calc(100vh - 69px - 130px);
+    background-color: #f5f5f5;
+  }
+
+  footer {
+    background-color: white;
+  }
+}
+
+.ant-layout {
+  a {
+    color: white;
+  }
+  height: 100vh;
+
+  .ant-layout-sider-children {
+    position: relative;
+
+    .ant-menu {
+
+      li:last-child {
+        position: absolute;
+        bottom: 60px;
+      }
+    }
+  }
+
+  .ant-menu {
+    .ant-menu-item {
+      span {
+        color: white;
+      }
+    }
+  }
+}
+
+.primary-text {
+  color: $primary-text;
+}
