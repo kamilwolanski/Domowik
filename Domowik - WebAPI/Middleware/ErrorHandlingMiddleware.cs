@@ -29,6 +29,11 @@ namespace Domowik___WebAPI.Middleware
                 context.Response.StatusCode = 400;
                 await context.Response.WriteAsync(badRequestException.Message);
             }
+            catch(InvalidOperationException invalidOperationException)
+            {
+                context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
+                await context.Response.WriteAsync(invalidOperationException.Message);
+            }
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);

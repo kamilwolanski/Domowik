@@ -11,6 +11,8 @@ namespace Domowik___WebAPI
             CreateMap<Family, FamilyDto>();
             CreateMap<User, FamilyUserDto>();
             CreateMap<CreateFamilyDto, Family>();
+            CreateMap<User, UserDto>();
+            CreateMap<UserUpdateDto, User>();
         }
     }
 }

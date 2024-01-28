@@ -54,7 +54,7 @@ namespace Domowik___WebAPI.Services
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_authenticationSettings.JwtKey));
             var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            var expires = DateTime.Now.AddDays(_authenticationSettings.JwtExprireDays);
+            var expires = DateTime.Now.AddDays(_authenticationSettings.JwtExpireDays);
 
             var token = new JwtSecurityToken(_authenticationSettings.JwtIssuer, _authenticationSettings.JwtIssuer, claims, expires: expires, signingCredentials: cred);
 
@@ -71,7 +71,7 @@ namespace Domowik___WebAPI.Services
                 DateOfBirth = dto.DateOfBirth,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
-                RoleId = dto.RoleId,
+                RoleId = 1
             };
 
             var hashedPassword = _passwordHasher.HashPassword(newUser, dto.Password);

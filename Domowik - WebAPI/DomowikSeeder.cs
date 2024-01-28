@@ -33,7 +33,7 @@ namespace Domowik___WebAPI
                         DateOfBirth = new DateTime(1998, 4, 23),
                         Email = "kwolanski3@gmail.com",
                         PasswordHash = "123",
-                        Role = GetRoles().FirstOrDefault(r => r.Name == "User")
+                        RoleId = 3
                     };
 
                     _dbContext.Users.Add(user);
