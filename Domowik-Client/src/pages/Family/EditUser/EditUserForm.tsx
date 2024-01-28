@@ -4,6 +4,8 @@ import DateInput from '../../../Components/FormikInputs/FormikDateInput';
 
 import validationSchema from './validationSchema';
 import { Button } from 'reactstrap';
+import { useMutation, useQueryClient } from 'react-query';
+import { editUser } from '../../../Api/api';
 
 interface IEditUserForm {
   handleCancel: () => void;
@@ -23,8 +25,28 @@ const EditUserForm: React.FC<IEditUserForm> = ({ handleCancel, user }) => {
     lastName: user.lastName,
     dateOfBirth: formattedDate,
   };
+  const queryClient = useQueryClient();
+  const editUserMutation = useMutation(editUser);
 
-  const handleSubmit = () => {};
+  const handleSubmit = (values: typeof initialValues) => {
+    editUserMutation.mutate(
+      {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        dateOfBirth: values.dateOfBirth,
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['family'] });
+          handleCancel();
+        },
+
+        onError: (err) => {
+          console.warn('err', err);
+        },
+      },
+    );
+  };
   return (
     <Formik
       validationSchema={validationSchema}

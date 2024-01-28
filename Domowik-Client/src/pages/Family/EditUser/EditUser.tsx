@@ -14,8 +14,6 @@ interface IEditUser {
 const EditUser: React.FC<IEditUser> = ({ user }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  console.log('user', user)
-
   const showModal = () => {
     setIsModalOpen(true);
   };

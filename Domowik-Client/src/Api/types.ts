@@ -15,3 +15,9 @@ export type RegisterBody = {
 export type CreateFamily = {
   name: string;
 };
+
+export type EditUser = {
+  firstName: string;
+  lastName: string;
+  dateOfBirth: string;
+};

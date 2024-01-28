@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CreateFamily, LoginBody, RegisterBody } from './types';
+import { CreateFamily, EditUser, LoginBody, RegisterBody } from './types';
 
 const api = axios.create({
   baseURL: 'https://localhost:7107/api',
@@ -59,6 +59,14 @@ export const getUserFamily = async () => {
 
 export const getUser = async () => {
   const response = await api.get('/user');
+
+  return response;
+};
+
+export const editUser = async (body: EditUser) => {
+  const response = await api.put('/user', {
+    ...body,
+  });
 
   return response;
 };
