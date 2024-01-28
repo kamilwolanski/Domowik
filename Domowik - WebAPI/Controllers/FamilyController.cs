@@ -26,6 +26,14 @@ namespace Domowik___WebAPI.Controllers
             _validator = validator;
         }
 
+        [HttpDelete("user/{id}")]
+        public ActionResult DeleteUser([FromRoute] int id)
+        {
+            _familyService.DeleteUser(id);
+
+            return Ok();
+        }
+
         [HttpPost("add")]
         public ActionResult Add([FromBody] AddUserToFamilyDto dto)
         {
@@ -43,16 +51,15 @@ namespace Domowik___WebAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete("{id}")]
-        public ActionResult Delete([FromRoute] int id)
+        [HttpDelete]
+        public ActionResult Delete()
         {
-            _familyService.Delete(id);
+            _familyService.Delete();
 
             return NoContent();
         }
 
         [HttpPost]
-        [Authorize(Roles = "User")]
         public async Task<ActionResult> CreateFamily([FromBody] CreateFamilyDto dto)
         {
             await _validator.ValidateAndThrowAsync(dto);
