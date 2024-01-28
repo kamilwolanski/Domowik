@@ -15,7 +15,7 @@ const App = () => {
     <>
       <Routes>
         <Route element={<RegularLayout />}>
-          <Route path="/auth/login" element={<ShoppingList />} /> // dodane tutaj dla testu. Trzeba wywalic i zamienic na login tak jak bylo.
+          <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/register" element={<Register />} />
           <Route
             path="/auth/register/success"
