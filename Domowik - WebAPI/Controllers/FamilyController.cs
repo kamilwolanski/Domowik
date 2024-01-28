@@ -3,6 +3,7 @@ using Domowik___WebAPI.Data;
 using Domowik___WebAPI.Entities;
 using Domowik___WebAPI.Models;
 using Domowik___WebAPI.Services;
+using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,10 +18,20 @@ namespace Domowik___WebAPI.Controllers
     public class FamilyController : ControllerBase
     {
         private readonly IFamilyService _familyService;
+        private readonly IValidator<CreateFamilyDto> _validator;
 
-        public FamilyController(IFamilyService familyService)
+        public FamilyController(IFamilyService familyService, IValidator<CreateFamilyDto> validator)
         {
-               _familyService = familyService;
+            _familyService = familyService;
+            _validator = validator;
+        }
+
+        [HttpPost("add")]
+        public ActionResult Add([FromBody] AddUserToFamilyDto dto)
+        {
+            _familyService.Add(dto);
+
+            return Ok(true);
         }
 
         [HttpPut("{id}")]
@@ -39,11 +50,12 @@ namespace Domowik___WebAPI.Controllers
 
             return NoContent();
         }
+
         [HttpPost]
         [Authorize(Roles = "User")]
-        public ActionResult CreateFamily([FromBody] CreateFamilyDto dto)
+        public async Task<ActionResult> CreateFamily([FromBody] CreateFamilyDto dto)
         {
-            var userId = int.Parse(User.FindFirst(c => c.Type == ClaimTypes.NameIdentifier).Value);
+            await _validator.ValidateAndThrowAsync(dto);
             var familyId = _familyService.Create(dto);
 
             return Created($"/api/family/{familyId}", null);
@@ -65,5 +77,7 @@ namespace Domowik___WebAPI.Controllers
 
             return Ok(family);
         }
+
+
     }
 }
