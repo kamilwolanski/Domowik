@@ -9,13 +9,14 @@ import Logout from './Pages/Logout';
 import Register from './Pages/Register/Register';
 import RegistrationSuccess from './Pages/Register/RegistrationSuccess';
 import Family from './Pages/Family/Family';
+import ShoppingList from './Pages/ShoppingList';
 
 const App = () => {
   return (
     <>
       <Routes>
         <Route element={<RegularLayout />}>
-          <Route path="/auth/login" element={<Login />} />
+          <Route path="/auth/login" element={<ShoppingList />} /> // dodane tutaj dla testu. Trzeba wywalic i zamienic na login tak jak bylo.
           <Route path="/auth/register" element={<Register />} />
           <Route
             path="/auth/register/success"
