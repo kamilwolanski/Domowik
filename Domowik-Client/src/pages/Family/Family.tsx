@@ -8,6 +8,7 @@ import { getUser, getUserFamily } from '../../Api/api';
 import FamilyList from './FamilyList';
 import AddFamilyMember from './AddFamilyMember';
 import { Role } from './types';
+import DeleteFamily from './DeleteFamily/DeleteFamily';
 
 const Family: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,7 +40,7 @@ const Family: React.FC = () => {
   console.log('isHeadOfamily', isHeadOfFamily);
 
   return (
-    <>
+    <div className="family-wrapper h-100">
       <Container>
         <Row>
           <Col xs="12" md={{ size: 6, offset: 3 }}>
@@ -91,6 +92,7 @@ const Family: React.FC = () => {
             </Col>
           )}
         </Row>
+        {isHeadOfFamily && <DeleteFamily />}
       </Container>
 
       <Modal
@@ -104,7 +106,7 @@ const Family: React.FC = () => {
       >
         <CreateFamilyForm handleCancel={handleCancel} />
       </Modal>
-    </>
+    </div>
   );
 };
 
