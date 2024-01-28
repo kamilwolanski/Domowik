@@ -4,20 +4,21 @@ import { Modal } from 'antd';
 import { GiHouse } from 'react-icons/gi';
 import CreateFamilyForm from './CreateFamilyForm';
 import { useQuery } from 'react-query';
-import { getUserFamily } from '../../Api/api';
+import { getUser, getUserFamily } from '../../Api/api';
 import FamilyList from './FamilyList';
 import AddFamilyMember from './AddFamilyMember';
+import { Role } from './types';
 
 const Family: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { isLoading, isError, data, status } = useQuery(
-    'family',
-    getUserFamily,
+  const { isLoading, isError, data } = useQuery('family', getUserFamily);
+
+  const { isLoading: userDataLoading, data: userData } = useQuery(
+    'user',
+    getUser,
   );
 
-  console.log('data', data);
-  console.log('status', status);
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -30,14 +31,21 @@ const Family: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  if (isLoading) return <h5>Ładowanie...</h5>;
+  if (isLoading || userDataLoading) return <h5>Ładowanie...</h5>;
   if (isError) return <h5>Błąd</h5>;
+
+  const isHeadOfFamily = userData?.data.roleId === Role.Head;
+
+  console.log('isHeadOfamily', isHeadOfFamily);
+
   return (
     <>
       <Container>
         <Row>
           <Col xs="12" md={{ size: 6, offset: 3 }}>
-            <GiHouse size={150} />
+            <div className="text-center">
+              <GiHouse size={150} />
+            </div>
           </Col>
         </Row>
 
@@ -48,12 +56,17 @@ const Family: React.FC = () => {
                 {data?.data.name}
               </h1>
               <Col xs="12" md={{ size: 10, offset: 1 }}>
-                <div className="mt-5">
-                  <AddFamilyMember />
-                </div>
+                {isHeadOfFamily && (
+                  <div className="mt-5">
+                    <AddFamilyMember />
+                  </div>
+                )}
 
                 <div className="family-list-wrapper mt-3">
-                  <FamilyList members={data.data.members} />
+                  <FamilyList
+                    members={data.data.members}
+                    user={userData?.data}
+                  />
                 </div>
               </Col>
             </>

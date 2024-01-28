@@ -56,3 +56,9 @@ export const getUserFamily = async () => {
 
   return response;
 };
+
+export const getUser = async () => {
+  const response = await api.get('/user');
+
+  return response;
+};
