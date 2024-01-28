@@ -11,3 +11,7 @@ export type RegisterBody = {
   lastName: string;
   dateOfBirth: string;
 };
+
+export type CreateFamily = {
+  name: string;
+};

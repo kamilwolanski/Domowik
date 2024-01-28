@@ -2,38 +2,23 @@ import { Formik, Form, FormikHelpers } from 'formik';
 import TextInput from '../../Components/FormikInputs/FormikTextInput';
 
 import { Button } from 'reactstrap';
-import { useMutation } from 'react-query';
-import { createFamily } from '../../Api/api';
 
-interface ICreateFamilyForm {
+interface IAddFamilyMemberForm {
   handleCancel: () => void;
 }
-const CreateFamilyForm: React.FC<ICreateFamilyForm> = ({ handleCancel }) => {
-  const createFamilyMutation = useMutation(createFamily);
-
+const AddFamilyMemberForm: React.FC<IAddFamilyMemberForm> = ({
+  handleCancel,
+}) => {
   const initialValues = {
-    name: '',
+    email: '',
   };
 
   const handleSubmit = (
     values: typeof initialValues,
-    formikHelpers: FormikHelpers<{ name: string }>,
+    formikHelpers: FormikHelpers<{ email: string }>,
   ) => {
     console.log('formikHelpers', formikHelpers);
-    createFamilyMutation.mutate(
-      {
-        name: values.name,
-      },
-      {
-        onSuccess: () => {
-          handleCancel();
-        },
-
-        onError: (err) => {
-          console.log('err', err);
-        },
-      },
-    );
+    console.log('values', values)
   };
   return (
     <Formik initialValues={initialValues} onSubmit={handleSubmit}>
@@ -41,9 +26,9 @@ const CreateFamilyForm: React.FC<ICreateFamilyForm> = ({ handleCancel }) => {
         return (
           <Form>
             <TextInput
-              label="Podaj nazwę swojej rodziny"
-              name="name"
-              id="name"
+              label="Podaj email użytkownika"
+              name="email"
+              id="email"
             />
             <div className="text-end">
               <Button onClick={handleCancel}>Anuluj</Button>
@@ -53,7 +38,7 @@ const CreateFamilyForm: React.FC<ICreateFamilyForm> = ({ handleCancel }) => {
                 type="submit"
                 disabled={!isValid}
               >
-                Utwórz
+                Dodaj
               </Button>
             </div>
           </Form>
@@ -63,4 +48,4 @@ const CreateFamilyForm: React.FC<ICreateFamilyForm> = ({ handleCancel }) => {
   );
 };
 
-export default CreateFamilyForm;
+export default AddFamilyMemberForm;

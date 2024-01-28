@@ -26,7 +26,7 @@ p {
 
 label {
   font-weight: 600;
-  color: #1f4e7e;
+  color: $primary-text;
 }
 
 input {
@@ -81,4 +81,8 @@ input[type='date'] {
       }
     }
   }
+}
+
+.primary-text {
+  color: $primary-text;
 }
