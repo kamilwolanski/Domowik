@@ -19,6 +19,7 @@ using static Domowik___WebAPI.Services.IUserContextService;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Nlog: Setup NLog for Dependency injection
 builder.Logging.ClearProviders();
 builder.Logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Trace);
