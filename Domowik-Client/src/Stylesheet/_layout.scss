@@ -80,6 +80,10 @@ input[type='date'] {
         color: white;
       }
     }
+
+    .ant-menu-item-disabled {
+      opacity: .5;
+    }
   }
 }
 

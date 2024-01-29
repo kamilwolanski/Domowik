@@ -18,7 +18,6 @@ interface IFamilyList {
 }
 
 const FamilyList: React.FC<IFamilyList> = ({ members, user }) => {
-  console.log('user', user);
   return (
     <List
       itemLayout="horizontal"

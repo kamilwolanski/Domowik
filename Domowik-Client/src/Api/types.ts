@@ -30,3 +30,8 @@ export type UpdateShoppingList = {
   name: string;
   count: number;
 };
+
+export type AddTransaction = {
+  name: string;
+  count: number;
+};
