@@ -1,10 +1,12 @@
 import axios from 'axios';
 import {
+  AddTransaction,
   AddUser,
   CreateFamily,
   EditUser,
   LoginBody,
   RegisterBody,
+  UpdateShoppingList,
 } from './types';
 
 const api = axios.create({
@@ -93,6 +95,38 @@ export const addUser = async (body: AddUser) => {
 
 export const removeFamilyMember = async (id: number) => {
   const response = await api.delete(`/family/user/${id}`);
+
+  return response;
+};
+
+export const updateShoppingList = async (body: UpdateShoppingList[]) => {
+  const response = await api.put('/family/shopping-list', [...body]);
+
+  return response;
+};
+
+export const getShoppingList = async () => {
+  const response = await api.get('/family/shopping-list');
+
+  return response;
+};
+
+export const getFinances = async () => {
+  const response = await api.get('/family/finances');
+
+  return response;
+};
+
+export const addTransaction = async (body: AddTransaction) => {
+  const response = await api.post('/family/transaction', {
+    ...body,
+  });
+
+  return response;
+};
+
+export const removeTransaction = async (transactionId: number) => {
+  const response = await api.delete(`/family/transaction/${transactionId}`);
 
   return response;
 };

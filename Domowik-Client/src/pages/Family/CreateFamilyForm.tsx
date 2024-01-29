@@ -2,7 +2,7 @@ import { Formik, Form, FormikHelpers } from 'formik';
 import TextInput from '../../Components/FormikInputs/FormikTextInput';
 
 import { Button } from 'reactstrap';
-import { useMutation } from 'react-query';
+import { useMutation, useQueryClient } from 'react-query';
 import { createFamily } from '../../Api/api';
 
 interface ICreateFamilyForm {
@@ -10,6 +10,7 @@ interface ICreateFamilyForm {
 }
 const CreateFamilyForm: React.FC<ICreateFamilyForm> = ({ handleCancel }) => {
   const createFamilyMutation = useMutation(createFamily);
+  const queryClient = useQueryClient();
 
   const initialValues = {
     name: '',
@@ -26,6 +27,7 @@ const CreateFamilyForm: React.FC<ICreateFamilyForm> = ({ handleCancel }) => {
       },
       {
         onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ['family'] });
           handleCancel();
         },
 

@@ -10,6 +10,9 @@ import {
 import { Layout, Menu, Button, theme } from 'antd';
 import Logo from './Logo';
 import type { MenuProps } from 'antd';
+import { CiShoppingBasket } from 'react-icons/ci';
+import { useQuery } from 'react-query';
+import { getUser } from '../Api/api';
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -19,17 +22,26 @@ const PrivateLayout: React.FC = () => {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
 
+  const { isLoading: userDataLoading, data: userData } = useQuery(
+    'user',
+    getUser,
+  );
+
+  console.log('userData', userData);
+
   type MenuItem = Required<MenuProps>['items'][number];
 
   function getItem(
     label: React.ReactNode,
     key: React.Key,
     icon?: React.ReactNode,
+    disabled?: boolean,
     children?: MenuItem[],
     type?: 'group',
   ): MenuItem {
     return {
       key,
+      disabled,
       icon,
       children,
       label,
@@ -46,11 +58,29 @@ const PrivateLayout: React.FC = () => {
       </NavLink>,
     ),
     getItem(
-      'Wydatki',
-      '/books',
-      <NavLink to="/books">
+      'Finanse',
+      '/finances',
+      userData?.data.familyId ? (
+        <NavLink to="/finances">
+          <PieChartOutlined />
+        </NavLink>
+      ) : (
         <PieChartOutlined />
-      </NavLink>,
+      ),
+      userData?.data.familyId ? false : true,
+    ),
+    getItem(
+      'Lista zakupów',
+      '/shopping-list',
+      userData?.data.familyId ? (
+        <NavLink to="/shopping-list">
+          <CiShoppingBasket size={17} color="white" />
+        </NavLink>
+      ) : (
+        <CiShoppingBasket size={17} color="white" />
+      ),
+
+      userData?.data.familyId ? false : true,
     ),
     getItem(
       'Wyloguj się',
@@ -67,15 +97,24 @@ const PrivateLayout: React.FC = () => {
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <Logo />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={[location.pathname]}
-          items={items}
-        />
+        {!userDataLoading && (
+          <Menu
+            theme="dark"
+            mode="inline"
+            defaultSelectedKeys={[location.pathname]}
+            items={items}
+          />
+        )}
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }}>
+        <Header
+          style={{
+            padding: 0,
+            background: colorBgContainer,
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
           <Button
             type="text"
             icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
@@ -86,6 +125,9 @@ const PrivateLayout: React.FC = () => {
               height: 64,
             }}
           />
+          <h4 className="ms-5 mt-2">
+            {userData?.data.firstName} {userData?.data.lastName}
+          </h4>
         </Header>
         <Content
           style={{

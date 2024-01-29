@@ -30,6 +30,7 @@ const LeaveFamily: React.FC<ILeaveFamily> = ({ member, userId }) => {
       },
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: ['family'] });
+        queryClient.invalidateQueries({ queryKey: ['user'] });
       },
     });
     setIsModalOpen(false);
