@@ -18,13 +18,40 @@ namespace Domowik___WebAPI.Controllers
     public class FamilyController : ControllerBase
     {
         private readonly IFamilyService _familyService;
+        private readonly ITransationService _transationService;
         private readonly IValidator<CreateFamilyDto> _validator;
 
-        public FamilyController(IFamilyService familyService, IValidator<CreateFamilyDto> validator)
+        public FamilyController(IFamilyService familyService, IValidator<CreateFamilyDto> validator, ITransationService transationService)
         {
             _familyService = familyService;
             _validator = validator;
+            _transationService = transationService;
         }
+
+        [HttpDelete("transaction/{id}")]
+        public ActionResult DeleteTransaction([FromRoute] int Id)
+        {
+            _transationService.DeleteTransaction(Id);
+
+            return Ok();
+        }
+
+        [HttpPost("transaction")]
+        public ActionResult AddTransation([FromBody] AddTransactionDto transaction)
+        {
+            _transationService.AddTransation(transaction);
+
+            return Ok();
+        }
+
+        [HttpGet("finances")]
+        public ActionResult<FinanceDto> GetFinances()
+        {
+            var transactions = _transationService.GetFinances();
+
+            return Ok(transactions);
+        }
+
 
         [HttpDelete("user/{id}")]
         public ActionResult DeleteUser([FromRoute] int id)
