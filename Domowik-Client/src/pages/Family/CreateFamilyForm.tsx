@@ -20,7 +20,7 @@ const CreateFamilyForm: React.FC<ICreateFamilyForm> = ({ handleCancel }) => {
     values: typeof initialValues,
     formikHelpers: FormikHelpers<{ name: string }>,
   ) => {
-    console.log('formikHelpers', formikHelpers);
+
     createFamilyMutation.mutate(
       {
         name: values.name,
@@ -28,11 +28,12 @@ const CreateFamilyForm: React.FC<ICreateFamilyForm> = ({ handleCancel }) => {
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['family'] });
+          formikHelpers.resetForm();
           handleCancel();
         },
 
         onError: (err) => {
-          console.log('err', err);
+          console.warn('err', err);
         },
       },
     );

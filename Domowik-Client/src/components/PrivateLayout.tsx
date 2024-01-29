@@ -27,8 +27,6 @@ const PrivateLayout: React.FC = () => {
     getUser,
   );
 
-  console.log('userData', userData);
-
   type MenuItem = Required<MenuProps>['items'][number];
 
   function getItem(

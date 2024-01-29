@@ -1,4 +1,4 @@
-import { Form, Formik } from 'formik';
+import { Form, Formik, FormikHelpers } from 'formik';
 import { useMutation } from 'react-query';
 import { Container, Row, Col } from 'reactstrap';
 import EmailInput from '../../Components/FormikInputs/FormikEmailInput';
@@ -28,15 +28,31 @@ const Register = () => {
     },
   });
 
-  const handleSubmit = (values: typeof initialValues) => {
-    registerMutation.mutate({
-      email: values.email,
-      password: values.password,
-      confirmPassword: values.confirmPassword,
-      firstName: values.firstName,
-      lastName: values.lastName,
-      dateOfBirth: values.dateOfBirth,
-    });
+  const handleSubmit = (
+    values: typeof initialValues,
+    formikHelpers: FormikHelpers<typeof initialValues>,
+  ) => {
+    registerMutation.mutate(
+      {
+        email: values.email,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        dateOfBirth: values.dateOfBirth,
+      },
+      {
+        onError: (err) => {
+          err.response.data?.Email &&
+            formikHelpers.setFieldError('email', err.response.data?.Email[0]);
+          err.response.data?.Password &&
+            formikHelpers.setFieldError(
+              'password',
+              err.response.data?.Password[0],
+            );
+        },
+      },
+    );
   };
 
   return (

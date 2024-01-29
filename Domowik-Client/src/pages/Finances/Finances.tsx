@@ -7,8 +7,6 @@ import TransactionList from './TransactionList';
 const Finances = () => {
   const { data, isLoading } = useQuery('finances', getFinances);
 
-  console.log('data', data);
-
   if (isLoading) return <p>Ładowanie...</p>;
   return (
     <Container>

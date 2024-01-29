@@ -50,9 +50,7 @@ const Login = () => {
 
         // @ts-expect-error
         onError: ({ response }) => {
-          console.log('status', response.status);
           if (response.status === 400) {
-            console.log('error', response.data);
             const errMsg = response.data;
             formikHelpers.setFieldError('email', errMsg);
           }

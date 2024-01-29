@@ -37,8 +37,6 @@ const Family: React.FC = () => {
 
   const isHeadOfFamily = userData?.data.roleId === Role.Head;
 
-  console.log('isHeadOfamily', isHeadOfFamily);
-
   return (
     <div className="family-wrapper h-100">
       <Container>

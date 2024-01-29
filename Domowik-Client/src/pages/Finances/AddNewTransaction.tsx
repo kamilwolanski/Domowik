@@ -20,8 +20,6 @@ const AddNewTransaction = () => {
     setIsModalOpen(false);
   };
 
-  console.log('isIncome', isIncome);
-
   return (
     <>
       <Button color="primary" onClick={showModal}>

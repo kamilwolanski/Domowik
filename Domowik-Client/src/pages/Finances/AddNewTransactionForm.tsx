@@ -41,7 +41,6 @@ const AddNewTransactionForm: React.FC<IAddNewTransactionForm> = ({
         },
       },
     );
-    console.log('asd', values, formikHelpers);
   };
 
   return (

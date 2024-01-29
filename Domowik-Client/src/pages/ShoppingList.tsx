@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Container } from 'reactstrap';
 import { getShoppingList, updateShoppingList } from '../Api/api';
 
@@ -12,8 +12,7 @@ type Item = {
 const ShoppingList: React.FC = () => {
   const updateShoppingListMutation = useMutation(updateShoppingList);
   const { data, isLoading } = useQuery('shopping-list', getShoppingList);
-
-  console.log('data', data);
+  const queryClient = useQueryClient();
 
   const [items, setItems] = useState<Item[]>([]);
   const [selectedItems, setSelectedItems] = useState<Item[]>([]);
@@ -33,8 +32,6 @@ const ShoppingList: React.FC = () => {
     }
   }, [isLoading]);
 
-  //   console.log('items', items);
-
   useEffect(() => {
     const mappedItems = items.map((item) => ({
       name: item.name,
@@ -43,14 +40,10 @@ const ShoppingList: React.FC = () => {
 
     updateShoppingListMutation.mutate(mappedItems, {
       onSuccess: () => {
-        console.log('supper');
+        queryClient.invalidateQueries({ queryKey: ['shopping-list'] });
       },
     });
-
-    console.log('mappedItems', mappedItems);
   }, [items]);
-
-  console.log('items', items);
 
   const handleOpen = () => {
     setIsOpen(true);
@@ -65,7 +58,6 @@ const ShoppingList: React.FC = () => {
   };
 
   const handleSubmitValue = () => {
-    console.log(value);
     const index = items.findIndex((item) => item.id === editedItem);
     const item = items[index];
     const newItem = { ...item, count: Number(value) };
@@ -102,7 +94,7 @@ const ShoppingList: React.FC = () => {
     item: Item,
   ) => {
     const isChecked = event.target.checked;
-    console.log(`Checkbox is ${isChecked ? 'checked' : 'not checked'}`);
+
     if (isChecked) {
       selectItem(item);
     } else {

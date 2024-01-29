@@ -4,8 +4,6 @@ const PrivateRoute: React.FC = () => {
   const isAuth = localStorage.getItem('token');
   const location = useLocation();
 
-  console.log('isAuth', isAuth);
-
   return (
     <>
       {isAuth ? (

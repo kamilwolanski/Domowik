@@ -11,7 +11,6 @@ interface ITransactionList {
 }
 
 const TransactionList: React.FC<ITransactionList> = ({ transactionList }) => {
-  console.log('transactionList', transactionList);
   const removeTransactionMutation = useMutation(removeTransaction);
   const queryClient = useQueryClient();
 
