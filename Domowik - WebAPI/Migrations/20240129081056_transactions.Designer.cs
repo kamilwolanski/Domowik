@@ -4,6 +4,7 @@ using Domowik___WebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domowik___WebAPI.Migrations
 {
     [DbContext(typeof(DomowikDbContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240129081056_transactions")]
+    partial class transactions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,9 +120,6 @@ namespace Domowik___WebAPI.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
                     b.Property<int?>("FamilyId")
                         .HasColumnType("int");
 
@@ -216,7 +215,7 @@ namespace Domowik___WebAPI.Migrations
             modelBuilder.Entity("Domowik___WebAPI.Entities.Transaction", b =>
                 {
                     b.HasOne("Domowik___WebAPI.Entities.Family", "Family")
-                        .WithMany("Transactions")
+                        .WithMany()
                         .HasForeignKey("FamilyId");
 
                     b.HasOne("Domowik___WebAPI.Entities.User", "User")
@@ -253,8 +252,6 @@ namespace Domowik___WebAPI.Migrations
 
                     b.Navigation("ShoppingList")
                         .IsRequired();
-
-                    b.Navigation("Transactions");
                 });
 
             modelBuilder.Entity("Domowik___WebAPI.Entities.ShoppingList", b =>
