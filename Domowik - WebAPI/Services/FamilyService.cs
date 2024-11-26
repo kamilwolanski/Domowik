@@ -14,7 +14,7 @@ namespace Domowik___WebAPI.Services
     {
         FamilyDto GetById(int id);
         IEnumerable<FamilyDto> GetAll();
-        int Create(CreateFamilyDto createFamilyDto);
+        Task<int> Create(CreateFamilyDto createFamilyDto);
         void Delete();
         void Update(int id, UpdateFamilyDto updateFamilyDto);
         void Add(AddUserToFamilyDto dto);
@@ -22,6 +22,7 @@ namespace Domowik___WebAPI.Services
         void UpdateShoppingList(List<CreateShoppingListProductDto> shoppingListProductDto);
         List<ShoppingListProductDto> GetShoppingListProducts();
     }
+
     public class FamilyService : IFamilyService
     {
         private readonly DomowikDbContext _dbContext;
@@ -181,22 +182,32 @@ namespace Domowik___WebAPI.Services
             return familiesDtos;
         }
 
-        public int Create(CreateFamilyDto createFamilyDto)
+        public async Task<int> Create(CreateFamilyDto createFamilyDto)
         {
-            var family = _mapper.Map<Family>(createFamilyDto);
             var userId = _userContextService.GetUserId;
+            if (!await HasFamily(userId))
+            {
+                throw new InvalidOperationException();
+            }
+            var family = _mapper.Map<Family>(createFamilyDto);
             family.HeadId = userId;
             family.ShoppingList = new ShoppingList();
             _dbContext.Add(family);
             _dbContext.SaveChanges();
 
-            var user = _dbContext.Users
-                .FirstOrDefault(x => x.Id == userId);
+            var user = await _dbContext.Users
+                .FirstOrDefaultAsync(x => x.Id == userId);
             user.RoleId = 3;
             user.FamilyId = family.Id;
-            _dbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
 
             return family.Id;
+        }
+
+        private async Task<bool> HasFamily(int userId)
+        {
+            var user = await _dbContext.Users.SingleAsync(x => x.Id == userId);
+            return user.FamilyId is null;
         }
     }
 }

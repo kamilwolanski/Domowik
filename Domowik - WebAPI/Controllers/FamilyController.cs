@@ -1,13 +1,9 @@
-﻿using AutoMapper;
-using Domowik___WebAPI.Data;
-using Domowik___WebAPI.Entities;
-using Domowik___WebAPI.Models;
+﻿using Domowik___WebAPI.Models;
 using Domowik___WebAPI.Services;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Security.Claims;
 
 namespace Domowik___WebAPI.Controllers
 {
@@ -27,6 +23,7 @@ namespace Domowik___WebAPI.Controllers
             _validator = validator;
             _transationService = transationService;
         }
+
 
         [HttpDelete("transaction/{id}")]
         public ActionResult DeleteTransaction([FromRoute] int Id)
@@ -89,8 +86,13 @@ namespace Domowik___WebAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateFamily([FromBody] CreateFamilyDto dto)
         {
-            await _validator.ValidateAndThrowAsync(dto);
-            var familyId = _familyService.Create(dto);
+            var validationResult = await _validator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+            {
+                validationResult.AddToModelState(ModelState);
+                return BadRequest(ModelState);
+            }
+            var familyId = await _familyService.Create(dto);
 
             return Created($"/api/family/{familyId}", null);
         }

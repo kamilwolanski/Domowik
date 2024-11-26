@@ -13,6 +13,7 @@ namespace Domowik___WebAPI.Services
         FamilyDto GetUserFamily();
         UserDto GetUser();
         void UpdateUser(UserUpdateDto dto);
+        void DeleteUser();
     }
     public class UserService : IUserService
     {
@@ -25,6 +26,15 @@ namespace Domowik___WebAPI.Services
             _dbContext = dbContext;
             _userContextService = userContextService;
             _mapper = mapper;
+        }
+
+        public void DeleteUser()
+        {
+            var userId = _userContextService.GetUserId;
+            var user = _dbContext.Users.FirstOrDefault(u => u.Id == userId);
+
+            _dbContext.Users.Remove(user);
+            _dbContext.SaveChanges();
         }
 
         public UserDto GetUser()

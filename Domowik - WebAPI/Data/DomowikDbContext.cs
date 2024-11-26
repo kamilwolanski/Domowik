@@ -10,6 +10,7 @@ namespace Domowik___WebAPI.Data
         public DbSet<Family> Families { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
+        public DbSet<TransactionCategory> TransactionCategories { get; set; }
         public DbSet<ShoppingList> ShoppingLists { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Transaction> Transactions { get; set; }

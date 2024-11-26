@@ -1,7 +1,6 @@
 ﻿using Domowik___WebAPI.Data;
 using Domowik___WebAPI.Services;
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 
 namespace Domowik___WebAPI.Models.Validators
 {
@@ -10,21 +9,8 @@ namespace Domowik___WebAPI.Models.Validators
         public CreateFamilyDtoValidator(DomowikDbContext dbContext, IUserContextService userContextService)
         {
             RuleFor(x => x.Name)
-                .NotEmpty()
-                .MaximumLength(25);
-
-            RuleFor(x => x)
-                .MustAsync(async (dto, _) =>
-                {
-                    var userId = userContextService.GetUserId;
-                    var user = await dbContext.Users.SingleOrDefaultAsync(u => u.Id == userId);
-
-                    if (user?.FamilyId == null)
-                    {
-                        return true;
-                    }
-                    return false;
-                });
+                .NotEmpty().WithMessage("To pole nie może być puste")
+                .MaximumLength(25).WithMessage("Maksymalna długość nazwy Twojej rodziny to 25 znaków");
         }
     }
 }

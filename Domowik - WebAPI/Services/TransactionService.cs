@@ -2,7 +2,6 @@
 using Domowik___WebAPI.Data;
 using Domowik___WebAPI.Entities;
 using Domowik___WebAPI.Models;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 
 namespace Domowik___WebAPI.Services

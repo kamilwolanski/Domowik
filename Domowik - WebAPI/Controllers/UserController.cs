@@ -16,6 +16,14 @@ namespace Domowik___WebAPI.Controllers
             _userService = userService;
         }
 
+        [HttpDelete]
+        public IActionResult Delete()
+        {
+            _userService.DeleteUser();
+
+            return Ok();
+        }
+
         [HttpGet]
         public IActionResult Get()
         {

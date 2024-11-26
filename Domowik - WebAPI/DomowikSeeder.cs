@@ -24,6 +24,14 @@ namespace Domowik___WebAPI
                     _dbContext.SaveChanges();
                 }
 
+                if (!_dbContext.TransactionCategories.Any())
+                {
+                    var transicionCategories = GetTransactionCategories();
+
+                    _dbContext.TransactionCategories.AddRange(transicionCategories);
+                    _dbContext.SaveChanges();
+                }
+
                 if (!_dbContext.Families.Any())
                 {
                     var user = new User()
@@ -66,6 +74,27 @@ namespace Domowik___WebAPI
         };
 
             return roles;
+        }
+
+        private IEnumerable<TransactionCategory> GetTransactionCategories()
+        {
+            var categories = new List<TransactionCategory>()
+            {
+                new TransactionCategory()
+                {
+                    Name = "Rachunki"
+                },
+                new TransactionCategory()
+                {
+                    Name = "Zdrowie"
+                },
+                new TransactionCategory()
+                {
+                    Name = "Zakupy"
+                }
+            };
+
+            return categories;
         }
 
         private IEnumerable<Family> GetFamilies(User user)
