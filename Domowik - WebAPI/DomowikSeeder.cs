@@ -82,15 +82,33 @@ namespace Domowik___WebAPI
             {
                 new TransactionCategory()
                 {
-                    Name = "Rachunki"
+                    Name = "Rachunki",
+                    Type = TransactionCategoryType.Expense
                 },
                 new TransactionCategory()
                 {
-                    Name = "Zdrowie"
+                    Name = "Zdrowie",
+                    Type = TransactionCategoryType.Expense
                 },
                 new TransactionCategory()
                 {
-                    Name = "Zakupy"
+                    Name = "Zakupy",
+                    Type = TransactionCategoryType.Expense
+                },
+                new TransactionCategory()
+                {
+                    Name = "Pensja",
+                    Type = TransactionCategoryType.Income
+                },
+                new TransactionCategory()
+                {
+                    Name = "Sprzedaż",
+                    Type = TransactionCategoryType.Income
+                },
+                new TransactionCategory()
+                {
+                    Name = "Inwestycje",
+                    Type = TransactionCategoryType.Income
                 }
             };
 
