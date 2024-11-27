@@ -6,11 +6,13 @@ import {
   EditUser,
   LoginBody,
   RegisterBody,
+  TransactionCategory,
+  TransactionCategoryType,
   UpdateShoppingList,
 } from './types';
 
 const api = axios.create({
-  baseURL: 'https://localhost:7107/api',
+  baseURL: 'http://localhost:7107/api',
   headers: {
     'Content-Type': 'application/json',
   },
@@ -121,6 +123,16 @@ export const addTransaction = async (body: AddTransaction) => {
   const response = await api.post('/family/transaction', {
     ...body,
   });
+
+  return response;
+};
+
+export const getTransactionCategories = async (
+  transactionCategory?: TransactionCategoryType,
+) => {
+  const response = await api.get<TransactionCategory[]>(
+    `/transactionCategory${transactionCategory !== undefined ? `?type=${transactionCategory}` : ''}`,
+  );
 
   return response;
 };

@@ -3,8 +3,15 @@ import { IoAddCircleSharp } from 'react-icons/io5';
 import { Button } from 'reactstrap';
 import { Modal } from 'antd';
 import AddNewTransactionForm from './AddNewTransactionForm';
+import { TransactionCategory } from '../../Api/types';
 
-const AddNewTransaction = () => {
+interface IAddNewTransaction {
+  transactionCategoriesData: TransactionCategory[];
+}
+
+const AddNewTransaction: React.FC<IAddNewTransaction> = ({
+  transactionCategoriesData,
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isIncome, setIsIncome] = useState(true);
 
@@ -55,6 +62,7 @@ const AddNewTransaction = () => {
         <AddNewTransactionForm
           handleCancel={handleCancel}
           isIncome={isIncome}
+          transactionCategoriesData={transactionCategoriesData}
         />
       </Modal>
     </>

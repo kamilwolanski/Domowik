@@ -7,6 +7,7 @@ const validationSchema = () => {
       .required('Pole jest wymagane')
       .max(100000, 'Maksymalna kwota transakcji to 100 000 ')
       .min(1, 'Wartość traksakcji musi być większa lub równa 1'),
+    category: Yup.string().required('Pole jest wymagane'),
   });
 };
 

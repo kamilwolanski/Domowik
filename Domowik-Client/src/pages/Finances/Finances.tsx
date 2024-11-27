@@ -1,13 +1,18 @@
 import { Container, Row, Col } from 'reactstrap';
 import { useQuery } from 'react-query';
 import { getFinances } from '../../Api/api';
+import { getTransactionCategories } from '../../Api/api';
 import AddNewTransaction from './AddNewTransaction';
 import TransactionList from './TransactionList';
 
 const Finances = () => {
   const { data, isLoading } = useQuery('finances', getFinances);
+  const {
+    data: transactionCategoriesData,
+    isLoading: transactionCategoriesIsLoading,
+  } = useQuery('transaction-categories', () => getTransactionCategories());
 
-  if (isLoading) return <p>Ładowanie...</p>;
+  if (isLoading || transactionCategoriesIsLoading) return <p>Ładowanie...</p>;
   return (
     <Container>
       <Row>
@@ -26,7 +31,9 @@ const Finances = () => {
           </h2>
 
           <div className="mt-5">
-            <AddNewTransaction />
+            <AddNewTransaction
+              transactionCategoriesData={transactionCategoriesData.data}
+            />
           </div>
 
           <div className="transaction-list-wrapper mt-3">

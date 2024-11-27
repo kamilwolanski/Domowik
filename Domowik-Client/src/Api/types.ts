@@ -34,4 +34,16 @@ export type UpdateShoppingList = {
 export type AddTransaction = {
   name: string;
   count: number;
+  categoryId: number;
+};
+
+export enum TransactionCategoryType {
+  Income,
+  Expense,
+}
+
+export type TransactionCategory = {
+  id: number;
+  name: string;
+  type: TransactionCategoryType;
 };
