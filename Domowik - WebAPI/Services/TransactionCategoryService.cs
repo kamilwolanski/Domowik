@@ -8,7 +8,7 @@ namespace Domowik___WebAPI.Services
 {
     public interface ITransactionCategoryService
     {
-        List<TransactionCategoryDto> GetTransactionCategories(TransactionCategoryType? type);
+        Task<List<TransactionCategoryDto>> GetTransactionCategories(TransactionCategoryType? type);
     }
     public class TransactionCategoryService : ITransactionCategoryService
     {
@@ -23,18 +23,20 @@ namespace Domowik___WebAPI.Services
             _logger = logger;
         }
 
-        public List<TransactionCategoryDto> GetTransactionCategories(TransactionCategoryType? type)
+        public async Task<List<TransactionCategoryDto>> GetTransactionCategories(TransactionCategoryType? type)
         {
-            IEnumerable<TransactionCategory> transactionCategories;
+            IQueryable<TransactionCategory> query;
 
             if (type.HasValue)
             {
-                transactionCategories = _dbContext.TransactionCategories.Where(c => c.Type == type);
+                query = _dbContext.TransactionCategories.Where(c => c.Type == type);
             }
             else
             {
-                transactionCategories = _dbContext.TransactionCategories;
+                query = _dbContext.TransactionCategories;
             }
+
+            var transactionCategories = await query.ToListAsync();
 
             var categories = _mapper.Map<List<TransactionCategoryDto>>(transactionCategories);
 

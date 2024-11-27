@@ -19,10 +19,10 @@ namespace Domowik___WebAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<TransactionCategoryDto> GetTransactionCategories([FromQuery] TransactionCategoryType? type)
+        public async Task<ActionResult<TransactionCategoryDto>> GetTransactionCategories([FromQuery] TransactionCategoryType? type)
         {
 
-            var transactions = _transactionCategoryService.GetTransactionCategories(type);
+            var transactions = await _transactionCategoryService.GetTransactionCategories(type);
 
             return Ok(transactions);
         }
