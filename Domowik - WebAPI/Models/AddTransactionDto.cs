@@ -10,5 +10,8 @@ namespace Domowik___WebAPI.Models
 
         [Required]
         public int Count { get; set; }
+
+        [Required]
+        public int CategoryId { get; set; }
     }
 }

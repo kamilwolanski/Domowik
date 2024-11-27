@@ -50,6 +50,7 @@ namespace Domowik___WebAPI.Services
                 Name = transationDto.Name,
                 Count = transationDto.Count,
                 CreatedDate = DateTime.Now,
+                CategoryId = transationDto.CategoryId,
             };
 
             userFamily.Transactions.Add(transation);
