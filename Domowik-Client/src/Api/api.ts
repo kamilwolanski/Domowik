@@ -131,7 +131,7 @@ export const getTransactionCategories = async (
   transactionCategory?: TransactionCategoryType,
 ) => {
   const response = await api.get<TransactionCategory[]>(
-    `/transactionCategory${transactionCategory !== undefined ? `?type=${transactionCategory}` : ''}`,
+    `/transaction-categories${transactionCategory !== undefined ? `?type=${transactionCategory}` : ''}`,
   );
 
   return response;
