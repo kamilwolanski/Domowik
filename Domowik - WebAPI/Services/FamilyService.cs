@@ -58,11 +58,11 @@ namespace Domowik___WebAPI.Services
             var userId = _userContextService.GetUserId;
             var userFamily = _dbContext.Families
                  .Include(x => x.Members)
-                 .Include(x => x.ShoppingList).ThenInclude(x => x.Products)
+                 .Include(x => x.ShoppingLists).ThenInclude(x => x.ShoppingListProducts)
                  .AsNoTracking()
                  .SingleOrDefault(x => x.Members.Any(x => userId == x.Id));
 
-            var products = _mapper.Map<List<ShoppingListProductDto>>(userFamily.ShoppingList.Products);
+            var products = _mapper.Map<List<ShoppingListProductDto>>(userFamily.ShoppingLists);
 
             return products;
 
@@ -73,19 +73,16 @@ namespace Domowik___WebAPI.Services
             var userId = _userContextService.GetUserId;
             var userFamily = _dbContext.Families
                 .Include(x => x.Members)
-                .Include(x => x.ShoppingList)
-                    .ThenInclude(sl => sl.Products)
+                .Include(x => x.ShoppingLists)
+                    .ThenInclude(sl => sl.ShoppingListProducts)
                 .SingleOrDefault(x => x.Members.Any(x => userId == x.Id));
 
-            // Usuń wszystkie produkty z bazy danych, które są związane z daną listą zakupów
-            _dbContext.Products.RemoveRange(userFamily.ShoppingList.Products ?? new List<Product>());
 
             // Zapisz zmiany w bazie danych
             _dbContext.SaveChanges();
 
             // Mapuj nowe produkty i przypisz je do listy zakupów w rodzinie
             var result = _mapper.Map<List<Product>>(shoppingListProductDto);
-            userFamily.ShoppingList.Products = result;
 
             // Zapisz zmiany w bazie danych
             _dbContext.SaveChanges();
@@ -191,7 +188,6 @@ namespace Domowik___WebAPI.Services
             }
             var family = _mapper.Map<Family>(createFamilyDto);
             family.HeadId = userId;
-            family.ShoppingList = new ShoppingList();
             _dbContext.Add(family);
             _dbContext.SaveChanges();
 

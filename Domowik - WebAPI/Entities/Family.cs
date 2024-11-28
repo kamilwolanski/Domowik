@@ -12,7 +12,7 @@ namespace Domowik___WebAPI.Entities
 
         public virtual List<User> Members { get; set; }
 
-        public virtual ShoppingList ShoppingList { get; set; }
+        public virtual List<ShoppingList> ShoppingLists { get; set; }
         public virtual List<Transaction> Transactions { get; set; }
         
     }

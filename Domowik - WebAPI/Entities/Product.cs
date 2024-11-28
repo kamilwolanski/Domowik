@@ -4,9 +4,9 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Count { get; set; }
 
-        public int ShoppingListId { get; set; }
-        public virtual ShoppingList ShoppingList { get; set; }
+        public int ProductCategoryId { get; set; }
+        public ProductCategory ProductCategory { get; set; }
+        public List<ShoppingListProduct> ShoppingListProducts { get; set; }
     }
 }

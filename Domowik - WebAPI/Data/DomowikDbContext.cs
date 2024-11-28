@@ -13,6 +13,9 @@ namespace Domowik___WebAPI.Data
         public DbSet<TransactionCategory> TransactionCategories { get; set; }
         public DbSet<ShoppingList> ShoppingLists { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+
+        public DbSet<ShoppingListProduct> ShoppingListProducts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -41,9 +44,27 @@ namespace Domowik___WebAPI.Data
                 .HasForeignKey(u => u.FamilyId);
 
             modelBuilder.Entity<Family>()
-                .HasOne(f => f.ShoppingList) 
-                .WithOne(sl => sl.Family)    
-                .HasForeignKey<ShoppingList>(sl => sl.FamilyId);
+                .HasMany(f => f.ShoppingLists)
+                .WithOne(sl => sl.Family)
+                .HasForeignKey(sl => sl.FamilyId);
+
+            modelBuilder.Entity<ShoppingListProduct>()
+                .HasKey(sl => sl.Id);
+
+            modelBuilder.Entity<ShoppingListProduct>()
+                .HasOne(sl => sl.ShoppingList)
+                .WithMany(s => s.ShoppingListProducts)
+                .HasForeignKey(sl => sl.ShoppingListId);
+
+            modelBuilder.Entity<ShoppingListProduct>()
+                .HasOne(sl => sl.Product)
+                .WithMany(p => p.ShoppingListProducts)
+                .HasForeignKey(sl => sl.ProductId);
+
+            modelBuilder.Entity<ProductCategory>()
+                .HasIndex(c => c.Name)
+                .IsUnique();
+
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
