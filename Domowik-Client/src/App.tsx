@@ -8,7 +8,7 @@ import Logout from './Pages/Logout';
 import Register from './Pages/Register/Register';
 import RegistrationSuccess from './Pages/Register/RegistrationSuccess';
 import Family from './Pages/Family/Family';
-import ShoppingList from './Pages/ShoppingList';
+import ShoppingList from './Pages/ShoppingList/ShoppingList';
 
 const App = () => {
   return (

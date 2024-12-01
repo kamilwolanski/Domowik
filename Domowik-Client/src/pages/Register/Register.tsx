@@ -1,11 +1,9 @@
 import { Form, Formik, FormikHelpers } from 'formik';
 import { useMutation } from 'react-query';
-import { Container, Row, Col } from 'reactstrap';
 import EmailInput from '../../Components/FormikInputs/FormikEmailInput';
 import PasswordInput from '../../Components/FormikInputs/FormikPasswordInput';
 import TextInput from '../../Components/FormikInputs/FormikTextInput';
 import DateInput from '../../Components/FormikInputs/FormikDateInput';
-import { Button } from 'reactstrap';
 import validationSchema from './validationSchema';
 import { register } from '../../Api/api';
 import { Link, useNavigate } from 'react-router-dom';
@@ -56,69 +54,58 @@ const Register = () => {
   };
 
   return (
-    <Container className="register-page">
-      <h1 className="text-center">Załóż konto</h1>
-      <Row>
-        <Col xs="12" md={{ size: 10, offset: 1 }}>
-          <Formik
-            validationSchema={validationSchema}
-            initialValues={initialValues}
-            onSubmit={handleSubmit}
-          >
-            {({ isValid }) => {
-              return (
-                <Form>
-                  <Row>
-                    <Col>
-                      <EmailInput label="Adres email" id="email" name="email" />
-                      <PasswordInput
-                        label="Hasło"
-                        id="password"
-                        name="password"
-                      />
-                      <PasswordInput
-                        label="Powtórz hasło"
-                        id="password"
-                        name="confirmPassword"
-                      />
-                    </Col>
-                    <Col>
-                      <TextInput label="Imię" id="firstName" name="firstName" />
-                      <TextInput
-                        label="Nazwisko"
-                        id="lastName"
-                        name="lastName"
-                      />
-                      <DateInput
-                        label="Data urodzenia"
-                        id="dateOfBirth"
-                        name="dateOfBirth"
-                        min="1900-01-01"
-                        max={new Date().toISOString().split('T')[0]}
-                      />
-                    </Col>
-                  </Row>
+    <div className="register-page px-4 py-8">
+      <h1 className="text-center text-2xl font-semibold">Załóż konto</h1>
+      <div className="mt-8 max-w-3xl mx-auto">
+        <Formik
+          validationSchema={validationSchema}
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+        >
+          {({ isValid }) => (
+            <Form>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div>
+                  <EmailInput label="Adres email" id="email" name="email" />
+                  <PasswordInput label="Hasło" id="password" name="password" />
+                  <PasswordInput
+                    label="Powtórz hasło"
+                    id="confirmPassword"
+                    name="confirmPassword"
+                  />
+                </div>
+                <div>
+                  <TextInput label="Imię" id="firstName" name="firstName" />
+                  <TextInput label="Nazwisko" id="lastName" name="lastName" />
+                  <DateInput
+                    label="Data urodzenia"
+                    id="dateOfBirth"
+                    name="dateOfBirth"
+                    min="1900-01-01"
+                    max={new Date().toISOString().split('T')[0]}
+                  />
+                </div>
+              </div>
 
-                  <div className="text-center mt-3">
-                    <Button
-                      size="lg"
-                      type="submit"
-                      disabled={!isValid}
-                      color="primary"
-                    >
-                      Załóż konto
-                    </Button>
-                  </div>
-                </Form>
-              );
-            }}
-          </Formik>
-          <div className="text-center">
-            <Link to="/auth/login">Masz już konto? Zaloguj się</Link>
-          </div>
-        </Col>
-      </Row>
-    </Container>
+              <div className="text-center mt-6">
+                <button
+                  type="submit"
+                  disabled={!isValid}
+                  className="w-full sm:w-auto bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 disabled:bg-blue-300"
+                >
+                  Załóż konto
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+        <div className="text-center mt-4">
+          <Link to="/auth/login" className="text-blue-600 hover:underline">
+            Masz już konto? Zaloguj się
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 };
 

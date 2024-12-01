@@ -1,5 +1,4 @@
 import { useField } from 'formik';
-import { FormFeedback, FormGroup, Input, InputGroup, Label } from 'reactstrap';
 
 interface IFormikNumberInput {
   label: string;
@@ -16,20 +15,29 @@ const FormikNumberInput: React.FC<IFormikNumberInput> = ({
   const [field, meta] = useField({ name: name });
 
   return (
-    <FormGroup>
-      {label && <Label for={id}>{label}</Label>}
-      <InputGroup>
-        <Input
+    <div className="mb-4">
+      {label && (
+        <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+          {label}
+        </label>
+      )}
+      <div className="mt-1">
+        <input
           {...field}
           {...props}
           type="number"
-          invalid={!!(meta.touched && meta.error)}
+          id={id}
+          className={`focus:outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-blue-500 block w-full p-2.5 ${
+            meta.touched && meta.error
+              ? 'border-red-500 focus:ring-red-500 focus:border-red-500'
+              : ''
+          } `}
         />
         {meta.touched && meta.error && (
-          <FormFeedback>{meta.error}</FormFeedback>
+          <p className="mt-2 text-sm text-red-600">{meta.error}</p>
         )}
-      </InputGroup>
-    </FormGroup>
+      </div>
+    </div>
   );
 };
 

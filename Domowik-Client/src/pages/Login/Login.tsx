@@ -1,11 +1,9 @@
 import { Form, Formik, FormikHelpers } from 'formik';
-import { Container, Row, Col } from 'reactstrap';
 import validationSchema from './validationSchema';
 import EmailInput from '../../Components/FormikInputs/FormikEmailInput';
 import PasswordInput from '../../Components/FormikInputs/FormikPasswordInput';
 import { useMutation } from 'react-query';
 import { login } from '../../Api/api';
-import { Button } from 'reactstrap';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
@@ -58,41 +56,43 @@ const Login = () => {
       },
     );
   };
+
   return (
-    <Container className="login-page">
-      <h1 className="text-center">Zaloguj się</h1>
-      <Row>
-        <Col xs="12" md={{ size: 6, offset: 3 }}>
-          <Formik
-            validationSchema={validationSchema}
-            initialValues={initialValues}
-            onSubmit={handleSubmit}
-          >
-            {({ isValid }) => {
-              return (
-                <Form>
-                  <EmailInput label="Adres email" id="email" name="email" />
-                  <PasswordInput label="Hasło" id="password" name="password" />
-                  <div className="text-center">
-                    <Button
-                      size="lg"
-                      type="submit"
-                      disabled={!isValid}
-                      color="primary"
-                    >
-                      Zaloguj się
-                    </Button>
-                  </div>
-                </Form>
-              );
-            }}
-          </Formik>
-          <div className="text-center mt-3">
-            <Link to="/auth/register">Załóż darmowe konto</Link>
-          </div>
-        </Col>
-      </Row>
-    </Container>
+    <div className="login-page px-4 py-8">
+      <h1 className="text-center text-2xl font-semibold">Zaloguj się</h1>
+      <div className="mt-8 max-w-md mx-auto">
+        <Formik
+          validationSchema={validationSchema}
+          initialValues={initialValues}
+          onSubmit={handleSubmit}
+        >
+          {({ isValid }) => (
+            <Form>
+              <div className="space-y-4">
+                <EmailInput label="Adres email" id="email" name="email" />
+                <PasswordInput label="Hasło" id="password" name="password" />
+              </div>
+
+              <div className="text-center mt-6">
+                <button
+                  type="submit"
+                  disabled={!isValid}
+                  className="w-full bg-blue-500 text-white py-2 px-4 rounded-lg disabled:bg-blue-300"
+                >
+                  Zaloguj się
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
+
+        <div className="text-center mt-4">
+          <Link to="/auth/register" className="text-blue-600 hover:underline">
+            Załóż darmowe konto
+          </Link>
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -1,8 +1,6 @@
-import { Modal } from 'antd';
 import { useState } from 'react';
 import { MdDeleteForever } from 'react-icons/md';
 import { useMutation, useQueryClient } from 'react-query';
-import { Button } from 'reactstrap';
 import { deleteFamily } from '../../../Api/api';
 
 const DeleteFamily: React.FC = () => {
@@ -27,38 +25,46 @@ const DeleteFamily: React.FC = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
   return (
     <>
-      <a className="delete-family-btn" type="button" onClick={showModal}>
-        <MdDeleteForever size={50} color="#bf2015" />
-      </a>
-      <Modal
-        title="Usuń rodzine"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        cancelButtonProps={{ style: { display: 'none' } }}
-        okButtonProps={{ style: { display: 'none' } }}
-        style={{ left: 80 }}
+      {/* Delete Family Button */}
+      <button
+        type="button"
+        className="delete-family-btn p-2 text-red-600 hover:text-red-800"
+        onClick={showModal}
       >
-        <h3>
-          Czy na pewno chcesz usunąć rodzinę? Jeśli to zrobisz żaden z
-          domowników nie będzie miał do niej dostępu oraz wszystkie dane zostaną
-          utracone
-        </h3>
+        <MdDeleteForever size={50} />
+      </button>
 
-        <div className="text-end mt-3">
-          <Button onClick={handleCancel}>Anuluj</Button>
-          <Button
-            color="primary"
-            className="ms-2"
-            type="submit"
-            onClick={handleOk}
-          >
-            Potwierdź
-          </Button>
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg w-96">
+            <h3 className="text-xl mb-4">
+              Czy na pewno chcesz usunąć rodzinę? Jeśli to zrobisz żaden z
+              domowników nie będzie miał do niej dostępu oraz wszystkie dane
+              zostaną utracone.
+            </h3>
+            <div className="flex justify-end space-x-4 mt-4">
+              <button
+                type="button"
+                onClick={handleCancel}
+                className="px-6 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400"
+              >
+                Anuluj
+              </button>
+              <button
+                type="button"
+                onClick={handleOk}
+                className="px-6 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+              >
+                Potwierdź
+              </button>
+            </div>
+          </div>
         </div>
-      </Modal>
+      )}
     </>
   );
 };

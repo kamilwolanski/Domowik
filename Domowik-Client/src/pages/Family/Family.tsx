@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Container, Row, Col, Button } from 'reactstrap';
 import { Modal } from 'antd';
 import { GiHouse } from 'react-icons/gi';
 import CreateFamilyForm from './CreateFamilyForm';
@@ -38,23 +37,18 @@ const Family: React.FC = () => {
   const isHeadOfFamily = userData?.data.roleId === Role.Head;
 
   return (
-    <div className="family-wrapper h-100">
-      <Container>
-        <Row>
-          <Col xs="12" md={{ size: 6, offset: 3 }}>
-            <div className="text-center">
-              <GiHouse size={150} />
-            </div>
-          </Col>
-        </Row>
-
-        <Row>
+    <div className="family-wrapper h-full">
+      <div className="grid grid-cols-1">
+        <div className="mx-auto">
+          <GiHouse size={150} />
+        </div>
+      </div>
+      <div className="grid grid-cols-12 gap-4">
+        <div className="col-span-12">
           {data?.data.id ? (
             <>
-              <h1 className="text-center mt-5 primary-text">
-                {data?.data.name}
-              </h1>
-              <Col xs="12" md={{ size: 10, offset: 1 }}>
+              <h1 className="text-2xl text-center mt-5">{data?.data.name}</h1>
+              <div className="col-span-12 md:col-span-10 md:col-start-2">
                 {isHeadOfFamily && (
                   <div className="mt-5">
                     <AddFamilyMember />
@@ -67,31 +61,27 @@ const Family: React.FC = () => {
                     user={userData?.data}
                   />
                 </div>
-              </Col>
+              </div>
             </>
           ) : (
-            <Col xs="12" md={{ size: 6, offset: 3 }}>
-              <div className="text-center">
-                <h2 className="mt-5">
-                  Wygląda na to, że nie jesteś jeszcze członkiem żadnej rodziny.
-                </h2>
-                <h2 className="mt-3 fw-bold">
-                  Chcesz stworzyć nową rodzinę teraz?
-                </h2>
-                <Button
-                  size="lg"
-                  color="primary"
-                  onClick={showModal}
-                  className="mt-5"
-                >
-                  Utwórz rodzinę
-                </Button>
-              </div>
-            </Col>
+            <div className="col-span-12 md:col-span-6 md:col-start-4 text-center">
+              <h2 className="mt-5">
+                Wygląda na to, że nie jesteś jeszcze członkiem żadnej rodziny.
+              </h2>
+              <h2 className="mt-3 font-bold">
+                Chcesz stworzyć nową rodzinę teraz?
+              </h2>
+              <button
+                className="mt-5 px-6 py-3 bg-primary text-white text-lg rounded-lg"
+                onClick={showModal}
+              >
+                Utwórz rodzinę
+              </button>
+            </div>
           )}
-        </Row>
-        {isHeadOfFamily && <DeleteFamily />}
-      </Container>
+        </div>
+      </div>
+      {isHeadOfFamily && <DeleteFamily />}
 
       <Modal
         title="Nowa rodzina"

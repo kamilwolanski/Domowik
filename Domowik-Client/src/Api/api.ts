@@ -107,8 +107,8 @@ export const updateShoppingList = async (body: UpdateShoppingList[]) => {
   return response;
 };
 
-export const getShoppingList = async () => {
-  const response = await api.get('/family/shopping-list');
+export const getShoppingLists = async () => {
+  const response = await api.get('/family/shopping-lists');
 
   return response;
 };
