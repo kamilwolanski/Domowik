@@ -9,12 +9,11 @@ namespace Domowik___WebAPI.Services
 {
     public interface IShoppingListsService
     {
-        Task<int> CreateShoppingList(CreateShoppingListDto createShoppingListDto);
-        void UpdateShoppingList(List<CreateShoppingListProductDto> shoppingListProductDto);
-        List<ShoppingListDto> GetShoppingLists();
-        ShoppingListDto GetShoppingList(int id);
-        List<ShoppingListProductDto> GetShoppingListProducts();
-        Task DeleteShoppingList(int shoppingListId);
+        Task<int> Create(CreateShoppingListDto createShoppingListDto);
+        Task Update(int id, UpdateShoppingListDto shoppingListProductDto);
+        List<ShoppingListDto> GetAll();
+        ShoppingListDto Get(int id);
+        Task Delete(int shoppingListId);
     }
     public class ShoppingListsService : IShoppingListsService
     {
@@ -29,7 +28,7 @@ namespace Domowik___WebAPI.Services
             _userContextService = userContextService;
             _userService = userService;
         }
-        public async Task<int> CreateShoppingList(CreateShoppingListDto createShoppingListDto)
+        public async Task<int> Create(CreateShoppingListDto createShoppingListDto)
         {
             var userFamily = await _userService.GetUserFamily();
 
@@ -40,7 +39,7 @@ namespace Domowik___WebAPI.Services
             return shoppingList.Id;
         }
 
-        public ShoppingListDto GetShoppingList(int id)
+        public ShoppingListDto Get(int id)
         {
             var userId = _userContextService.GetUserId;
             var userFamily = _dbContext.Families
@@ -71,7 +70,7 @@ namespace Domowik___WebAPI.Services
             return products;
         }
 
-        public List<ShoppingListDto> GetShoppingLists()
+        public List<ShoppingListDto> GetAll()
         {
             var userId = _userContextService.GetUserId;
             var userFamily = _dbContext.Families
@@ -87,27 +86,30 @@ namespace Domowik___WebAPI.Services
             return shoppingLists;
         }
 
-        public void UpdateShoppingList(List<CreateShoppingListProductDto> shoppingListProductDto)
+        public async Task Update(int id, UpdateShoppingListDto shoppingListProductDto)
         {
-            var userId = _userContextService.GetUserId;
-            var userFamily = _dbContext.Families
-                .Include(x => x.Members)
-                .Include(x => x.ShoppingLists)
-                    .ThenInclude(sl => sl.ShoppingListProducts)
-                .SingleOrDefault(x => x.Members.Any(x => userId == x.Id));
+            var shoppingList = await _dbContext.ShoppingLists
+                 .FirstOrDefaultAsync(sl => sl.Id == id);
 
+            if (shoppingList == null)
+            {
+                throw new NotFoundException($"Shopping list with ID {id} not found");
+            }
 
-            // Zapisz zmiany w bazie danych
-            _dbContext.SaveChanges();
+            var userFamily = await _userService.GetUserFamily();
 
-            // Mapuj nowe produkty i przypisz je do listy zakupów w rodzinie
-            var result = _mapper.Map<List<Product>>(shoppingListProductDto);
+            if (shoppingList.FamilyId != userFamily.Id)
+            {
+                throw new ForbidException();
+            }
 
-            // Zapisz zmiany w bazie danych
-            _dbContext.SaveChanges();
+            _mapper.Map(shoppingListProductDto, shoppingList);
+
+            await _dbContext.SaveChangesAsync();
+
         }
 
-        public async Task DeleteShoppingList(int shoppingListId)
+        public async Task Delete(int shoppingListId)
         {
             var shoppingList = await _dbContext.ShoppingLists
                 .FirstOrDefaultAsync(sl => sl.Id == shoppingListId);
@@ -124,7 +126,7 @@ namespace Domowik___WebAPI.Services
                 throw new ForbidException();
             }
 
-            _dbContext.ShoppingLists.Remove(shoppingList);
+            _dbContext.ShoppingLists.Update(shoppingList);
             await _dbContext.SaveChangesAsync();
         }
     }

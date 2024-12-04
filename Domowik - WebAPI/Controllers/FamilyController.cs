@@ -118,52 +118,5 @@ namespace Domowik___WebAPI.Controllers
             return Ok(family);
         }
 
-        [HttpPut("shopping-list")]
-        public ActionResult UpdateShoppingList([FromBody] List<CreateShoppingListProductDto> dto)
-        {
-            _shoppingListsService.UpdateShoppingList(dto);
-            return Ok();
-        }
-
-        [HttpGet("shopping-lists")]
-        public ActionResult<List<ShoppingListDto>> GetShoppingLists()
-        {
-            var shoppingLists = _shoppingListsService.GetShoppingLists();
-
-            return Ok(shoppingLists);
-        }
-
-        [HttpPost("shopping-lists")]
-        public async Task<ActionResult> CreateShoppingList([FromBody] CreateShoppingListDto dto)
-        {
-            var validationResult = await _createShoppingListValidator.ValidateAsync(dto);
-            if (!validationResult.IsValid)
-            {
-                validationResult.AddToModelState(ModelState);
-                return BadRequest(ModelState);
-            }
-
-            var shoppingId = await _shoppingListsService.CreateShoppingList(dto);
-
-            return Created($"/api/family/shopping-lists/{shoppingId}", null);
-        }
-
-        [HttpGet("shopping-lists/{id}")]
-        public ActionResult<ShoppingListDto> GetShoppingList([FromRoute] int id)
-        {
-            var shoppingLists = _shoppingListsService.GetShoppingList(id);
-
-            return Ok(shoppingLists);
-        }
-
-        [HttpDelete("shopping-lists/{id}")]
-        public async Task<ActionResult> DeleteShoppingList([FromRoute] int id)
-        {
-            await _shoppingListsService.DeleteShoppingList(id);
-
-            return NoContent();
-        }
-
-
     }
 }

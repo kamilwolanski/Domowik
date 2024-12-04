@@ -62,6 +62,7 @@ builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
 builder.Services.AddScoped<IValidator<CreateFamilyDto>, CreateFamilyDtoValidator>();
 builder.Services.AddScoped<IValidator<CreateShoppingListDto>, CreateShoppingListDtoValidator>();
+builder.Services.AddScoped<IValidator<UpdateShoppingListDto>, UpdateShoppingListDtoValidator>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
