@@ -9,7 +9,7 @@ const ShoppingLists: React.FC<IShoppingLists> = ({ shoppingLists }) => {
   return (
     <div className="mt-10">
       {shoppingLists.map((shoppingList) => (
-        <ShoppingListsElement shoppingList={shoppingList} />
+        <ShoppingListsElement shoppingListEl={shoppingList} />
       ))}
     </div>
   );

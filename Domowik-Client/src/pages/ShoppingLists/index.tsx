@@ -1,7 +1,7 @@
 import { useQuery } from 'react-query';
 import { getShoppingLists } from '../../Api/ShoppingLists';
 import { Col, Row } from 'antd';
-import AddNewShoppingList from './AddNewShoppingList';
+import AddNewShoppingList from './Add/AddNewShoppingList';
 import ShoppingLists from './ShoppingLists';
 
 const ShoppingList: React.FC = () => {

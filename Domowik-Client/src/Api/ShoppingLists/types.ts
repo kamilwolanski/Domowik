@@ -25,3 +25,7 @@ export type ShoppingList = {
 export type CreateShoppingList = {
   name: string;
 };
+
+export type UpdateShoppingList = {
+  name: string;
+};

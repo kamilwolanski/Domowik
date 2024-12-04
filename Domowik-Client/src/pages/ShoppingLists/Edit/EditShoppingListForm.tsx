@@ -1,36 +1,37 @@
-import { Formik, Form, FormikHelpers } from 'formik';
+import { Formik, Form } from 'formik';
 import { useMutation, useQueryClient } from 'react-query';
-import { createShoppingList } from '../../Api/ShoppingLists';
-
-import TextInput from '../../Components/FormikInputs/FormikTextInput';
 import validationSchema from './validationSchema';
+import TextInput from '../../../Components/FormikInputs/FormikTextInput';
+import { updateShoppingList } from '../../../Api/ShoppingLists';
+import { ShoppingList } from '../../../Api/ShoppingLists/types';
 
-interface IAddNewShoppingListForm {
+interface IEditShoppingListForm {
   handleCancel: () => void;
+  shoppingListEl: ShoppingList;
 }
 
-const AddNewShoppingListForm: React.FC<IAddNewShoppingListForm> = ({
+const EditShoppingListForm: React.FC<IEditShoppingListForm> = ({
   handleCancel,
+  shoppingListEl,
 }) => {
   const initialValues = {
-    name: '',
+    name: shoppingListEl.name,
   };
 
   const queryClient = useQueryClient();
-  const createNewShopppingListMutation = useMutation(createShoppingList);
+  const updateShopppingListMutation = useMutation(updateShoppingList);
 
-  const handleSubmit = (
-    values: typeof initialValues,
-    formikHelpers: FormikHelpers<typeof initialValues>,
-  ) => {
-    createNewShopppingListMutation.mutate(
+  const handleSubmit = (values: typeof initialValues) => {
+    updateShopppingListMutation.mutate(
       {
-        name: values.name,
+        id: shoppingListEl.id,
+        body: {
+          name: values.name,
+        },
       },
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['shopping-lists'] });
-          formikHelpers.resetForm();
           handleCancel();
         },
       },
@@ -46,7 +47,7 @@ const AddNewShoppingListForm: React.FC<IAddNewShoppingListForm> = ({
       {({ isValid }) => {
         return (
           <Form>
-            <TextInput label="Nazwa listy zakupów" name="name" id="name" />
+            <TextInput label="" name="name" id="name" />
             <div className="flex justify-end mt-4">
               <button
                 onClick={handleCancel}
@@ -64,7 +65,7 @@ const AddNewShoppingListForm: React.FC<IAddNewShoppingListForm> = ({
                     : 'bg-gray-400 text-gray-600 cursor-not-allowed'
                 }`}
               >
-                Dodaj
+                Zapisz
               </button>
             </div>
           </Form>
@@ -74,4 +75,4 @@ const AddNewShoppingListForm: React.FC<IAddNewShoppingListForm> = ({
   );
 };
 
-export default AddNewShoppingListForm;
+export default EditShoppingListForm;
