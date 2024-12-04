@@ -3,7 +3,7 @@ import { Modal } from 'antd';
 import { GiHouse } from 'react-icons/gi';
 import CreateFamilyForm from './CreateFamilyForm';
 import { useQuery } from 'react-query';
-import { getUser, getUserFamily } from '../../Api/api';
+import { getUser, getUserFamily } from '../../Api';
 import FamilyList from './FamilyList';
 import AddFamilyMember from './AddFamilyMember';
 import { Role } from './types';

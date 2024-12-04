@@ -12,7 +12,7 @@ import Logo from './Logo';
 import type { MenuProps } from 'antd';
 import { CiShoppingBasket } from 'react-icons/ci';
 import { useQuery } from 'react-query';
-import { getUser } from '../Api/api';
+import { getUser } from '../Api';
 
 const { Header, Sider, Content, Footer } = Layout;
 
@@ -68,7 +68,7 @@ const PrivateLayout: React.FC = () => {
       userData?.data.familyId ? false : true,
     ),
     getItem(
-      'Lista zakupów',
+      'Listy zakupów',
       '/shopping-list',
       userData?.data.familyId ? (
         <NavLink to="/shopping-list">

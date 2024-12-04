@@ -3,7 +3,7 @@ import validationSchema from './validationSchema';
 import EmailInput from '../../Components/FormikInputs/FormikEmailInput';
 import PasswordInput from '../../Components/FormikInputs/FormikPasswordInput';
 import { useMutation } from 'react-query';
-import { login } from '../../Api/api';
+import { login } from '../../Api';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 

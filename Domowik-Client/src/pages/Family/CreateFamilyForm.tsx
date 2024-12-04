@@ -1,7 +1,7 @@
 import { Formik, Form, FormikHelpers } from 'formik';
 import TextInput from '../../Components/FormikInputs/FormikTextInput';
 import { useMutation, useQueryClient } from 'react-query';
-import { createFamily } from '../../Api/api';
+import { createFamily } from '../../Api';
 
 interface ICreateFamilyForm {
   handleCancel: () => void;

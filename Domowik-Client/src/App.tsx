@@ -1,5 +1,5 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import Finances from './Pages/Finances/Finances';
+import Finances from './Pages/Finances';
 import RegularLayout from './Components/RegularLayout';
 import PrivateLayout from './Components/PrivateLayout';
 import Login from './Pages/Login/Login';
@@ -7,8 +7,8 @@ import PrivateRoute from './Routing/PrivateRoute';
 import Logout from './Pages/Logout';
 import Register from './Pages/Register/Register';
 import RegistrationSuccess from './Pages/Register/RegistrationSuccess';
-import Family from './Pages/Family/Family';
-import ShoppingList from './Pages/ShoppingList/ShoppingList';
+import Family from './Pages/Family';
+import ShoppingList from './Pages/ShoppingLists';
 
 const App = () => {
   return (

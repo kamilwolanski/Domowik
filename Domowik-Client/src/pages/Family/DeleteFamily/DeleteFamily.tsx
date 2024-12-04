@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { MdDeleteForever } from 'react-icons/md';
 import { useMutation, useQueryClient } from 'react-query';
-import { deleteFamily } from '../../../Api/api';
+import { deleteFamily } from '../../../Api';
 
 const DeleteFamily: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

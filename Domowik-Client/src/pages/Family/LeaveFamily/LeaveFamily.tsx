@@ -2,7 +2,7 @@ import { ImCross } from 'react-icons/im';
 import { Modal } from 'antd';
 import React, { useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { removeFamilyMember } from '../../../Api/api';
+import { removeFamilyMember } from '../../../Api';
 
 interface ILeaveFamily {
   member: {

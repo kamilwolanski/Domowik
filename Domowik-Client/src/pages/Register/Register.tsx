@@ -5,7 +5,7 @@ import PasswordInput from '../../Components/FormikInputs/FormikPasswordInput';
 import TextInput from '../../Components/FormikInputs/FormikTextInput';
 import DateInput from '../../Components/FormikInputs/FormikDateInput';
 import validationSchema from './validationSchema';
-import { register } from '../../Api/api';
+import { register } from '../../Api';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Register = () => {

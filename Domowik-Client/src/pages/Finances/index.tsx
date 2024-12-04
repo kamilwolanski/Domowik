@@ -1,6 +1,6 @@
 import { useQuery } from 'react-query';
-import { getFinances } from '../../Api/api';
-import { getTransactionCategories } from '../../Api/api';
+import { getFinances } from '../../Api';
+import { getTransactionCategories } from '../../Api';
 import AddNewTransaction from './AddNewTransaction';
 import TransactionList from './TransactionList';
 

@@ -4,7 +4,7 @@ import { Finance } from './types';
 import formatDate from '../../Helpers/formatDate';
 import { TbCash } from 'react-icons/tb';
 import { useMutation, useQueryClient } from 'react-query';
-import { removeTransaction } from '../../Api/api';
+import { removeTransaction } from '../../Api';
 
 interface ITransactionList {
   transactionList: Finance[];

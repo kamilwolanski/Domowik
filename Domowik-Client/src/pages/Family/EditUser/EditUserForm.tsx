@@ -4,7 +4,7 @@ import DateInput from '../../../Components/FormikInputs/FormikDateInput';
 
 import validationSchema from './validationSchema';
 import { useMutation, useQueryClient } from 'react-query';
-import { editUser } from '../../../Api/api';
+import { editUser } from '../../../Api';
 import formatDate from '../../../Helpers/formatDate';
 
 interface IEditUserForm {

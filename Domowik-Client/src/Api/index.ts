@@ -8,7 +8,6 @@ import {
   RegisterBody,
   TransactionCategory,
   TransactionCategoryType,
-  UpdateShoppingList,
 } from './types';
 
 const api = axios.create({
@@ -101,18 +100,6 @@ export const removeFamilyMember = async (id: number) => {
   return response;
 };
 
-export const updateShoppingList = async (body: UpdateShoppingList[]) => {
-  const response = await api.put('/family/shopping-list', [...body]);
-
-  return response;
-};
-
-export const getShoppingLists = async () => {
-  const response = await api.get('/family/shopping-lists');
-
-  return response;
-};
-
 export const getFinances = async () => {
   const response = await api.get('/family/finances');
 
@@ -142,3 +129,5 @@ export const removeTransaction = async (transactionId: number) => {
 
   return response;
 };
+
+export default api;

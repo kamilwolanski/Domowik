@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { Container } from 'reactstrap';
-import { getShoppingList, updateShoppingList } from '../Api/api';
+import { getShoppingList, updateShoppingList } from '../Api';
 
 type Item = {
   id: string;
@@ -116,7 +116,7 @@ const ShoppingList: React.FC = () => {
 
   return (
     <Container className="shopping-list-page">
-      <h1 className="text-center">Lista zakupów</h1>
+      <h1 className="text-center">Listy zakupów</h1>
       <div className="text-center mt-3">
         <form onSubmit={handleSubmit}>
           <input
