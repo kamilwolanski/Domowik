@@ -14,6 +14,12 @@ namespace Domowik___WebAPI
             CreateMap<User, UserDto>();
             CreateMap<UserUpdateDto, User>();
             CreateMap<TransactionCategory, TransactionCategoryDto>();
+            CreateMap<ShoppingList, ShoppingListDto>();
+            CreateMap<ShoppingList, CreateShoppingListDto>();
+            CreateMap<CreateShoppingListDto, ShoppingList>();
+            CreateMap<ShoppingListProduct, ShoppingListProductDto>();
+            CreateMap<ProductCategory, ProductCategoryDto>();
+            CreateMap<Product, ProductDto>();
             CreateMap<CreateShoppingListProductDto, Product>().ReverseMap();
             CreateMap<ShoppingListProductDto, Product>().ReverseMap();
             CreateMap<Transaction, TransactionDto>().ReverseMap();

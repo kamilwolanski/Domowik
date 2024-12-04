@@ -19,8 +19,6 @@ namespace Domowik___WebAPI.Services
         void Update(int id, UpdateFamilyDto updateFamilyDto);
         void Add(AddUserToFamilyDto dto);
         void DeleteUser(int id);
-        void UpdateShoppingList(List<CreateShoppingListProductDto> shoppingListProductDto);
-        List<ShoppingListProductDto> GetShoppingListProducts();
     }
 
     public class FamilyService : IFamilyService
@@ -53,39 +51,15 @@ namespace Domowik___WebAPI.Services
             _dbContext.SaveChanges();
         }
 
-        public List<ShoppingListProductDto> GetShoppingListProducts()
+        public async Task<int> CreateShoppingList(CreateShoppingListDto createShoppingListDto)
         {
-            var userId = _userContextService.GetUserId;
-            var userFamily = _dbContext.Families
-                 .Include(x => x.Members)
-                 .Include(x => x.ShoppingLists).ThenInclude(x => x.ShoppingListProducts)
-                 .AsNoTracking()
-                 .SingleOrDefault(x => x.Members.Any(x => userId == x.Id));
+            var userFamily = await GetUserFamily();
+            
+            var shoppingList = _mapper.Map<ShoppingList>(createShoppingListDto);
+            userFamily.ShoppingLists.Add(shoppingList);
+            await _dbContext.SaveChangesAsync();
 
-            var products = _mapper.Map<List<ShoppingListProductDto>>(userFamily.ShoppingLists);
-
-            return products;
-
-        }
-
-        public void UpdateShoppingList(List<CreateShoppingListProductDto> shoppingListProductDto)
-        {
-            var userId = _userContextService.GetUserId;
-            var userFamily = _dbContext.Families
-                .Include(x => x.Members)
-                .Include(x => x.ShoppingLists)
-                    .ThenInclude(sl => sl.ShoppingListProducts)
-                .SingleOrDefault(x => x.Members.Any(x => userId == x.Id));
-
-
-            // Zapisz zmiany w bazie danych
-            _dbContext.SaveChanges();
-
-            // Mapuj nowe produkty i przypisz je do listy zakupów w rodzinie
-            var result = _mapper.Map<List<Product>>(shoppingListProductDto);
-
-            // Zapisz zmiany w bazie danych
-            _dbContext.SaveChanges();
+            return shoppingList.Id;
         }
 
 
@@ -204,6 +178,14 @@ namespace Domowik___WebAPI.Services
         {
             var user = await _dbContext.Users.SingleAsync(x => x.Id == userId);
             return user.FamilyId is null;
+        }
+
+        private async Task<Family> GetUserFamily()
+        {
+            var userId = _userContextService.GetUserId;
+            var family =  await _dbContext.Families.Include(f => f.Members).Include(f => f.ShoppingLists).SingleOrDefaultAsync(x => x.Members.Any(x => userId == x.Id));
+
+            return family;
         }
     }
 }

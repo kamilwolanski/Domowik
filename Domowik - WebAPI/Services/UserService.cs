@@ -10,7 +10,7 @@ namespace Domowik___WebAPI.Services
 {
     public interface IUserService
     {
-        FamilyDto GetUserFamily();
+        Task<Family> GetUserFamily();
         UserDto GetUser();
         void UpdateUser(UserUpdateDto dto);
         void DeleteUser();
@@ -70,15 +70,16 @@ namespace Domowik___WebAPI.Services
 
             _dbContext.SaveChanges();
         }
-        public FamilyDto GetUserFamily()
+        public async Task<Family> GetUserFamily()
         {
             var userId = _userContextService.GetUserId;
 
-            var userFamily = _dbContext.Families
+            var userFamily = await _dbContext.Families
                 .Include(x => x.Members)
-                .SingleOrDefault(x => x.Members.Any(x => userId == x.Id));
+                .Include(f => f.ShoppingLists)
+                .SingleOrDefaultAsync(x => x.Members.Any(x => userId == x.Id));
 
-            var result = _mapper.Map<FamilyDto>(userFamily);
+            var result = _mapper.Map<Family>(userFamily);
 
             return result;
         }

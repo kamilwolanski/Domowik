@@ -13,7 +13,7 @@
         public int UserId { get; set; }
         public User User { get; set; }
         public int? FamilyId { get; set; }
-        public virtual Family? Family { get; set; }
+        public Family? Family { get; set; }
 
         
     }

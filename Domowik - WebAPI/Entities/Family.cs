@@ -8,12 +8,12 @@ namespace Domowik___WebAPI.Entities
 
         public string Name { get; set; }
         public int HeadId { get; set; }
-        public virtual User Head { get; set; }
+        public User Head { get; set; }
 
-        public virtual List<User> Members { get; set; }
+        public List<User> Members { get; set; }
 
-        public virtual List<ShoppingList> ShoppingLists { get; set; }
-        public virtual List<Transaction> Transactions { get; set; }
+        public List<ShoppingList> ShoppingLists { get; set; }
+        public List<Transaction> Transactions { get; set; }
         
     }
 }

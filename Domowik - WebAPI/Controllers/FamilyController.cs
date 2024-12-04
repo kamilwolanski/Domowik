@@ -14,14 +14,18 @@ namespace Domowik___WebAPI.Controllers
     public class FamilyController : ControllerBase
     {
         private readonly IFamilyService _familyService;
+        private readonly IShoppingListsService _shoppingListsService;
         private readonly ITransationService _transationService;
         private readonly IValidator<CreateFamilyDto> _validator;
+        private readonly IValidator<CreateShoppingListDto> _createShoppingListValidator;
 
-        public FamilyController(IFamilyService familyService, IValidator<CreateFamilyDto> validator, ITransationService transationService)
+        public FamilyController(IFamilyService familyService, IShoppingListsService shoppingListsService, IValidator<CreateFamilyDto> validator, IValidator<CreateShoppingListDto> createShoppingListValidator, ITransationService transationService)
         {
             _familyService = familyService;
+            _shoppingListsService = shoppingListsService;
             _validator = validator;
             _transationService = transationService;
+            _createShoppingListValidator = createShoppingListValidator;
         }
 
 
@@ -117,16 +121,47 @@ namespace Domowik___WebAPI.Controllers
         [HttpPut("shopping-list")]
         public ActionResult UpdateShoppingList([FromBody] List<CreateShoppingListProductDto> dto)
         {
-            _familyService.UpdateShoppingList(dto);
+            _shoppingListsService.UpdateShoppingList(dto);
             return Ok();
         }
 
-        [HttpGet("shopping-list")]
-        public ActionResult<List<ShoppingListProductDto>> GetShoppingList()
+        [HttpGet("shopping-lists")]
+        public ActionResult<List<ShoppingListDto>> GetShoppingLists()
         {
-            var products = _familyService.GetShoppingListProducts();
+            var shoppingLists = _shoppingListsService.GetShoppingLists();
 
-            return Ok(products);
+            return Ok(shoppingLists);
+        }
+
+        [HttpPost("shopping-lists")]
+        public async Task<ActionResult> CreateShoppingList([FromBody] CreateShoppingListDto dto)
+        {
+            var validationResult = await _createShoppingListValidator.ValidateAsync(dto);
+            if (!validationResult.IsValid)
+            {
+                validationResult.AddToModelState(ModelState);
+                return BadRequest(ModelState);
+            }
+
+            var shoppingId = await _shoppingListsService.CreateShoppingList(dto);
+
+            return Created($"/api/family/shopping-lists/{shoppingId}", null);
+        }
+
+        [HttpGet("shopping-lists/{id}")]
+        public ActionResult<ShoppingListDto> GetShoppingList([FromRoute] int id)
+        {
+            var shoppingLists = _shoppingListsService.GetShoppingList(id);
+
+            return Ok(shoppingLists);
+        }
+
+        [HttpDelete("shopping-lists/{id}")]
+        public async Task<ActionResult> DeleteShoppingList([FromRoute] int id)
+        {
+            await _shoppingListsService.DeleteShoppingList(id);
+
+            return NoContent();
         }
 
 

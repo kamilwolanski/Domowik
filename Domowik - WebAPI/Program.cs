@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using NLog.Web;
 using System.Text;
+using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using static Domowik___WebAPI.Services.IUserContextService;
 
@@ -52,6 +53,7 @@ builder.Services.AddDbContext<DomowikDbContext>();
 builder.Services.AddScoped<DomowikSeeder>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IFamilyService, FamilyService>();
+builder.Services.AddScoped<IShoppingListsService, ShoppingListsService>();
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<ITransationService, TransactionService>();
 builder.Services.AddScoped<ITransactionCategoryService,  TransactionCategoryService>();
@@ -59,13 +61,39 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IPasswordHasher<User>, PasswordHasher<User>>();
 builder.Services.AddScoped<IValidator<RegisterUserDto>, RegisterUserDtoValidator>();
 builder.Services.AddScoped<IValidator<CreateFamilyDto>, CreateFamilyDtoValidator>();
+builder.Services.AddScoped<IValidator<CreateShoppingListDto>, CreateShoppingListDtoValidator>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddScoped<IUserContextService, UserContextService>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description="Please insert token",
+        Name="Authorization",
+        Type=SecuritySchemeType.Http,
+        BearerFormat="JWT",
+        Scheme="bearer"
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+});
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("FrontEndClient", policyBuilder =>

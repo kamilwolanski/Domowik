@@ -10,10 +10,10 @@
         public DateTime? DateOfBirth { get; set; }
 
         public int RoleId { get; set; }
-        public virtual Role Role { get; set; }
+        public Role Role { get; set; }
 
         public int? FamilyId { get; set; }
-        public virtual Family? Family { get; set; }
+        public Family? Family { get; set; }
 
     }
 }
