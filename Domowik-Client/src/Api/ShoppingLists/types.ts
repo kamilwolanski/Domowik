@@ -29,3 +29,15 @@ export type CreateShoppingList = {
 export type UpdateShoppingList = {
   name: string;
 };
+
+export type AvailableProduct = {
+  id: number;
+  name: string;
+  productCategory: ProductCategory;
+  quantity: number;
+};
+
+export type AddProductToShoppingList = {
+  productId: number;
+  quantity: number;
+};

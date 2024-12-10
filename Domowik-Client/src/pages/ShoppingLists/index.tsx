@@ -4,7 +4,7 @@ import { Col, Row } from 'antd';
 import AddNewShoppingList from './Add/AddNewShoppingList';
 import ShoppingLists from './ShoppingLists';
 
-const ShoppingList: React.FC = () => {
+const Index: React.FC = () => {
   const { data: shoppingLists, isLoading } = useQuery(
     'shopping-lists',
     getShoppingLists,
@@ -29,4 +29,4 @@ const ShoppingList: React.FC = () => {
   );
 };
 
-export default ShoppingList;
+export default Index;

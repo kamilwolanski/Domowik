@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Modal } from 'antd';
 import EditShoppingListForm from './EditShoppingListForm';
 import { MdEdit } from 'react-icons/md';
@@ -6,21 +5,25 @@ import { ShoppingList } from '../../../Api/ShoppingLists/types';
 
 interface IEditShoppingList {
   shoppingListEl: ShoppingList;
+  isEditModalOpen: boolean;
+  setIsEditModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const EditShoppingList: React.FC<IEditShoppingList> = ({ shoppingListEl }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+const EditShoppingList: React.FC<IEditShoppingList> = ({
+  shoppingListEl,
+  isEditModalOpen,
+  setIsEditModalOpen,
+}) => {
   const showModal = () => {
-    setIsModalOpen(true);
+    setIsEditModalOpen(true);
   };
 
   const handleOk = () => {
-    setIsModalOpen(false);
+    setIsEditModalOpen(false);
   };
 
   const handleCancel = () => {
-    setIsModalOpen(false);
+    setIsEditModalOpen(false);
   };
   return (
     <>
@@ -30,7 +33,7 @@ const EditShoppingList: React.FC<IEditShoppingList> = ({ shoppingListEl }) => {
       </button>
       <Modal
         title="Zmień nazwę listy"
-        open={isModalOpen}
+        open={isEditModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
         cancelButtonProps={{ style: { display: 'none' } }}

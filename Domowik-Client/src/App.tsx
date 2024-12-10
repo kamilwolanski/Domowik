@@ -8,7 +8,8 @@ import Logout from './Pages/Logout';
 import Register from './Pages/Register/Register';
 import RegistrationSuccess from './Pages/Register/RegistrationSuccess';
 import Family from './Pages/Family';
-import ShoppingList from './Pages/ShoppingLists';
+import ShoppingLists from './Pages/ShoppingLists';
+import ShoppingList from './Pages/ShoppingLists/ShoppingList';
 
 const App = () => {
   return (
@@ -25,7 +26,8 @@ const App = () => {
         <Route element={<PrivateRoute />}>
           <Route element={<PrivateLayout />}>
             <Route path="/family" element={<Family />} />
-            <Route path="/shopping-list" element={<ShoppingList />} />
+            <Route path="/shopping-lists" element={<ShoppingLists />} />
+            <Route path="/shopping-lists/:id" element={<ShoppingList />} />
             <Route path="/auth/logout" element={<Logout />} />
             <Route path="/finances" element={<Finances />} />
           </Route>

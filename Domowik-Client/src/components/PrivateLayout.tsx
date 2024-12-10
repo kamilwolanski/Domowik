@@ -69,9 +69,9 @@ const PrivateLayout: React.FC = () => {
     ),
     getItem(
       'Listy zakupów',
-      '/shopping-list',
+      '/shopping-lists',
       userData?.data.familyId ? (
-        <NavLink to="/shopping-list">
+        <NavLink to="/shopping-lists">
           <CiShoppingBasket size={17} color="white" />
         </NavLink>
       ) : (
