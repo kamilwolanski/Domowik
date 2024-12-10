@@ -1,4 +1,6 @@
-﻿namespace Domowik___WebAPI.Entities
+﻿using Domowik___WebAPI.Models;
+
+namespace Domowik___WebAPI.Entities
 {
     public class ShoppingList
     {
@@ -8,6 +10,6 @@
         public int? FamilyId { get; set; }
         public Family? Family { get; set; }
 
-        public List<ShoppingListProduct> ShoppingListProducts { get; set; }
+        public List<ShoppingListProduct> ShoppingListProducts { get; set; } = new List<ShoppingListProduct>();
     }
 }

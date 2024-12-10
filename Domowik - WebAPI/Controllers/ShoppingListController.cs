@@ -26,9 +26,11 @@ namespace Domowik___WebAPI.Controllers
         public ActionResult<List<ShoppingListDto>> GetShoppingLists()
         {
             var shoppingLists = _shoppingListsService.GetAll();
+            
 
             return Ok(shoppingLists);
         }
+
 
         [HttpPost]
         public async Task<ActionResult> CreateShoppingList([FromBody] CreateShoppingListDto dto)
@@ -74,5 +76,30 @@ namespace Domowik___WebAPI.Controllers
             await _shoppingListsService.Update(id, dto);
             return Ok();
         }
+
+        [HttpPatch("{id}/products/{productId}/toggle-purchased")]
+        public async Task<ActionResult> ToggleProductPurchased([FromRoute] int id, [FromRoute] int productId)
+        {
+            await _shoppingListsService.ToggleProductPurchased(id, productId);
+            return NoContent();
+        }
+
+        [HttpGet("{id}/available-products")]
+
+        public async Task<ActionResult> GetAvailableProducts([FromRoute] int id)
+        {
+            var availableProducts = await _shoppingListsService.GetAvailableProducts(id);
+
+            return Ok(availableProducts);
+        }
+
+        [HttpPost("{id}/products")]
+        public async Task<ActionResult> AddProductToShoppingList([FromRoute] int id, [FromBody] AddProductToShoppingListDto dto)
+        {
+            await _shoppingListsService.AddProductToShoppingList(id, dto);
+
+            return NoContent();
+        }
+
     }
 }

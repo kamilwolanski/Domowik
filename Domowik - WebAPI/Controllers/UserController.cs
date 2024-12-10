@@ -1,4 +1,6 @@
-﻿using Domowik___WebAPI.Models;
+﻿using AutoMapper;
+using Domowik___WebAPI.Entities;
+using Domowik___WebAPI.Models;
 using Domowik___WebAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,9 +13,11 @@ namespace Domowik___WebAPI.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
-        public UserController(IUserService userService)
+        private readonly IMapper _mapper;
+        public UserController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
+            _mapper = mapper;
         }
 
         [HttpDelete]
@@ -41,11 +45,12 @@ namespace Domowik___WebAPI.Controllers
         }
 
         [HttpGet("family")]
-        public ActionResult<FamilyDto> GetUserFamily()
+        public async Task<ActionResult> GetUserFamily()
         {
-            var family = _userService.GetUserFamily();
+            var family = await _userService.GetUserFamily();
+            var result = _mapper.Map<FamilyDto>(family);
 
-            return Ok(family);
+            return Ok(result);
         }
     }
 }

@@ -77,11 +77,14 @@ namespace Domowik___WebAPI.Services
             var userFamily = await _dbContext.Families
                 .Include(x => x.Members)
                 .Include(f => f.ShoppingLists)
-                .SingleOrDefaultAsync(x => x.Members.Any(x => userId == x.Id));
+                .SingleOrDefaultAsync(x => x.Members.Any(m => m.Id == userId));
 
-            var result = _mapper.Map<Family>(userFamily);
+            if (userFamily == null)
+            {
+                throw new NotFoundException("Family not Found");
+            }
 
-            return result;
+            return userFamily;
         }
     }
 }

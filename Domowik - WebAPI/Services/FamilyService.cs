@@ -53,9 +53,16 @@ namespace Domowik___WebAPI.Services
 
         public async Task<int> CreateShoppingList(CreateShoppingListDto createShoppingListDto)
         {
-            var userFamily = await GetUserFamily();
+            var userId = _userContextService.GetUserId;
+            var userFamily = await _dbContext.Families.Include(f => f.Members).Include(f => f.ShoppingLists).FirstOrDefaultAsync(x => x.Members.Any(m => m.Id == userId));
             
             var shoppingList = _mapper.Map<ShoppingList>(createShoppingListDto);
+
+            if (userFamily == null)
+            {
+                throw new NotFoundException("Family not Found");
+            }
+
             userFamily.ShoppingLists.Add(shoppingList);
             await _dbContext.SaveChangesAsync();
 
@@ -80,6 +87,11 @@ namespace Domowik___WebAPI.Services
             if (userHasFamily)
             {
                 throw new InvalidOperationException("Użytkownik o podanym adresie email należy już do innej rodziny");
+            }
+
+            if (userFamily == null)
+            {
+                throw new NotFoundException("Family not Found");
             }
 
             userFamily.Members.Add(userToAdd);
@@ -180,12 +192,5 @@ namespace Domowik___WebAPI.Services
             return user.FamilyId is null;
         }
 
-        private async Task<Family> GetUserFamily()
-        {
-            var userId = _userContextService.GetUserId;
-            var family =  await _dbContext.Families.Include(f => f.Members).Include(f => f.ShoppingLists).SingleOrDefaultAsync(x => x.Members.Any(x => userId == x.Id));
-
-            return family;
-        }
     }
 }
