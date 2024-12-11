@@ -1,8 +1,9 @@
-import { useQuery, useMutation } from 'react-query';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { IoMdAddCircle } from 'react-icons/io';
+import { FaMinus } from 'react-icons/fa';
 import {
   getAvailableProducts,
-  addProductToShoppingList,
+  updateProductQuantityInShoppingList,
 } from '../../../Api/ShoppingLists';
 
 interface IProductsToAddList {
@@ -14,16 +15,13 @@ const ProductsToAddList: React.FC<IProductsToAddList> = ({ paramId }) => {
     'available-products',
     () => getAvailableProducts(paramId),
   );
-  const addProductToShoppingListMutation = useMutation(
-    addProductToShoppingList,
+  const updateProductQuantityInShoppingListMutation = useMutation(
+    updateProductQuantityInShoppingList,
   );
+  const queryClient = useQueryClient();
 
-  const handleClick = async (
-    listId: number,
-    productId: number,
-    quantity: number,
-  ) => {
-    await addProductToShoppingListMutation.mutate(
+  const handleClick = (listId: number, productId: number, quantity: number) => {
+    updateProductQuantityInShoppingListMutation.mutate(
       {
         listId,
         body: {
@@ -33,6 +31,12 @@ const ProductsToAddList: React.FC<IProductsToAddList> = ({ paramId }) => {
       },
       {
         onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: [`shopping-list-${paramId}`],
+          });
+          queryClient.invalidateQueries({
+            queryKey: ['available-products'],
+          });
           console.log('success');
         },
       },
@@ -47,17 +51,29 @@ const ProductsToAddList: React.FC<IProductsToAddList> = ({ paramId }) => {
         {availableProducts.map((product) => (
           <li
             key={product.id}
-            className="p-2 border-b last:border-b-0 border-gray-200 hover:bg-gray-100 bg-gray-50 cursor-pointer"
+            className="p-2 border-b last:border-b-0 border-gray-200 hover:bg-gray-100 bg-gray-50 flex justify-between"
           >
             <button
               onClick={() =>
                 handleClick(paramId, product.id, product.quantity + 1)
               }
-              className="flex items-center"
+              className="flex items-center cursor-pointer"
             >
               <IoMdAddCircle />
               <span className="ms-3">{product.name}</span>
             </button>
+            {product.quantity > 0 && (
+              <div className="flex items-center space-x-2">
+                <span>{product.quantity}</span>
+                <button
+                  onClick={() =>
+                    handleClick(paramId, product.id, product.quantity - 1)
+                  }
+                >
+                  <FaMinus color="red" />
+                </button>
+              </div>
+            )}
           </li>
         ))}
       </ul>

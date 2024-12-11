@@ -62,7 +62,7 @@ export const getAvailableProducts = async (id: number) => {
   return response.data;
 };
 
-export const addProductToShoppingList = async (variables: {
+export const updateProductQuantityInShoppingList = async (variables: {
   listId: number;
   body: AddProductToShoppingList;
 }) => {

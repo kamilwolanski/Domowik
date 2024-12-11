@@ -22,6 +22,7 @@ const EditShoppingListForm: React.FC<IEditShoppingListForm> = ({
   const updateShopppingListMutation = useMutation(updateShoppingList);
 
   const handleSubmit = (values: typeof initialValues) => {
+    console.log('weszlo');
     updateShopppingListMutation.mutate(
       {
         id: shoppingListEl.id,
@@ -44,7 +45,7 @@ const EditShoppingListForm: React.FC<IEditShoppingListForm> = ({
       validationSchema={validationSchema}
       onSubmit={handleSubmit}
     >
-      {({ isValid }) => {
+      {({ isValid, values }) => {
         return (
           <Form>
             <TextInput label="" name="name" id="name" />
@@ -57,6 +58,7 @@ const EditShoppingListForm: React.FC<IEditShoppingListForm> = ({
                 Anuluj
               </button>
               <button
+                onClick={() => handleSubmit(values)}
                 type="submit"
                 disabled={!isValid}
                 className={`px-4 py-2 rounded-lg focus:outline-none ml-2 ${

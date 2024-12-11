@@ -51,7 +51,6 @@ const ShoppingListsElement: React.FC<IShoppingListsElement> = ({
       <div
         key={shoppingListEl.id}
         className="rounded overflow-hidden shadow-lg p-6 bg-white mb-8 hover:bg-gray-100"
-        onClick={() => console.log('dupa')}
       >
         <div className="flex items-center justify-between mb-2">
           <h2 className="text-xl font-semibold">{shoppingListEl.name}</h2>
