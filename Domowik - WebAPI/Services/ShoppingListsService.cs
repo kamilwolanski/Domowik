@@ -13,11 +13,11 @@ namespace Domowik___WebAPI.Services
         Task<int> Create(CreateShoppingListDto createShoppingListDto);
         Task Update(int id, UpdateShoppingListDto shoppingListProductDto);
         List<ShoppingListDto> GetAll();
-        ShoppingListDto Get(int id);
+        Task<ShoppingListDto> Get(int id);
         Task Delete(int shoppingListId);
         Task ToggleProductPurchased(int id, int productId);
         Task<IEnumerable<AvailableProductDto>> GetAvailableProducts(int id);
-        Task AddProductToShoppingList (int id, AddProductToShoppingListDto dto);
+        Task UpdateProductQuantityInShoppingList(int id, UpdateProductQuantityDto dto);
     }
     public class ShoppingListsService : IShoppingListsService
     {
@@ -50,21 +50,31 @@ namespace Domowik___WebAPI.Services
             return shoppingList.Id;
         }
 
-        public ShoppingListDto Get(int id)
+        public async Task<ShoppingListDto> Get(int id)
         {
             var userId = _userContextService.GetUserId;
-            var userFamily = _dbContext.Families
-                .Include(f => f.ShoppingLists)
-                .ThenInclude(x => x.ShoppingListProducts)
-                .ThenInclude(x => x.Product)
-                .ThenInclude(x => x.ProductCategory)
-                .SingleOrDefault(f => f.Members.Any(m => userId == m.Id));
 
-            var familyShoppingList = userFamily.ShoppingLists.SingleOrDefault(sl => sl.Id == id);
+            var shoppingList = await _dbContext.ShoppingLists
+                .Include(sl => sl.ShoppingListProducts)
+                    .ThenInclude(sl => sl.Product)
+                .Include(sl => sl.Family)
+                    .ThenInclude(f => f.Members)
+                .FirstOrDefaultAsync(sl => sl.Id == id);
 
-            var shoppingList = _mapper.Map<ShoppingListDto>(familyShoppingList);
+            if(shoppingList == null)
+            {
+                throw new NotFoundException($"Shopping list with ID {id} not found");
+            }
 
-            return shoppingList;
+            if(!shoppingList.Family.Members.Any(m => m.Id == userId))
+            {
+                throw new ForbidException("Access denied: This shopping list is associated with a family you are not a member of.");
+            }
+
+
+            var shoppingListDto = _mapper.Map<ShoppingListDto>(shoppingList);
+
+            return shoppingListDto;
         }
 
         public IEnumerable<ShoppingListProductDto> GetShoppingListProducts()
@@ -75,6 +85,12 @@ namespace Domowik___WebAPI.Services
                  .Include(x => x.ShoppingLists).ThenInclude(x => x.ShoppingListProducts)
                  .AsNoTracking()
                  .SingleOrDefault(x => x.Members.Any(x => userId == x.Id));
+
+
+            if (userFamily == null)
+            {
+                throw new NotFoundException("Family not Found");
+            }
 
             var products = _mapper.Map<List<ShoppingListProductDto>>(userFamily.ShoppingLists);
 
@@ -92,6 +108,12 @@ namespace Domowik___WebAPI.Services
                 .ThenInclude(x => x.ProductCategory)
                 .SingleOrDefault(f => f.Members.Any(m => userId == m.Id));
 
+
+            if (userFamily == null)
+            {
+                throw new NotFoundException("Family not Found");
+            }
+
             var shoppingLists = _mapper.Map<List<ShoppingListDto>>(userFamily.ShoppingLists);
 
             return shoppingLists;
@@ -101,23 +123,18 @@ namespace Domowik___WebAPI.Services
         {
             var userId = _userContextService.GetUserId;
             var shoppingList = await _dbContext.ShoppingLists
-                 .FirstOrDefaultAsync(sl => sl.Id == id);
+                .Include(sl => sl.Family)
+                    .ThenInclude(sl => sl.Members)
+                .FirstOrDefaultAsync(sl => sl.Id == id);
 
             if (shoppingList == null)
             {
                 throw new NotFoundException($"Shopping list with ID {id} not found");
             }
 
-            var userFamily = await _dbContext.Families.Include(f => f.Members).FirstOrDefaultAsync(f => f.Members.Any(m => m.Id == userId));
-
-            if (userFamily == null)
+            if (!shoppingList.Family.Members.Any(m => m.Id == userId))
             {
-                throw new NotFoundException("Family not Found");
-            }
-
-            if (shoppingList.FamilyId != userFamily.Id)
-            {
-                throw new ForbidException();
+                throw new ForbidException("Access denied: This shopping list is associated with a family you are not a member of.");
             }
 
             _mapper.Map(shoppingListProductDto, shoppingList);
@@ -130,6 +147,8 @@ namespace Domowik___WebAPI.Services
         {
             var userId = _userContextService.GetUserId;
             var shoppingList = await _dbContext.ShoppingLists
+                .Include(sl => sl.Family)
+                    .ThenInclude(f => f.Members)
                 .FirstOrDefaultAsync(sl => sl.Id == shoppingListId);
 
             if (shoppingList == null)
@@ -137,16 +156,9 @@ namespace Domowik___WebAPI.Services
                 throw new NotFoundException($"Shopping list with ID {shoppingListId} not found");
             }
 
-            var userFamily = await _dbContext.Families.Include(f => f.Members).Include(f => f.ShoppingLists).FirstOrDefaultAsync(f => f.Members.Any(m => m.Id == userId));
-
-            if (userFamily == null)
+            if (!shoppingList.Family.Members.Any(m => m.Id == userId))
             {
-                throw new NotFoundException("Family not Found");
-            }
-
-            if (shoppingList.FamilyId != userFamily.Id)
-            {
-                throw new ForbidException();
+                throw new ForbidException("Access denied: This shopping list is associated with a family you are not a member of.");
             }
 
             _dbContext.ShoppingLists.Remove(shoppingList);
@@ -156,27 +168,27 @@ namespace Domowik___WebAPI.Services
         public async Task ToggleProductPurchased(int id, int productId)
         {
             var userId = _userContextService.GetUserId;
-            var userFamily = await _dbContext.Families.Include(f => f.Members).Include(f => f.ShoppingLists).FirstOrDefaultAsync(f => f.Members.Any(m => m.Id == userId));
 
-            if (userFamily == null)
+            var shoppingList = await _dbContext.ShoppingLists.Include(sl => sl.Family).ThenInclude(f => f.Members).Include(sl => sl.ShoppingListProducts).FirstOrDefaultAsync(sl => sl.Id == id);
+
+            if (shoppingList == null)
             {
-                throw new NotFoundException("Family not Found");
+                throw new NotFoundException("ShoppingList not Found");
             }
 
-            var product = await _dbContext.ShoppingListProducts
-                .FirstOrDefaultAsync(p => p.ShoppingListId == id && p.ProductId == productId);
+
+            if(!shoppingList.Family.Members.Any(m => m.Id == userId))
+            {
+                throw new ForbidException("Access denied: This shopping list is associated with a family you are not a member of.");
+            }
+
+            var product = shoppingList.ShoppingListProducts.FirstOrDefault(p => p.ProductId == productId);
 
             if (product == null)
             {
                 throw new NotFoundException("Product not found in the shopping list.");
             }
 
-            if (!userFamily.ShoppingLists.Any(sl => sl.Id == product.ShoppingListId))
-            {
-                throw new ForbidException();
-            }
-
- 
 
             product.IsPurchased = !product.IsPurchased;
             await _dbContext.SaveChangesAsync();
@@ -188,9 +200,14 @@ namespace Domowik___WebAPI.Services
 
             var shoppingList = await _dbContext.ShoppingLists.Include(sl => sl.Family).ThenInclude(f => f.Members).FirstOrDefaultAsync(sl => sl.Id == id);
 
-            if(!shoppingList.Family.Members.Any(m => m.Id == userId))
+            if (shoppingList == null)
             {
-                throw new ForbidException();
+                throw new NotFoundException("ShoppingList not Found");
+            }
+
+            if (!shoppingList.Family.Members.Any(m => m.Id == userId))
+            {
+                throw new ForbidException("Access denied: This shopping list is associated with a family you are not a member of.");
             }
 
             var productsToAdd = await _dbContext.Products.Include(p => p.ProductCategory)
@@ -215,15 +232,20 @@ namespace Domowik___WebAPI.Services
 
         }
 
-        public async Task AddProductToShoppingList(int id, AddProductToShoppingListDto dto)
+        public async Task UpdateProductQuantityInShoppingList(int id, UpdateProductQuantityDto dto)
         {
             var userId = _userContextService.GetUserId;
 
             var shoppingList = await _dbContext.ShoppingLists.Include(sl => sl.ShoppingListProducts).Include(sl => sl.Family).ThenInclude(f => f.Members).FirstOrDefaultAsync(sl => sl.Id == id);
 
+            if (shoppingList == null)
+            {
+                throw new NotFoundException("ShoppingList not Found");
+            }
+
             if (!shoppingList.Family.Members.Any(m => m.Id == userId))
             {
-                throw new ForbidException();
+                throw new ForbidException("Access denied: This shopping list is associated with a family you are not a member of.");
             }
 
             var product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == dto.ProductId);
@@ -234,7 +256,7 @@ namespace Domowik___WebAPI.Services
             }
 
             var existingProduct = shoppingList.ShoppingListProducts.FirstOrDefault(x => x.ProductId == dto.ProductId);
-            if(existingProduct == null)
+            if(existingProduct == null && dto.Quantity > 0) // create new
             {
                 var shoppingListProduct = new ShoppingListProduct
                 {
@@ -244,12 +266,19 @@ namespace Domowik___WebAPI.Services
                 };
 
                 shoppingList.ShoppingListProducts.Add(shoppingListProduct);
-            } else
+            }  
+            else if(existingProduct != null && dto.Quantity == 0) // delete
+            {
+                shoppingList.ShoppingListProducts.Remove(existingProduct);
+            }
+            else if(existingProduct != null) // update 
             {
                 existingProduct.Quantity = dto.Quantity;
             }
  
             await _dbContext.SaveChangesAsync();
         }
+
+
     }
 }
