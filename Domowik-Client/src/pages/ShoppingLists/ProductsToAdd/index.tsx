@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IoIosClose } from 'react-icons/io';
 import ProductsToAddList from './ProductsToAddList';
 import { useParams } from 'react-router-dom';
@@ -11,6 +11,11 @@ const ProductsToAdd: React.FC<IProductsToAdd> = ({
   closeProductsToAddWindow,
 }) => {
   const { id } = useParams();
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
 
   return (
     <div className="rounded overflow-hidden shadow-lg p-6 bg-white mb-8">
@@ -50,10 +55,11 @@ const ProductsToAdd: React.FC<IProductsToAdd> = ({
           className="focus:outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-blue-500 block w-full p-2.5 ps-10"
           placeholder="Search Mockups, Logos..."
           required
+          onChange={handleChange}
         />
       </div>
       <div>
-        <ProductsToAddList paramId={Number(id)} />
+        <ProductsToAddList paramId={Number(id)} searchValue={searchValue} />
       </div>
     </div>
   );
