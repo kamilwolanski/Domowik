@@ -6,6 +6,7 @@ import {
   toggleProductPurchased,
   updateProductQuantityInShoppingList,
 } from '../../../Api/ShoppingLists';
+import categoryIcons from '../../../Assets/ProductCategoryIcons/productCategoryIcons';
 
 interface IShoppingListElement extends ShoppingListProduct {
   listId: number;
@@ -67,7 +68,7 @@ const ShoppingListElement: React.FC<IShoppingListElement> = ({
   };
 
   return (
-    <li className="mb-3 flex justify-between">
+    <li className="mb-3 flex justify-between items-center">
       <div className="flex items-center space-x-2">
         <input
           type="checkbox"
@@ -83,9 +84,15 @@ const ShoppingListElement: React.FC<IShoppingListElement> = ({
           {product.name} {quantity}
         </label>
       </div>
-      <button onClick={handleDelete}>
-        <IoIosClose size={25} color="red" />
-      </button>
+      <div className="flex items-center">
+        <img
+          src={categoryIcons[product.productCategory.id]}
+          className={`${isPurchased ? 'grayscale' : ''} w-8`}
+        />
+        {/* <button onClick={handleDelete}>
+          <IoIosClose size={25} color="red" />
+        </button> */}
+      </div>
     </li>
   );
 };
