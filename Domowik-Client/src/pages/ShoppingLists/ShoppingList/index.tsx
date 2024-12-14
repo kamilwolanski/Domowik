@@ -28,11 +28,11 @@ const Index = () => {
   return (
     <>
       <Row className="justify-center">
-        <Col span={7} className="pe-4">
+        <Col span={9} className="px-2">
           <ShoppingList paramId={Number(id)} />
         </Col>
         {showProductsToAdd && (
-          <Col span={5} className="ps-4">
+          <Col span={5} className="px-2">
             <ProductsToAdd
               closeProductsToAddWindow={closeProductsToAddWindow}
             />
@@ -42,8 +42,7 @@ const Index = () => {
       {!showProductsToAdd && (
         <button
           onClick={showProductsToAddWindow}
-          className="flex items-center bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 fixed left-1/2"
-          style={{ bottom: 'calc(0px + 69px + 48px)' }}
+          className="flex items-center bg-blue-600 text-white text-lg font-bold py-2 px-10 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 fixed left-1/2"
         >
           <IoAddCircleSharp size={40} />
           <span className="ml-2">Dodaj produkty</span>

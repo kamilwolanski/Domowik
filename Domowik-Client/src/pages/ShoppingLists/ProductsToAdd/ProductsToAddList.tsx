@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { IoMdAddCircle } from 'react-icons/io';
-import { FaMinus } from 'react-icons/fa';
+import { CiCirclePlus, CiCircleMinus } from 'react-icons/ci';
+import { MdDone } from 'react-icons/md';
 import {
   getAvailableProducts,
   updateProductQuantityInShoppingList,
@@ -75,30 +75,41 @@ const ProductsToAddList: React.FC<IProductsToAddList> = ({
               key={product.id}
               className="p-2 border-b last:border-b-0 border-gray-200 hover:bg-gray-100 bg-gray-50 flex justify-between"
             >
-              <button
-                onClick={() =>
-                  handleClick(paramId, product.id, product.quantity + 1)
-                }
-                className="flex items-center cursor-pointer"
-              >
-                <IoMdAddCircle />
-                <span className="ms-3">
-                  <span className="ms-3">
-                    {highlightText(product.name, searchValue)}
-                  </span>
+              <div className="flex items-center">
+                {product.isPurchased && <MdDone size={20} color="green" />}
+
+                <span className={`${!product.isPurchased ? 'ms-6' : 'ms-1'}`}>
+                  {highlightText(product.name, searchValue)}
                 </span>
-              </button>
-              {product.quantity > 0 && (
+              </div>
+              {product.quantity > 0 ? (
                 <div className="flex items-center space-x-2">
+                  <button>
+                    <CiCirclePlus
+                      size={20}
+                      onClick={() =>
+                        handleClick(paramId, product.id, product.quantity + 1)
+                      }
+                    />
+                  </button>
                   <span>{product.quantity}</span>
                   <button
                     onClick={() =>
                       handleClick(paramId, product.id, product.quantity - 1)
                     }
                   >
-                    <FaMinus color="red" />
+                    <CiCircleMinus color="red" size={20} />
                   </button>
                 </div>
+              ) : (
+                <button>
+                  <CiCirclePlus
+                    size={20}
+                    onClick={() =>
+                      handleClick(paramId, product.id, product.quantity + 1)
+                    }
+                  />
+                </button>
               )}
             </li>
           ))}

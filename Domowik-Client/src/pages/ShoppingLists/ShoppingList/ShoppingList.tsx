@@ -13,10 +13,17 @@ const ShoppingList: React.FC<IShoppingList> = ({ paramId }) => {
     `shopping-list-${paramId}`,
     () => getShoppingList(paramId),
   );
-  console.log('shoppingList', shoppingList);
+
+  const unPurchasedProducts = shoppingList?.shoppingListProducts.filter(
+    (product) => !product.isPurchased,
+  );
+  const purchasedProducts = shoppingList?.shoppingListProducts.filter(
+    (product) => product.isPurchased,
+  );
 
   if (isLoading) return <p>Ładowanie...</p>;
-  if (shoppingList) {
+
+  if (shoppingList && unPurchasedProducts && purchasedProducts) {
     return (
       <div className="rounded overflow-hidden shadow-lg p-6 bg-white mb-8">
         <div className="flex items-center justify-between mb-2">
@@ -26,10 +33,13 @@ const ShoppingList: React.FC<IShoppingList> = ({ paramId }) => {
           percent={calculateProgress(shoppingList.shoppingListProducts)}
           showInfo={false}
         />
+        {unPurchasedProducts.length <= 0 && purchasedProducts.length <= 0 && (
+          <p>Brak produktów</p>
+        )}
         <div>
-          {shoppingList?.shoppingListProducts.length > 0 ? (
-            <ul className="mt-5">
-              {shoppingList.shoppingListProducts.map((product) => (
+          {unPurchasedProducts?.length > 0 && (
+            <ul className="mt-5 shopping-list">
+              {unPurchasedProducts.map((product) => (
                 <ShoppingListElement
                   listId={shoppingList.id}
                   {...product}
@@ -37,8 +47,20 @@ const ShoppingList: React.FC<IShoppingList> = ({ paramId }) => {
                 />
               ))}
             </ul>
-          ) : (
-            <p>Brak produktów</p>
+          )}
+          {purchasedProducts?.length > 0 && (
+            <>
+              <h3>Zakupione</h3>
+              <ul className="mt-5 shopping-list">
+                {purchasedProducts.map((product) => (
+                  <ShoppingListElement
+                    listId={shoppingList.id}
+                    {...product}
+                    key={product.id}
+                  />
+                ))}
+              </ul>
+            </>
           )}
         </div>
       </div>

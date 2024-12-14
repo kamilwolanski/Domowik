@@ -1,11 +1,7 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
-import { IoIosClose } from 'react-icons/io';
 import { ShoppingListProduct } from '../../../Api/ShoppingLists/types';
-import {
-  toggleProductPurchased,
-  updateProductQuantityInShoppingList,
-} from '../../../Api/ShoppingLists';
+import { toggleProductPurchased } from '../../../Api/ShoppingLists';
 import categoryIcons from '../../../Assets/ProductCategoryIcons/productCategoryIcons';
 
 interface IShoppingListElement extends ShoppingListProduct {
@@ -16,15 +12,26 @@ const ShoppingListElement: React.FC<IShoppingListElement> = ({
   listId,
   product,
   quantity,
-  isPurchased,
+  isPurchased: initialIsPurchased,
 }) => {
+  const [isChecked, setIsChecked] = useState<boolean>(initialIsPurchased);
+  const liRef = useRef<HTMLLIElement>(null);
   const queryClient = useQueryClient();
   const toggleProductPurchasedMutation = useMutation(toggleProductPurchased);
-  const updateProductQuantityInShoppingListMutation = useMutation(
-    updateProductQuantityInShoppingList,
-  );
 
   const handleClick = async () => {
+    setIsChecked(!isChecked);
+
+    if (!isChecked) {
+      setTimeout(() => {
+        liRef.current?.classList.add('is-purchasing');
+      }, 0);
+    } else {
+      setTimeout(() => {
+        liRef.current?.classList.add('is-unpurchasing');
+      }, 0);
+    }
+
     toggleProductPurchasedMutation.mutate(
       {
         listId: listId,
@@ -32,66 +39,54 @@ const ShoppingListElement: React.FC<IShoppingListElement> = ({
       },
       {
         onSuccess: () => {
-          queryClient.refetchQueries({
-            queryKey: ['shopping-lists'],
-          });
-
-          queryClient.invalidateQueries({
-            queryKey: [`shopping-list-${listId}`],
-          });
+          setTimeout(() => {
+            liRef.current?.classList.remove('isPurchasing');
+            queryClient.refetchQueries({
+              queryKey: ['shopping-lists'],
+            });
+            queryClient.invalidateQueries({
+              queryKey: [`shopping-list-${listId}`],
+            });
+            queryClient.invalidateQueries({
+              queryKey: ['available-products'],
+            });
+          }, 300);
         },
-      },
-    );
-  };
-
-  const handleDelete = () => {
-    updateProductQuantityInShoppingListMutation.mutate(
-      {
-        listId,
-        body: {
-          productId: product.id,
-          quantity: 0,
-        },
-      },
-      {
-        onSuccess: () => {
-          queryClient.invalidateQueries({
-            queryKey: [`shopping-list-${listId}`],
-          });
-          queryClient.invalidateQueries({
-            queryKey: ['available-products'],
-          });
-          console.log('success');
+        onError: () => {
+          setIsChecked(initialIsPurchased);
         },
       },
     );
   };
 
   return (
-    <li className="mb-3 flex justify-between items-center">
+    <li
+      className={`mb-3 flex justify-between items-center ${
+        isChecked ? 'bought' : ''
+      }`}
+      ref={liRef}
+    >
       <div className="flex items-center space-x-2">
         <input
           type="checkbox"
           id={`shoppingListEl_${product.id}`}
           className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 focus:ring-2"
-          checked={isPurchased}
+          checked={isChecked}
           onChange={handleClick}
         />
         <label
           htmlFor={`shoppingListEl_${product.id}`}
-          className="text-gray-700"
+          className="text-gray-700 "
         >
-          {product.name} {quantity}
+          <span className="font-semibold text-base">{product.name}</span>
+          <span className="ms-3">{quantity}</span>
         </label>
       </div>
       <div className="flex items-center">
         <img
           src={categoryIcons[product.productCategory.id]}
-          className={`${isPurchased ? 'grayscale' : ''} w-8`}
+          className={`${isChecked ? 'grayscale' : ''} w-8`}
         />
-        {/* <button onClick={handleDelete}>
-          <IoIosClose size={25} color="red" />
-        </button> */}
       </div>
     </li>
   );

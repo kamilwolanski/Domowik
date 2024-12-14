@@ -35,6 +35,7 @@ export type AvailableProduct = {
   name: string;
   productCategory: ProductCategory;
   quantity: number;
+  isPurchased: boolean;
 };
 
 export type AddProductToShoppingList = {
