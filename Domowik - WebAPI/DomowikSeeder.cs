@@ -100,15 +100,55 @@ public class DomowikSeeder
             var nabialCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Nabiał i jajka");
             var owoceCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Owoce i warzywa");
             var napojeCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Napoje");
+            var miesoCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Mięso i ryby");
+            var pieczywoCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Pieczywo i wypieki");
+            var produktySucheCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Produkty suche i sypkie");
+            var przetworyCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Przetwory i konserwy");
+            var przekaskiCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Przekąski i słodycze");
+            var przyprawyCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Przyprawy i dodatki");
+            var mrozonkiCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Mrożonki");
+            var czystoscCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Środki czystości");
+            var higienaCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Higiena osobista");
+            var artykulyPapieroweCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Artykuły papierowe");
+            var artykulyDomoweCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Artykuły domowe");
+            var ogrodCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Ogród i rośliny");
+            var niemowlakiCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Produkty dla niemowląt");
+            var zabawkiCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Zabawki i akcesoria dla dzieci");
+            var karmaZwierzatCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Karma i przysmaki dla zwierząt");
+            var akcesoriaZwierzatCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Akcesoria dla zwierząt");
+            var baterieCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Baterie i akcesoria elektroniczne");
+            var narzedziaCategory = _dbContext.ProductCategories.FirstOrDefault(pc => pc.Name == "Narzędzia i materiały eksploatacyjne");
 
-            if (nabialCategory != null && owoceCategory != null && napojeCategory != null)
+            if (nabialCategory != null && owoceCategory != null && napojeCategory != null && miesoCategory != null && pieczywoCategory != null &&
+                produktySucheCategory != null && przetworyCategory != null && przekaskiCategory != null && przyprawyCategory != null &&
+                mrozonkiCategory != null && czystoscCategory != null && higienaCategory != null && artykulyPapieroweCategory != null &&
+                artykulyDomoweCategory != null && ogrodCategory != null && niemowlakiCategory != null && zabawkiCategory != null &&
+                karmaZwierzatCategory != null && akcesoriaZwierzatCategory != null && baterieCategory != null && narzedziaCategory != null)
             {
                 var products = new List<Product>
-                {
-                    new Product { Name = "Mleko", ProductCategoryId = nabialCategory.Id },
-                    new Product { Name = "Jabłka", ProductCategoryId = owoceCategory.Id },
-                    new Product { Name = "Sok pomarańczowy", ProductCategoryId = napojeCategory.Id }
-                };
+            {
+                new Product { Name = "Mleko", ProductCategoryId = nabialCategory.Id },
+                new Product { Name = "Jabłka", ProductCategoryId = owoceCategory.Id },
+                new Product { Name = "Sok pomarańczowy", ProductCategoryId = napojeCategory.Id },
+                new Product { Name = "Kurczak", ProductCategoryId = miesoCategory.Id },
+                new Product { Name = "Chleb pszenny", ProductCategoryId = pieczywoCategory.Id },
+                new Product { Name = "Mąka pszenna", ProductCategoryId = produktySucheCategory.Id },
+                new Product { Name = "Sos pomidorowy", ProductCategoryId = przetworyCategory.Id },
+                new Product { Name = "Czekolada mleczna", ProductCategoryId = przekaskiCategory.Id },
+                new Product { Name = "Sól", ProductCategoryId = przyprawyCategory.Id },
+                new Product { Name = "Groszek mrożony", ProductCategoryId = mrozonkiCategory.Id },
+                new Product { Name = "Płyn do mycia naczyń", ProductCategoryId = czystoscCategory.Id },
+                new Product { Name = "Szampon do włosów", ProductCategoryId = higienaCategory.Id },
+                new Product { Name = "Papier toaletowy", ProductCategoryId = higienaCategory.Id },
+                new Product { Name = "Mop", ProductCategoryId = artykulyDomoweCategory.Id },
+                new Product { Name = "Nasiona trawy", ProductCategoryId = ogrodCategory.Id },
+                new Product { Name = "Pielucha jednorazowa", ProductCategoryId = niemowlakiCategory.Id },
+                new Product { Name = "Klocki konstrukcyjne", ProductCategoryId = zabawkiCategory.Id },
+                new Product { Name = "Karma dla psa", ProductCategoryId = karmaZwierzatCategory.Id },
+                new Product { Name = "Smycz dla psa", ProductCategoryId = akcesoriaZwierzatCategory.Id },
+                new Product { Name = "Bateria AA", ProductCategoryId = baterieCategory.Id },
+                new Product { Name = "Wkrętarka", ProductCategoryId = narzedziaCategory.Id }
+            };
 
                 _dbContext.Products.AddRange(products);
                 _dbContext.SaveChanges();

@@ -7,5 +7,6 @@
 
         public ProductCategoryDto ProductCategory { get; set; }
         public int Quantity { get; set; } = 1;
+        public bool IsPurchased { get; set; } = false;
     }
 }

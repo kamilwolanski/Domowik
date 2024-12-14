@@ -57,6 +57,7 @@ namespace Domowik___WebAPI.Services
             var shoppingList = await _dbContext.ShoppingLists
                 .Include(sl => sl.ShoppingListProducts)
                     .ThenInclude(sl => sl.Product)
+                    .ThenInclude(sl => sl.ProductCategory)
                 .Include(sl => sl.Family)
                     .ThenInclude(f => f.Members)
                 .FirstOrDefaultAsync(sl => sl.Id == id);
@@ -223,6 +224,10 @@ namespace Domowik___WebAPI.Services
                     Quantity = p.ShoppingListProducts
                         .Where(slp => slp.ShoppingListId == id)
                         .Select(slp => slp.Quantity)
+                        .FirstOrDefault(),
+                    IsPurchased = p.ShoppingListProducts
+                        .Where(slp => slp.ShoppingListId == id)
+                        .Select(slp => slp.IsPurchased)
                         .FirstOrDefault()
                 }).ToListAsync();
                 
