@@ -35,7 +35,7 @@ namespace Domowik___WebAPI.Services
         public async Task<int> Create(CreateShoppingListDto createShoppingListDto)
         {
             var userId = _userContextService.GetUserId;
-            var userFamily = await _dbContext.Families.Include(f => f.Members).Include(f => f.ShoppingLists).FirstOrDefaultAsync();
+            var userFamily = await _dbContext.Families.Include(f => f.Members).Include(f => f.ShoppingLists).FirstOrDefaultAsync(f => f.Members.Any(m => m.Id == userId));
 
             var shoppingList = _mapper.Map<ShoppingList>(createShoppingListDto);
 
