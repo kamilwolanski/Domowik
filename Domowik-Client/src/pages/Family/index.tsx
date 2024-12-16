@@ -72,7 +72,7 @@ const Family: React.FC = () => {
                 Chcesz stworzyć nową rodzinę teraz?
               </h2>
               <button
-                className="mt-5 px-6 py-3 bg-primary text-white text-lg rounded-lg"
+                className="mt-5 bg-blue-600 text-white text-lg font-bold py-2 px-10 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 onClick={showModal}
               >
                 Utwórz rodzinę

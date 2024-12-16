@@ -48,6 +48,12 @@ namespace Domowik___WebAPI.Controllers
         public async Task<ActionResult> GetUserFamily()
         {
             var family = await _userService.GetUserFamily();
+
+            if (family == null)
+            {
+                return Ok(null);
+            }
+
             var result = _mapper.Map<FamilyDto>(family);
 
             return Ok(result);
