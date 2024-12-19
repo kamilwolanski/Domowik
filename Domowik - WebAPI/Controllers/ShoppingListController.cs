@@ -137,7 +137,8 @@ namespace Domowik___WebAPI.Controllers
         [HttpGet("{id}/available-products")]
         public async Task<ActionResult> GetAvailableProducts(
         [FromRoute] int id,
-        [FromQuery] string? name = null
+        [FromQuery] string? name = null,
+        [FromQuery] int? limit = null
         )
         {
             var (shoppingList, errorResult) = await _shoppingListsService.ValidateShoppingListAccessAsync(id);
@@ -149,6 +150,11 @@ namespace Domowik___WebAPI.Controllers
             if (!string.IsNullOrEmpty(name))
             {
                 query = query.Where(p => p.Name.Contains(name));
+            }
+
+            if (limit.HasValue)
+            {
+                query = query.Take(limit.Value);
             }
 
             var availableProducts = await query.Select(p => new AvailableProductDto

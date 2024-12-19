@@ -22,7 +22,7 @@ const ProductsToAddList: React.FC<IProductsToAddList> = ({
   const debouncedSearchTerm = useDebounce(searchValue, 200);
   const { data: availableProducts, isLoading } = useQuery({
     queryKey: ['available-products', debouncedSearchTerm],
-    queryFn: () => getAvailableProducts(paramId, debouncedSearchTerm),
+    queryFn: () => getAvailableProducts(paramId, debouncedSearchTerm, 30),
   });
   const addProductToShoppingListMutation = useMutation(
     addProductToShoppingList,

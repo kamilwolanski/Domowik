@@ -55,9 +55,23 @@ export const toggleProductPurchased = async (variables: {
   return response;
 };
 
-export const getAvailableProducts = async (id: number, search: string) => {
+export const getAvailableProducts = async (
+  id: number,
+  search?: string,
+  limit?: number,
+) => {
+  const params = new URLSearchParams();
+
+  if (search) {
+    params.append('name', search);
+  }
+
+  if (limit) {
+    params.append('limit', limit.toString());
+  }
+
   const response = await api.get<AvailableProduct[]>(
-    `/shopping-lists/${id}/available-products/?name=${search}`,
+    `/shopping-lists/${id}/available-products/?${params.toString()}`,
   );
 
   return response.data;
