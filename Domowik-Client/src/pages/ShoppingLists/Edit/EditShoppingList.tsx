@@ -27,7 +27,7 @@ const EditShoppingList: React.FC<IEditShoppingList> = ({
   };
   return (
     <>
-      <button onClick={showModal} className="mb-2">
+      <button onClick={showModal} className="w-full text-left">
         <MdEdit size={20} className="inline-block" />
         <span className="text-base ps-2">Zmień nazwę</span>
       </button>

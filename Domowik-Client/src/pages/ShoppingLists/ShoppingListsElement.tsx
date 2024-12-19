@@ -65,17 +65,24 @@ const ShoppingListsElement: React.FC<IShoppingListsElement> = ({
             </p>
             <Popover
               content={
-                <div className="flex flex-col items-start">
-                  <EditShoppingList
-                    shoppingListEl={shoppingListEl}
-                    isEditModalOpen={isEditModalOpen}
-                    setIsEditModalOpen={setIsEditModalOpen}
-                  />
-                  <button onClick={handleDelete} className="text-red-600">
-                    <MdDelete size={20} className="inline-block" />
-                    <span className="text-base ps-2">Usuń</span>
-                  </button>
-                </div>
+                <ul className="">
+                  <li className="hover:bg-gray-50 p-2">
+                    <EditShoppingList
+                      shoppingListEl={shoppingListEl}
+                      isEditModalOpen={isEditModalOpen}
+                      setIsEditModalOpen={setIsEditModalOpen}
+                    />
+                  </li>
+                  <li className="hover:bg-gray-50 p-2">
+                    <button
+                      onClick={handleDelete}
+                      className="text-red-600 w-full text-left"
+                    >
+                      <MdDelete size={20} className="inline-block" />
+                      <span className="text-base ps-2">Usuń</span>
+                    </button>
+                  </li>
+                </ul>
               }
               trigger="click"
               fresh
@@ -99,6 +106,11 @@ const ShoppingListsElement: React.FC<IShoppingListsElement> = ({
         <Progress
           percent={calculateProgress(shoppingListEl.shoppingListProducts)}
           showInfo={false}
+          strokeColor={
+            calculateProgress(shoppingListEl.shoppingListProducts) === 100
+              ? '#16a34a'
+              : '#5aacff'
+          }
         />
       </div>
     </Link>

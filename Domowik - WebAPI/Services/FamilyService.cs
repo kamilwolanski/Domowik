@@ -16,7 +16,7 @@ namespace Domowik___WebAPI.Services
         IEnumerable<FamilyDto> GetAll();
         Task<int> Create(CreateFamilyDto createFamilyDto);
         void Delete();
-        void Update(int id, UpdateFamilyDto updateFamilyDto);
+        Task Update(int id, UpdateFamilyDto updateFamilyDto);
         void Add(AddUserToFamilyDto dto);
         void DeleteUser(int id);
     }
@@ -98,7 +98,7 @@ namespace Domowik___WebAPI.Services
             _dbContext.SaveChanges();
         }
 
-        public void Update(int id, UpdateFamilyDto updateFamilyDto)
+        public async Task Update(int id, UpdateFamilyDto updateFamilyDto)
         {
             var family = _dbContext.Families.FirstOrDefault(f => f.Id == id);
 
@@ -107,7 +107,7 @@ namespace Domowik___WebAPI.Services
                 throw new NotFoundException("Family not Found");
             }
 
-            var authorizationResult = _authorizationService.AuthorizeAsync(_userContextService.User, family, new ResourceOperationRequirement(ResourceOperation.Update)).Result;
+            var authorizationResult = await _authorizationService.AuthorizeAsync(_userContextService.User, family, new ResourceOperationRequirement(ResourceOperation.Update));
 
 
             if(!authorizationResult.Succeeded)
