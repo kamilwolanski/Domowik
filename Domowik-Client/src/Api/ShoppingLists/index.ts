@@ -5,6 +5,7 @@ import {
   UpdateShoppingList,
   AvailableProduct,
   AddProductToShoppingList,
+  UpdateShoppingListProduct,
 } from './types';
 
 export const getShoppingLists = async () => {
@@ -54,21 +55,45 @@ export const toggleProductPurchased = async (variables: {
   return response;
 };
 
-export const getAvailableProducts = async (id: number) => {
+export const getAvailableProducts = async (id: number, search: string) => {
   const response = await api.get<AvailableProduct[]>(
-    `/shopping-lists/${id}/available-products`,
+    `/shopping-lists/${id}/available-products/?name=${search}`,
   );
 
   return response.data;
 };
 
-export const updateProductQuantityInShoppingList = async (variables: {
+export const addProductToShoppingList = async (variables: {
   listId: number;
   body: AddProductToShoppingList;
 }) => {
   const response = await api.post(
     `/shopping-lists/${variables.listId}/products`,
     variables.body,
+  );
+
+  return response.data;
+};
+
+export const updateProductInShoppingList = async (variables: {
+  listId: number;
+  shoppingListProductId: number;
+  body: UpdateShoppingListProduct;
+}) => {
+  const response = await api.patch(
+    `/shopping-lists/${variables.listId}/products/${variables.shoppingListProductId}`,
+    variables.body,
+  );
+
+  return response.data;
+};
+
+export const removeProductFromShoppingList = async (variables: {
+  listId: number;
+  shoppingListProductId: number;
+}) => {
+  const response = await api.delete(
+    `/shopping-lists/${variables.listId}/products/${variables.shoppingListProductId}`,
   );
 
   return response.data;

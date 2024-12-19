@@ -32,17 +32,22 @@ const ShoppingList: React.FC<IShoppingList> = ({ paramId }) => {
         <Progress
           percent={calculateProgress(shoppingList.shoppingListProducts)}
           showInfo={false}
+          strokeColor={
+            calculateProgress(shoppingList.shoppingListProducts) === 100
+              ? '#16a34a'
+              : '#5aacff'
+          }
         />
         {unPurchasedProducts.length <= 0 && purchasedProducts.length <= 0 && (
           <p>Brak produktów</p>
         )}
         <div>
           {unPurchasedProducts?.length > 0 && (
-            <ul className="mt-5 shopping-list">
+            <ul className="mt-5 shopping-list px-2">
               {unPurchasedProducts.map((product) => (
                 <ShoppingListElement
                   listId={shoppingList.id}
-                  {...product}
+                  product={product}
                   key={product.id}
                 />
               ))}
@@ -50,16 +55,19 @@ const ShoppingList: React.FC<IShoppingList> = ({ paramId }) => {
           )}
           {purchasedProducts?.length > 0 && (
             <>
-              <h3>Zakupione</h3>
-              <ul className="mt-5 shopping-list">
-                {purchasedProducts.map((product) => (
-                  <ShoppingListElement
-                    listId={shoppingList.id}
-                    {...product}
-                    key={product.id}
-                  />
-                ))}
-              </ul>
+              <div className="bg-green-100 rounded-lg">
+                <ul className="mt-5 shopping-list py-4 px-2">
+                  {purchasedProducts.map((product, index) => (
+                    <ShoppingListElement
+                      listId={shoppingList.id}
+                      // {...product}
+                      product={product}
+                      key={product.id}
+                      lastEl={purchasedProducts.length - 1 === index}
+                    />
+                  ))}
+                </ul>
+              </div>
             </>
           )}
         </div>
