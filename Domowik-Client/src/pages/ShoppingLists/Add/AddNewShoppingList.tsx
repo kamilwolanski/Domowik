@@ -24,7 +24,7 @@ const AddNewShoppingList = () => {
         onClick={showModal}
         className="flex items-center bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
       >
-        <IoAddCircleSharp size={40} />
+        <IoAddCircleSharp size={30} />
         <span className="ml-2">Stwórz nową listę</span>
       </button>
 
