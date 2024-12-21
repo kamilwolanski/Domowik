@@ -12,6 +12,8 @@
 
         public int Quantity { get; set; } = 1;
         public bool IsPurchased { get; set; } = false;
+        public string Name { get; set; }
         public string? Unit {  get; set; }
+        public string? Description { get; set; }
     }
 }

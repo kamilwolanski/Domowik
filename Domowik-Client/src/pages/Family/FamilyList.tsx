@@ -25,26 +25,34 @@ const FamilyList: React.FC<IFamilyList> = ({ members, user }) => {
       loading={false}
       renderItem={(item) => (
         <List.Item
+          className="shadow-lg rounded !p-6 mb-4"
           actions={[
-            item.id === user.id && (
-              <a key="editUser">
-                <EditUser user={user} />
-              </a>
-            ),
-            (item.id === user.id || user.roleId === Role.Head) && (
-              <a key="leave-family">
-                <LeaveFamily member={item} userId={user.id} />
-              </a>
-            ),
-          ].filter(Boolean)}
+            <div
+              key="actions-container"
+              className="flex items-center space-x-3"
+            >
+              {item.id === user.id && (
+                <a key="editUser" className="text-blue-500 hover:underline">
+                  <EditUser user={user} />
+                </a>
+              )}
+              {(item.id === user.id || user.roleId === Role.Head) && (
+                <a key="leave-family" className="text-red-500 hover:underline">
+                  <LeaveFamily member={item} userId={user.id} />
+                </a>
+              )}
+            </div>,
+          ]}
         >
           <Skeleton loading={false}>
             <List.Item.Meta
               title={
-                <div>
-                  {item.firstName} {item.lastName}{' '}
+                <div className="flex items-center">
+                  <span className="pe-2">
+                    {item.firstName} {item.lastName}{' '}
+                  </span>
                   {item.roleId === Role.Head && (
-                    <FaCrown color="brown" style={{ marginBottom: 7 }} />
+                    <FaCrown color="brown" style={{ marginBottom: 3 }} />
                   )}
                 </div>
               }

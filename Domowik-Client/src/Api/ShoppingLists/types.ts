@@ -11,9 +11,12 @@ export type Product = {
 
 export type ShoppingListProduct = {
   id: number;
+  name: string;
   isPurchased: false;
   product: Product;
   quantity: number;
+  description?: string;
+  unit?: string;
 };
 
 export type ShoppingList = {
@@ -36,9 +39,17 @@ export type AvailableProduct = {
   productCategory: ProductCategory;
   quantity: number;
   isPurchased: boolean;
+  shoppingListProductId?: number;
+  shoppingListProductName?: string;
 };
 
 export type AddProductToShoppingList = {
   productId: number;
-  quantity: number;
+};
+
+export type UpdateShoppingListProduct = {
+  name?: string;
+  quantity?: number;
+  description?: string;
+  unit?: string;
 };

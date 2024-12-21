@@ -11,6 +11,7 @@ import { Layout, Menu, Button, theme } from 'antd';
 import Logo from './Logo';
 import type { MenuProps } from 'antd';
 import { CiShoppingBasket } from 'react-icons/ci';
+import { FaRegCalendarAlt } from 'react-icons/fa';
 import { useQuery } from 'react-query';
 import { getUser } from '../Api';
 
@@ -76,6 +77,19 @@ const PrivateLayout: React.FC = () => {
         </NavLink>
       ) : (
         <CiShoppingBasket size={17} color="white" />
+      ),
+
+      userData?.data.familyId ? false : true,
+    ),
+    getItem(
+      'Kalendarz',
+      '/calendar',
+      userData?.data.familyId ? (
+        <NavLink to="/calendar">
+          <FaRegCalendarAlt size={15} color="white" />
+        </NavLink>
+      ) : (
+        <FaRegCalendarAlt size={15} color="white" />
       ),
 
       userData?.data.familyId ? false : true,
