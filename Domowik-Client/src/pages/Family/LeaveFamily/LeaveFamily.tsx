@@ -43,7 +43,7 @@ const LeaveFamily: React.FC<ILeaveFamily> = ({ member, userId }) => {
     <>
       <ImCross
         color="#bf2015"
-        size={20}
+        size={15}
         onClick={showModal}
         className="cursor-pointer"
       />

@@ -10,6 +10,7 @@ import RegistrationSuccess from './Pages/Register/RegistrationSuccess';
 import Family from './Pages/Family';
 import ShoppingLists from './Pages/ShoppingLists';
 import ShoppingList from './Pages/ShoppingLists/ShoppingList';
+import Calendar from './Pages/Calendar';
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
             <Route path="/shopping-lists/:id" element={<ShoppingList />} />
             <Route path="/auth/logout" element={<Logout />} />
             <Route path="/finances" element={<Finances />} />
+            <Route path="/calendar" element={<Calendar />} />
           </Route>
         </Route>
         <Route path="/" element={<Navigate replace to="/family" />} />

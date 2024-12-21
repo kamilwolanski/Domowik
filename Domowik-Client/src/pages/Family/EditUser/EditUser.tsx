@@ -28,7 +28,7 @@ const EditUser: React.FC<IEditUser> = ({ user }) => {
 
   return (
     <>
-      <CiEdit size={30} color="black" onClick={showModal} />
+      <CiEdit size={25} color="black" onClick={showModal} />
       <Modal
         title="Edytuj swoje dane"
         open={isModalOpen}
