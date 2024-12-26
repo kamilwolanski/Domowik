@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { Col, Row } from 'antd';
 import { Modal } from 'antd';
-import { GiHouse } from 'react-icons/gi';
 import CreateFamilyForm from './CreateFamilyForm';
 import { useQuery } from 'react-query';
 import { getUser, getUserFamily } from '../../Api';
@@ -38,23 +38,19 @@ const Family: React.FC = () => {
 
   return (
     <div className="family-wrapper h-full">
-      <div className="grid grid-cols-1">
-        <div className="mx-auto">
-          <GiHouse size={150} />
-        </div>
-      </div>
-      <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-12">
+      <Row>
+        <Col span={8} offset={8}>
           {data?.data.id ? (
             <>
-              <h1 className="text-2xl text-center mt-5">{data?.data.name}</h1>
-              <div className="col-span-12 md:col-span-10 md:col-start-2">
+              <div className="flex justify-between items-center mb-10">
+                <h1 className="text-3xl font-bold">{data?.data.name}</h1>
                 {isHeadOfFamily && (
                   <div className="mt-5">
                     <AddFamilyMember />
                   </div>
                 )}
-
+              </div>
+              <div className="col-span-12 md:col-span-10 md:col-start-2">
                 <div className="family-list-wrapper mt-3">
                   <FamilyList
                     members={data.data.members}
@@ -79,8 +75,9 @@ const Family: React.FC = () => {
               </button>
             </div>
           )}
-        </div>
-      </div>
+        </Col>
+      </Row>
+
       {isHeadOfFamily && <DeleteFamily />}
 
       <Modal

@@ -6,7 +6,9 @@
         public string Name { get; set; }
 
         public ProductCategoryDto ProductCategory { get; set; }
-        public int Quantity { get; set; } = 1;
+        public int Quantity { get; set; } = 0;
         public bool IsPurchased { get; set; } = false;
+        public int? ShoppingListProductId { get; set; }
+        public string? ShoppingListProductName { get; set; }
     }
 }

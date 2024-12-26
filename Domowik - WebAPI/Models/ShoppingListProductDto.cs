@@ -10,5 +10,8 @@ namespace Domowik___WebAPI.Models
 
         public int Quantity { get; set; }
         public bool IsPurchased { get; set; }
+        public string Name { get; set; }
+        public string? Description { get; set; }
+        public string? Unit { get; set; }
     }
 }

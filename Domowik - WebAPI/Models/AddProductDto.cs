@@ -2,10 +2,9 @@
 
 namespace Domowik___WebAPI.Models
 {
-    public class CreateShoppingListDto
+    public class AddProductDto
     {
         [Required]
-        [StringLength(50)]
-        public string Name { get; set; }
+        public int ProductId { get; set; }
     }
 }

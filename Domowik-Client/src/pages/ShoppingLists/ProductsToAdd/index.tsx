@@ -53,7 +53,7 @@ const ProductsToAdd: React.FC<IProductsToAdd> = ({
           type="search"
           id="default-search"
           className="focus:outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-blue-500 block w-full p-2.5 ps-10"
-          placeholder="Search Mockups, Logos..."
+          placeholder="Wyszukaj produkty np. mleko"
           required
           onChange={handleChange}
         />

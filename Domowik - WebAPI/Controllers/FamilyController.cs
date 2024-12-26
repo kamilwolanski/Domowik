@@ -14,18 +14,14 @@ namespace Domowik___WebAPI.Controllers
     public class FamilyController : ControllerBase
     {
         private readonly IFamilyService _familyService;
-        private readonly IShoppingListsService _shoppingListsService;
         private readonly ITransationService _transationService;
         private readonly IValidator<CreateFamilyDto> _validator;
-        private readonly IValidator<CreateShoppingListDto> _createShoppingListValidator;
 
-        public FamilyController(IFamilyService familyService, IShoppingListsService shoppingListsService, IValidator<CreateFamilyDto> validator, IValidator<CreateShoppingListDto> createShoppingListValidator, ITransationService transationService)
+        public FamilyController(IFamilyService familyService, IValidator<CreateFamilyDto> validator, ITransationService transationService)
         {
             _familyService = familyService;
-            _shoppingListsService = shoppingListsService;
             _validator = validator;
             _transationService = transationService;
-            _createShoppingListValidator = createShoppingListValidator;
         }
 
 
@@ -71,9 +67,9 @@ namespace Domowik___WebAPI.Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult Update([FromBody] UpdateFamilyDto dto, [FromRoute] int id)
+        public async Task<ActionResult> Update([FromBody] UpdateFamilyDto dto, [FromRoute] int id)
         {
-            _familyService.Update(id, dto);
+            await _familyService.Update(id, dto);
 
 
             return Ok();
@@ -110,7 +106,7 @@ namespace Domowik___WebAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<FamilyDto> Get([FromRoute] int id)
+        public ActionResult<FamilyDto?> Get([FromRoute] int id)
         {
             var family = _familyService.GetById(id);
 
