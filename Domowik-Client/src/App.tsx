@@ -11,6 +11,8 @@ import Family from './Pages/Family';
 import ShoppingLists from './Pages/ShoppingLists';
 import ShoppingList from './Pages/ShoppingLists/ShoppingList';
 import Calendar from './Pages/Calendar';
+import Invitation from './Pages/Invitation';
+import InvitationConfirm from './Pages/Invitation/InvitationConfirm';
 
 const App = () => {
   return (
@@ -23,6 +25,8 @@ const App = () => {
             path="/auth/register/success"
             element={<RegistrationSuccess />}
           />
+          <Route path="/invitation" element={<Invitation />} />
+          <Route path="/invitation/confirm" element={<InvitationConfirm />} />
         </Route>
         <Route element={<PrivateRoute />}>
           <Route element={<PrivateLayout />}>

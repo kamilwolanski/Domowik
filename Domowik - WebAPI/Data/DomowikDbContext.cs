@@ -17,6 +17,7 @@ namespace Domowik___WebAPI.Data
 
         public DbSet<ShoppingListProduct> ShoppingListProducts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
+        public DbSet<Invitation> Invitations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -64,6 +65,20 @@ namespace Domowik___WebAPI.Data
             modelBuilder.Entity<ProductCategory>()
                 .HasIndex(c => c.Name)
                 .IsUnique();
+
+            modelBuilder.Entity<Invitation>()
+                .HasOne(i => i.Family)
+                .WithMany()
+                .HasForeignKey(i => i.FamilyId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Invitation>()
+                .HasOne(i => i.Sender)
+                .WithMany()
+                .HasForeignKey(i => i.SenderId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+
 
         }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

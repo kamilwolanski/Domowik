@@ -30,7 +30,13 @@ namespace Domowik___WebAPI.Controllers
             }
             _accountService.RegisterUser(dto);
 
-            return Ok();
+            string token = _accountService.GenerateJwt(new LoginDto()
+            {
+                Email = dto.Email,
+                Password = dto.Password,
+            });
+
+            return Ok(token);
         }
 
         [HttpPost("login")]
