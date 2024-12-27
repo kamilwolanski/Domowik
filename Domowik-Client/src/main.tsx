@@ -5,16 +5,19 @@ import './Stylesheet/main.scss';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import NotificationProvider from './Components/Notification/NotificationProvider.tsx';
 
 const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <App />
-        <ReactQueryDevtools initialIsOpen />
-      </BrowserRouter>
+      <NotificationProvider>
+        <BrowserRouter>
+          <App />
+          <ReactQueryDevtools initialIsOpen />
+        </BrowserRouter>
+      </NotificationProvider>
     </QueryClientProvider>
   </React.StrictMode>,
 );

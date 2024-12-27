@@ -3,6 +3,7 @@ import { useQuery } from 'react-query';
 import { getShoppingList } from '../../../Api/ShoppingLists/index';
 import ShoppingListElement from './ShoppingListElement';
 import { calculateProgress } from './helpers';
+import ShoppingListPlaceholder from '../Placeholders/ShoppingListPlaceholder';
 
 interface IShoppingList {
   paramId: number;
@@ -21,7 +22,7 @@ const ShoppingList: React.FC<IShoppingList> = ({ paramId }) => {
     (product) => product.isPurchased,
   );
 
-  if (isLoading) return <p>Ładowanie...</p>;
+  if (isLoading) return <ShoppingListPlaceholder />;
 
   if (shoppingList && unPurchasedProducts && purchasedProducts) {
     return (

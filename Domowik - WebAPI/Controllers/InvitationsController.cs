@@ -106,12 +106,10 @@ namespace Domowik___WebAPI.Controllers
                 return BadRequest("Nie znaleziono użytkownika");
             }
 
-            if (invitation == null) { return NotFound("Invalid token"); }
-
+            if (invitation == null) { return NotFound("Nieprawidłowy token"); }
 
             if (invitation.ExpiresAt <= DateTime.UtcNow)
             {
-                await _dbContext.SaveChangesAsync();
                 return BadRequest("Zaproszenie wygasło");
             }
 
