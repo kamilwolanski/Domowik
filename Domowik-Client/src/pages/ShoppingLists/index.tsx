@@ -3,6 +3,7 @@ import { getShoppingLists } from '../../Api/ShoppingLists';
 import { Col, Row } from 'antd';
 import AddNewShoppingList from './Add/AddNewShoppingList';
 import ShoppingLists from './ShoppingLists';
+import ShoppingListsPlaceholder from './Placeholders/ShoppingListsPlaceholder';
 
 const Index: React.FC = () => {
   const { data: shoppingLists, isLoading } = useQuery(
@@ -10,7 +11,7 @@ const Index: React.FC = () => {
     getShoppingLists,
   );
 
-  if (isLoading) return <p>Ładowanie...</p>;
+  if (isLoading) return <ShoppingListsPlaceholder />;
 
   return (
     <Row>

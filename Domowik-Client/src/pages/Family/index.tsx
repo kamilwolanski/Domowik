@@ -8,6 +8,7 @@ import FamilyList from './FamilyList';
 import AddFamilyMember from './AddFamilyMember';
 import { Role } from './types';
 import DeleteFamily from './DeleteFamily/DeleteFamily';
+import FamilyListPlaceholder from './Placeholders/FamilyListPlaceholder';
 
 const Family: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,13 +32,13 @@ const Family: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  if (isLoading || userDataLoading) return <h5>Ładowanie...</h5>;
+  if (isLoading || userDataLoading) return <FamilyListPlaceholder />;
   if (isError) return <h5>Błąd</h5>;
 
   const isHeadOfFamily = userData?.data.roleId === Role.Head;
 
   return (
-    <div className="family-wrapper h-full">
+    <div className="h-full relative">
       <Row>
         <Col span={8} offset={8}>
           {data?.data.id ? (

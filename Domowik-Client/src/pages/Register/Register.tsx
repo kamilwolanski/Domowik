@@ -62,7 +62,7 @@ const Register = () => {
   return (
     <div className="register-page px-4 py-8">
       <h1 className="text-center text-2xl font-semibold">Załóż konto</h1>
-      <div className="mt-8 max-w-3xl mx-auto">
+      <div className="mt-8 max-w-3xl mx-auto shadow-lg bg-white rounded p-6">
         <Formik
           validationSchema={validationSchema}
           initialValues={initialValues}

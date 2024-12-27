@@ -9,6 +9,7 @@ import {
   removeProductFromShoppingList,
 } from '../../../Api/ShoppingLists';
 import useDebounce from '../../../Hooks/useDebounce';
+import ProductsToAddListPlaceholder from '../Placeholders/ProductsToAddListPlaceholder';
 
 interface IProductsToAddList {
   paramId: number;
@@ -122,7 +123,7 @@ const ProductsToAddList: React.FC<IProductsToAddList> = ({
     );
   };
 
-  if (isLoading) return <p>Loading...</p>;
+  if (isLoading) return <ProductsToAddListPlaceholder />;
 
   if (availableProducts) {
     return (

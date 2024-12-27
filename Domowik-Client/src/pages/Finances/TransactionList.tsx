@@ -36,7 +36,7 @@ const TransactionList: React.FC<ITransactionList> = ({ transactionList }) => {
       }}
       renderItem={(item) => (
         <List.Item
-          className="shadow-lg rounded !p-6"
+          className="shadow-lg rounded !p-6 bg-white mb-4"
           actions={[
             <a key="leave-family">
               <ImCross

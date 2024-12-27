@@ -25,7 +25,7 @@ const FamilyList: React.FC<IFamilyList> = ({ members, user }) => {
       loading={false}
       renderItem={(item) => (
         <List.Item
-          className="shadow-lg rounded !p-6 mb-4"
+          className="shadow-lg rounded !p-6 mb-4 bg-white"
           actions={[
             <div
               key="actions-container"

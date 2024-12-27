@@ -3,22 +3,47 @@ import { getInvitation, useInvitation } from '../../Api/Invitation';
 import { Col, Row } from 'antd';
 import getQueryParam from '../../Helpers/getQueryParam';
 import { useNavigate } from 'react-router-dom';
+import useNotification from '../../Components/Notification/useNotification';
+import { AxiosError } from 'axios';
+import { Invitation } from '../../Api/Invitation/types';
+import { useEffect } from 'react';
 
 const InvitationConfirm = () => {
-  const useInvitationMutation = useMutation(useInvitation);
+  const useInvitationMutation = useMutation<
+    unknown,
+    AxiosError<string>,
+    string
+  >(useInvitation);
   const navigate = useNavigate();
+  const { openNotificationSuccess, openNotificationError } = useNotification();
   const token = getQueryParam('token');
-  const { data, isLoading } = useQuery('invitation', () =>
-    getInvitation(String(token)),
+  const { data, isLoading, error } = useQuery<Invitation, AxiosError<string>>(
+    'invitation',
+    () => getInvitation(String(token)),
   );
+
+  useEffect(() => {
+    if (error) {
+      console.log('error', error);
+      openNotificationError('', error.response?.data);
+      navigate('/');
+    }
+  }, [error, navigate, openNotificationError]);
+
   const handleJoinFamily = () => {
     if (data?.token) {
       useInvitationMutation.mutate(data?.token, {
         onSuccess: () => {
+          openNotificationSuccess(
+            'Zaproszenie zaakceptowane!',
+            <span>
+              Dołączyłeś do rodziny <b>{data.familyName}</b>
+            </span>,
+          );
           navigate('/family');
         },
         onError: (err) => {
-          console.log('err', err);
+          openNotificationError('', err.response?.data);
         },
       });
     }

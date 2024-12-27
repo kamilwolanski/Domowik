@@ -42,7 +42,7 @@ const Index = () => {
       {!showProductsToAdd && (
         <button
           onClick={showProductsToAddWindow}
-          className="flex items-center bg-blue-600 text-white text-lg font-bold py-2 px-10 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 fixed left-1/2"
+          className="flex items-center bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 fixed left-1/2"
         >
           <IoAddCircleSharp size={30} />
           <span className="ml-2">Dodaj produkty</span>
