@@ -13,12 +13,17 @@ import FamilyListPlaceholder from './Placeholders/FamilyListPlaceholder';
 const Family: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { isLoading, isError, data } = useQuery('family', getUserFamily);
+  const { isLoading, isError, data } = useQuery({
+    queryKey: 'family',
+    queryFn: getUserFamily,
+    useErrorBoundary: true,
+  });
 
-  const { isLoading: userDataLoading, data: userData } = useQuery(
-    'user',
-    getUser,
-  );
+  const { isLoading: userDataLoading, data: userData } = useQuery({
+    queryKey: 'user',
+    queryFn: getUser,
+    useErrorBoundary: true,
+  });
 
   const showModal = () => {
     setIsModalOpen(true);

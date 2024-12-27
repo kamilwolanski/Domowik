@@ -13,6 +13,7 @@ import ShoppingList from './Pages/ShoppingLists/ShoppingList';
 import Calendar from './Pages/Calendar';
 import Invitation from './Pages/Invitation';
 import InvitationConfirm from './Pages/Invitation/InvitationConfirm';
+import NotFound from './Components/Errors/NotFound';
 
 const App = () => {
   return (
@@ -39,10 +40,7 @@ const App = () => {
           </Route>
         </Route>
         <Route path="/" element={<Navigate replace to="/family" />} />
-        <Route
-          path="*"
-          element={<h1>Strona o podanym adresie nie istnieje.</h1>}
-        />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );
