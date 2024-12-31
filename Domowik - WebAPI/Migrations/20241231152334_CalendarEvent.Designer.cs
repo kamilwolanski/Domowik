@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domowik___WebAPI.Migrations
 {
     [DbContext(typeof(DomowikDbContext))]
-    [Migration("20241230232107_CalendarEvent")]
+    [Migration("20241231152334_CalendarEvent")]
     partial class CalendarEvent
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -11,6 +11,7 @@ namespace Domowik___WebAPI.Entities
         public DateTime EndDateTime { get; set; }
         public int? OrganizerId { get; set; }
         public User Organizer { get; set; }
+        public List<User> Members { get; set; }
         public int? FamilyId { get; set; }
         public Family Family { get; set; }
     }

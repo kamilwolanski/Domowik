@@ -55,6 +55,7 @@ public class DomowikSeeder
                     var families = GetFamilies(user);
                     _dbContext.Families.AddRange(families);
                     _dbContext.SaveChanges();
+
                 }
             }
             SeedCalendarEvents();
