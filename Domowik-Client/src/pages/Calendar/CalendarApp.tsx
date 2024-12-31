@@ -11,10 +11,18 @@ import { createDragAndDropPlugin } from '@schedule-x/drag-and-drop';
 
 import '@schedule-x/theme-default/dist/index.css';
 import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
+import { getCalendarEvents } from '../../Api/CalendarEvents';
 
 function CalendarApp() {
   const eventsService = useState(() => createEventsServicePlugin())[0];
 
+ const { data: calendarEvents, isLoading } = useQuery(
+    `calendar-events`,
+      getCalendarEvents
+  );
+  console.log(calendarEvents)
+  console.log(isLoading)
   const calendar = useCalendarApp({
     views: [
       createViewDay(),
@@ -25,7 +33,7 @@ function CalendarApp() {
     events: [
       {
         id: '1',
-        title: 'Urodziny',
+        title: 'urodziny',
         start: '2024-12-19 08:00',
         end: '2024-12-19 10:00',
       },
@@ -37,6 +45,7 @@ function CalendarApp() {
     ],
     locale: 'pl-PL',
   });
+  
 
   useEffect(() => {
     // get all events

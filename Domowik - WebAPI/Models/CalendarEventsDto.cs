@@ -1,8 +1,8 @@
-using Domowik___WebAPI.Models;
+using Domowik___WebAPI.Entities;
 
-namespace Domowik___WebAPI.Entities
+namespace Domowik___WebAPI.Models
 {
-    public class CalendarEvent
+    public class CalendarEventsDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -13,5 +13,6 @@ namespace Domowik___WebAPI.Entities
         public User Organizer { get; set; }
         public int? FamilyId { get; set; }
         public Family Family { get; set; }
+
     }
 }
