@@ -3,6 +3,7 @@ import { getFinances } from '../../Api';
 import { getTransactionCategories } from '../../Api';
 import AddNewTransaction from './AddNewTransaction';
 import TransactionList from './TransactionList';
+import TransactionsChart from './TransactionsChart'
 
 const Finances = () => {
   const { data, isLoading } = useQuery('finances', getFinances);
@@ -20,9 +21,8 @@ const Finances = () => {
         <h2 className="mt-5 text-xl">
           Stan konta:{' '}
           <span
-            className={`font-bold ${
-              data?.data.budget > 0 ? 'text-green-600' : 'text-red-600'
-            }`}
+            className={`font-bold ${data?.data.budget > 0 ? 'text-green-600' : 'text-red-600'
+              }`}
           >
             {data?.data.budget}
           </span>
@@ -32,6 +32,10 @@ const Finances = () => {
           <AddNewTransaction
             transactionCategoriesData={transactionCategoriesData.data}
           />
+        </div>
+
+        <div>
+          <TransactionsChart transactionList={data?.data.transactions} />
         </div>
 
         <div className="transaction-list-wrapper mt-3">
