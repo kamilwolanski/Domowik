@@ -13,6 +13,8 @@ import '@schedule-x/theme-default/dist/index.css';
 import { useEffect, useState } from 'react';
 import { useQuery } from 'react-query';
 import { getCalendarEvents } from '../../Api/CalendarEvents';
+import { Col, Row } from 'antd';
+import AddCalendarEvent from './AddCalendarEvent';
 
 function CalendarApp() {
   const eventsService = useState(() => createEventsServicePlugin())[0];
@@ -21,7 +23,7 @@ function CalendarApp() {
     `calendar-events`,
       getCalendarEvents
   );
-  console.log(calendarEvents)
+  
   console.log(isLoading)
   const calendar = useCalendarApp({
     views: [
@@ -53,8 +55,22 @@ function CalendarApp() {
   }, []);
 
   return (
-    <div>
-      <ScheduleXCalendar calendarApp={calendar} />
+    <div className="h-full relative">
+      <Row style={{ height: '100vh'}}>
+        <Col span={8} offset={8}>
+          <div className="px-4">
+            <div className=" mx-auto">
+              <div className="flex justify-between items-center mb-10">
+                <h1 className="text-3xl font-bold">Kalendarz</h1>
+                  <AddCalendarEvent />
+              </div>
+            </div>
+          </div>
+        </Col>
+        <Col span={16} offset={4} style={{ height: '80%', overflowY: 'auto' }}>
+          <ScheduleXCalendar calendarApp={calendar} />
+        </Col>
+      </Row>
     </div>
   );
 }
