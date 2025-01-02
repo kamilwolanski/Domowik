@@ -130,4 +130,16 @@ export const removeTransaction = async (transactionId: number) => {
   return response;
 };
 
+
+export const addEvent = async (eventData: {
+  name: string;
+  description: string;
+  startDateTime: string;
+  endDateTime: string;
+  participants: string[];
+}) => {
+  const response = await api.post('/calendar-events/add', eventData);
+  return response.data;
+};
+
 export default api;

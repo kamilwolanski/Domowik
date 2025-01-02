@@ -22,7 +22,6 @@ namespace Domowik___WebAPI.Controllers
         private readonly DomowikDbContext _dbContext;
         private readonly IUserContextService _userContextService;
 
-
         public CalendarEventsController(IUserContextService userContextService, DomowikDbContext domowikDbContext)
         {
             _dbContext = domowikDbContext;
@@ -33,10 +32,8 @@ namespace Domowik___WebAPI.Controllers
         public ActionResult<List<CalendarEventsDto>> GetCalendarEvents()
         {
             var userId = _userContextService.GetUserId;
-            Console.WriteLine("Pocz¹tek metody GetCalendarEvents");
             var calendarEvents = _dbContext.CalendarEvents
                 .Where(e => e.OrganizerId == userId);
-          
 
             var calendarEventsDto = calendarEvents.Select(
                 e => new CalendarEventsDto
@@ -49,14 +46,43 @@ namespace Domowik___WebAPI.Controllers
                     OrganizerId = userId,
                     FamilyId = e.Organizer.FamilyId
                 }
-                );
-            
+            );
 
             return Ok(calendarEventsDto);
         }
 
+        [HttpPost("add")]
+        public ActionResult Add([FromBody] AddCalendarEventDto dto)
+        {
+            if (dto == null || string.IsNullOrWhiteSpace(dto.Name))
+            {
+                return BadRequest("Nieprawid³owe dane.");
+            }
+            return BadRequest("Nieprawid³owe dane.");
+            var userId = _userContextService.GetUserId;
 
+            var newEvent = new CalendarEvent
+            {
+                Name = dto.Name,
+                Description = dto.Description,
+                StartDateTime = dto.StartDateTime,
+                EndDateTime = dto.EndDateTime,
+                OrganizerId = userId
+            };
 
+            _dbContext.CalendarEvents.Add(newEvent);
+            _dbContext.SaveChanges();
 
+            return Ok(new { message = "Wydarzenie dodane pomyœlnie." });
+        }
+    }
+
+    public class AddCalendarEventDto
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public DateTime StartDateTime { get; set; }
+        public DateTime EndDateTime { get; set; }
+        public List<string> Participants { get; set; }
     }
 }
