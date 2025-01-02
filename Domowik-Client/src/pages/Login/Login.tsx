@@ -60,7 +60,7 @@ const Login = () => {
   return (
     <div className="login-page px-4 py-8">
       <h1 className="text-center text-2xl font-semibold">Zaloguj się</h1>
-      <div className="mt-8 max-w-md mx-auto">
+      <div className="mt-8 max-w-md mx-auto shadow-lg bg-white rounded p-6">
         <Formik
           validationSchema={validationSchema}
           initialValues={initialValues}

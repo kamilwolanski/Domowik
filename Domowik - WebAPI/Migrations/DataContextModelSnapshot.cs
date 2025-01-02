@@ -45,6 +45,39 @@ namespace Domowik___WebAPI.Migrations
                     b.ToTable("Families");
                 });
 
+            modelBuilder.Entity("Domowik___WebAPI.Entities.Invitation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpiresAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("FamilyId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FamilyId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("Invitations");
+                });
+
             modelBuilder.Entity("Domowik___WebAPI.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -134,8 +167,15 @@ namespace Domowik___WebAPI.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsPurchased")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -267,6 +307,25 @@ namespace Domowik___WebAPI.Migrations
                         .IsRequired();
 
                     b.Navigation("Head");
+                });
+
+            modelBuilder.Entity("Domowik___WebAPI.Entities.Invitation", b =>
+                {
+                    b.HasOne("Domowik___WebAPI.Entities.Family", "Family")
+                        .WithMany()
+                        .HasForeignKey("FamilyId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Domowik___WebAPI.Entities.User", "Sender")
+                        .WithMany()
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Family");
+
+                    b.Navigation("Sender");
                 });
 
             modelBuilder.Entity("Domowik___WebAPI.Entities.Product", b =>

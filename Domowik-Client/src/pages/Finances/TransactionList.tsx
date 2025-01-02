@@ -36,11 +36,12 @@ const TransactionList: React.FC<ITransactionList> = ({ transactionList }) => {
       }}
       renderItem={(item) => (
         <List.Item
+          className="shadow-lg rounded !p-6 bg-white mb-4"
           actions={[
             <a key="leave-family">
               <ImCross
                 color="#bf2015"
-                size={20}
+                size={15}
                 onClick={() => handleDelete(item.id)}
               />
             </a>,
@@ -50,23 +51,24 @@ const TransactionList: React.FC<ITransactionList> = ({ transactionList }) => {
             <List.Item.Meta
               title={
                 <div>
-                  <p className="mb-0 fw-bold">{item.name} </p>
-                  <div className="d-flex align-items-center">
+                  <div className="flex items-center">
+                    <p className="mb-0 font-semibold">{item.name}:</p>
+
                     <p
-                      className="fw-bold mb-0 count"
+                      className="font-bold mb-0 count ms-2"
                       style={
                         item.count >= 0 ? { color: 'green' } : { color: 'red' }
                       }
                     >
                       {item.count}
                     </p>
-                    <span className="ms-3 transaction-author">
-                      Dokonujący transakcji:{' '}
-                      <span className="fw-bold">
-                        {item.user.firstName} {item.user.lastName}
-                      </span>
-                    </span>
                   </div>
+                  <span className="transaction-author">
+                    Dokonujący transakcji:{' '}
+                    <span className="font-semibold">
+                      {item.user.firstName} {item.user.lastName}
+                    </span>
+                  </span>
                 </div>
               }
               description={`Data transakcji: ${formatDate(new Date(item.createdDate))}`}

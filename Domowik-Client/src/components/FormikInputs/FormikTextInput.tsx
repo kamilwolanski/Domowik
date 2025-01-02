@@ -4,6 +4,7 @@ interface IFormikTextInput {
   label: string;
   name: string;
   id: string;
+  placeholder?: string;
 }
 
 const FormikTextInput: React.FC<IFormikTextInput> = ({

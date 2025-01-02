@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
+import { Col, Row } from 'antd';
 import { Modal } from 'antd';
-import { GiHouse } from 'react-icons/gi';
 import CreateFamilyForm from './CreateFamilyForm';
 import { useQuery } from 'react-query';
 import { getUser, getUserFamily } from '../../Api';
@@ -8,16 +8,22 @@ import FamilyList from './FamilyList';
 import AddFamilyMember from './AddFamilyMember';
 import { Role } from './types';
 import DeleteFamily from './DeleteFamily/DeleteFamily';
+import FamilyListPlaceholder from './Placeholders/FamilyListPlaceholder';
 
 const Family: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { isLoading, isError, data } = useQuery('family', getUserFamily);
+  const { isLoading, isError, data } = useQuery({
+    queryKey: 'family',
+    queryFn: getUserFamily,
+    useErrorBoundary: true,
+  });
 
-  const { isLoading: userDataLoading, data: userData } = useQuery(
-    'user',
-    getUser,
-  );
+  const { isLoading: userDataLoading, data: userData } = useQuery({
+    queryKey: 'user',
+    queryFn: getUser,
+    useErrorBoundary: true,
+  });
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -31,30 +37,26 @@ const Family: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  if (isLoading || userDataLoading) return <h5>Ładowanie...</h5>;
+  if (isLoading || userDataLoading) return <FamilyListPlaceholder />;
   if (isError) return <h5>Błąd</h5>;
 
   const isHeadOfFamily = userData?.data.roleId === Role.Head;
 
   return (
-    <div className="family-wrapper h-full">
-      <div className="grid grid-cols-1">
-        <div className="mx-auto">
-          <GiHouse size={150} />
-        </div>
-      </div>
-      <div className="grid grid-cols-12 gap-4">
-        <div className="col-span-12">
+    <div className="h-full relative">
+      <Row>
+        <Col span={8} offset={8}>
           {data?.data.id ? (
             <>
-              <h1 className="text-2xl text-center mt-5">{data?.data.name}</h1>
-              <div className="col-span-12 md:col-span-10 md:col-start-2">
+              <div className="flex justify-between items-center mb-10">
+                <h1 className="text-3xl font-bold">{data?.data.name}</h1>
                 {isHeadOfFamily && (
                   <div className="mt-5">
                     <AddFamilyMember />
                   </div>
                 )}
-
+              </div>
+              <div className="col-span-12 md:col-span-10 md:col-start-2">
                 <div className="family-list-wrapper mt-3">
                   <FamilyList
                     members={data.data.members}
@@ -72,15 +74,16 @@ const Family: React.FC = () => {
                 Chcesz stworzyć nową rodzinę teraz?
               </h2>
               <button
-                className="mt-5 px-6 py-3 bg-primary text-white text-lg rounded-lg"
+                className="mt-5 bg-blue-600 text-white text-lg font-bold py-2 px-10 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
                 onClick={showModal}
               >
                 Utwórz rodzinę
               </button>
             </div>
           )}
-        </div>
-      </div>
+        </Col>
+      </Row>
+
       {isHeadOfFamily && <DeleteFamily />}
 
       <Modal

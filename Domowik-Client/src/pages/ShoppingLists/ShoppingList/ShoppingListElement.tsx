@@ -3,23 +3,27 @@ import { useMutation, useQueryClient } from 'react-query';
 import { ShoppingListProduct } from '../../../Api/ShoppingLists/types';
 import { toggleProductPurchased } from '../../../Api/ShoppingLists';
 import categoryIcons from '../../../Assets/ProductCategoryIcons/productCategoryIcons';
+import ProductDrawer from './ProductDrawer';
 
-interface IShoppingListElement extends ShoppingListProduct {
+interface IShoppingListElement {
   listId: number;
+  lastEl?: boolean;
+  product: ShoppingListProduct;
 }
 
 const ShoppingListElement: React.FC<IShoppingListElement> = ({
   listId,
   product,
-  quantity,
-  isPurchased: initialIsPurchased,
+  lastEl,
 }) => {
-  const [isChecked, setIsChecked] = useState<boolean>(initialIsPurchased);
+  const [isChecked, setIsChecked] = useState<boolean>(product.isPurchased);
   const liRef = useRef<HTMLLIElement>(null);
   const queryClient = useQueryClient();
   const toggleProductPurchasedMutation = useMutation(toggleProductPurchased);
 
-  const handleClick = async () => {
+  const [openDrawer, setDrawerOpen] = useState(false);
+
+  const handleChange = async () => {
     setIsChecked(!isChecked);
 
     if (!isChecked) {
@@ -35,7 +39,7 @@ const ShoppingListElement: React.FC<IShoppingListElement> = ({
     toggleProductPurchasedMutation.mutate(
       {
         listId: listId,
-        productId: product.id,
+        productId: product.product.id,
       },
       {
         onSuccess: () => {
@@ -53,42 +57,59 @@ const ShoppingListElement: React.FC<IShoppingListElement> = ({
           }, 300);
         },
         onError: () => {
-          setIsChecked(initialIsPurchased);
+          setIsChecked(product.isPurchased);
         },
       },
     );
   };
 
+  const showDrawer = () => {
+    setDrawerOpen(true);
+  };
+
+  const closeDrawer = () => {
+    setDrawerOpen(false);
+  };
+
   return (
-    <li
-      className={`mb-3 flex justify-between items-center ${
-        isChecked ? 'bought' : ''
-      }`}
-      ref={liRef}
-    >
-      <div className="flex items-center space-x-2">
-        <input
-          type="checkbox"
-          id={`shoppingListEl_${product.id}`}
-          className="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded-full focus:ring-blue-500 focus:ring-2"
-          checked={isChecked}
-          onChange={handleClick}
-        />
-        <label
-          htmlFor={`shoppingListEl_${product.id}`}
-          className="text-gray-700 "
-        >
-          <span className="font-semibold text-base">{product.name}</span>
-          <span className="ms-3">{quantity}</span>
-        </label>
-      </div>
-      <div className="flex items-center">
-        <img
-          src={categoryIcons[product.productCategory.id]}
-          className={`${isChecked ? 'grayscale' : ''} w-8`}
-        />
-      </div>
-    </li>
+    <>
+      <li
+        className={`${lastEl ? '' : 'py-1'} px-3 flex justify-between items-center hover:bg-gray-50 rounded-lg cursor-pointer ${
+          product.isPurchased ? 'bought hover:bg-green-200 px-3' : ''
+        }`}
+        ref={liRef}
+        onClick={showDrawer}
+      >
+        <div className="flex items-center space-x-2">
+          <input
+            type="checkbox"
+            id={`shoppingListEl_${product.id}`}
+            className="w-4 h-4 accent-pink-500 text-green-600 rounded focus:ring-0 cursor-pointer"
+            checked={isChecked}
+            onChange={handleChange}
+            onClick={(e) => e.stopPropagation()}
+          />
+          <label className="text-gray-700 cursor-pointer">
+            <span className="font-semibold text-base">{product.name}</span>
+            <span className="ms-3">{product.quantity}</span>
+            <span className="ms-1">{product.unit}</span>
+          </label>
+        </div>
+        <div className="flex items-center">
+          <img
+            src={categoryIcons[product.product.productCategory.id]}
+            className={`${isChecked ? 'grayscale' : ''} w-8`}
+          />
+        </div>
+      </li>
+
+      <ProductDrawer
+        closeDrawer={closeDrawer}
+        listId={listId}
+        openDrawer={openDrawer}
+        product={product}
+      />
+    </>
   );
 };
 

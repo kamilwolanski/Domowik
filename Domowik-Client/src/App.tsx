@@ -10,6 +10,10 @@ import RegistrationSuccess from './Pages/Register/RegistrationSuccess';
 import Family from './Pages/Family';
 import ShoppingLists from './Pages/ShoppingLists';
 import ShoppingList from './Pages/ShoppingLists/ShoppingList';
+import Calendar from './Pages/Calendar';
+import Invitation from './Pages/Invitation';
+import InvitationConfirm from './Pages/Invitation/InvitationConfirm';
+import NotFound from './Components/Errors/NotFound';
 
 const App = () => {
   return (
@@ -22,6 +26,8 @@ const App = () => {
             path="/auth/register/success"
             element={<RegistrationSuccess />}
           />
+          <Route path="/invitation" element={<Invitation />} />
+          <Route path="/invitation/confirm" element={<InvitationConfirm />} />
         </Route>
         <Route element={<PrivateRoute />}>
           <Route element={<PrivateLayout />}>
@@ -30,13 +36,11 @@ const App = () => {
             <Route path="/shopping-lists/:id" element={<ShoppingList />} />
             <Route path="/auth/logout" element={<Logout />} />
             <Route path="/finances" element={<Finances />} />
+            <Route path="/calendar" element={<Calendar />} />
           </Route>
         </Route>
         <Route path="/" element={<Navigate replace to="/family" />} />
-        <Route
-          path="*"
-          element={<h1>Strona o podanym adresie nie istnieje.</h1>}
-        />
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </>
   );

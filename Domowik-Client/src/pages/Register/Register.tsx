@@ -6,10 +6,11 @@ import TextInput from '../../Components/FormikInputs/FormikTextInput';
 import DateInput from '../../Components/FormikInputs/FormikDateInput';
 import validationSchema from './validationSchema';
 import { register } from '../../Api';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
 const Register = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const initialValues = {
     email: '',
@@ -20,9 +21,14 @@ const Register = () => {
     dateOfBirth: '',
   };
 
+  const fromInvitationPathname = location.state?.from?.pathname;
+
   const registerMutation = useMutation(register, {
-    onSuccess: () => {
-      navigate('/auth/register/success', { state: { from: 'register' } });
+    onSuccess: ({ data: token }) => {
+      if (token) {
+        localStorage.setItem('token', token);
+        navigate(fromInvitationPathname ? fromInvitationPathname : '/');
+      }
     },
   });
 
@@ -56,7 +62,7 @@ const Register = () => {
   return (
     <div className="register-page px-4 py-8">
       <h1 className="text-center text-2xl font-semibold">Załóż konto</h1>
-      <div className="mt-8 max-w-3xl mx-auto">
+      <div className="mt-8 max-w-3xl mx-auto shadow-lg bg-white rounded p-6">
         <Formik
           validationSchema={validationSchema}
           initialValues={initialValues}
