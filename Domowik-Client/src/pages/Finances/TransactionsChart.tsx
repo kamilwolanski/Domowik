@@ -7,11 +7,9 @@ interface ITransactionList {
 }
 
 const TransactionsChart: React.FC<ITransactionList> = ({ transactionList }) => {
-    // Initialize balance and transactions data
     const [balance, setBalance] = useState(0);
     const [transactionsData, setTransactionsData] = useState([]);
 
-    // Function to update balance and transactions data
     const updateBalance = () => {
         let newBalance = 0;
         const updatedTransactions = [
@@ -25,7 +23,6 @@ const TransactionsChart: React.FC<ITransactionList> = ({ transactionList }) => {
         setTransactionsData(updatedTransactions);
     };
 
-    // Call this function when component mounts or when transaction list changes
     useEffect(() => {
         updateBalance();
     }, [transactionList]);
