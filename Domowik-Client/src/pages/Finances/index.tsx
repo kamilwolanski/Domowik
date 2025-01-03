@@ -42,9 +42,12 @@ const Finances = () => {
           </div>
         </div>
 
-        <div>
-          <TransactionsChart transactionList={data?.data.transactions} />
-        </div>
+        {data?.data.transactions &&
+          <div className="pt-16">
+            <TransactionsChart transactionList={data?.data.transactions} />
+          </div>
+        }
+
       </Col>
     </Row>
   );
