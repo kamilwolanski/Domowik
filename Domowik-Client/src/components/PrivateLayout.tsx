@@ -157,6 +157,7 @@ const PrivateLayout: React.FC = () => {
             mode="inline"
             defaultSelectedKeys={[location.pathname]}
             items={items}
+            onClick={() => { setCollapsed(true) }}
           />
         )}
       </Sider>
