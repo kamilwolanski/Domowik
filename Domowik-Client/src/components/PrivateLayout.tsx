@@ -53,6 +53,12 @@ const PrivateLayout: React.FC = () => {
     }
   }, [isMobile, collapsed]);
 
+  const mobileOpenMenuOnClick = useCallback(() => {
+    if (isMobile && collapsed) {
+      setCollapsed(false);
+    }
+  }, [isMobile, collapsed]);
+
   type MenuItem = Required<MenuProps>['items'][number];
 
   function getItem(
@@ -142,6 +148,7 @@ const PrivateLayout: React.FC = () => {
           height: '100vh',
           zIndex: 10,
         }}
+        onClick={mobileOpenMenuOnClick}
       >
         <Logo />
         {!userDataLoading && (
