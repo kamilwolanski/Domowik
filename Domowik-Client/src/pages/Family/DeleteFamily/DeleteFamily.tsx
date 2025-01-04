@@ -31,7 +31,7 @@ const DeleteFamily: React.FC = () => {
       {/* Delete Family Button */}
       <button
         type="button"
-        className="delete-family-btn p-2 text-red-600 hover:text-red-800 absolute bottom-0 right-0"
+        className="delete-family-btn p-2 text-red-600 hover:text-red-800 absolute bottom-12 right-0"
         onClick={showModal}
       >
         <MdDeleteForever size={50} />
