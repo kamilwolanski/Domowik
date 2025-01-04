@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { AreaChart, Area, Tooltip, XAxis, YAxis, CartesianGrid } from 'recharts';
+import { AreaChart, Area, Tooltip, XAxis, YAxis, CartesianGrid, ResponsiveContainer } from 'recharts';
 
 interface Finance {
     name: string;
@@ -43,13 +43,15 @@ const TransactionsChart: React.FC<ITransactionList> = ({ transactionList }) => {
     };
 
     return (
-        <AreaChart width={500} height={400} data={transactionsData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <YAxis domain={[0, Math.max(...transactionsData.map(item => item.count))]} />
-            <Tooltip content={<CustomTooltip />} />
-            <Area type="monotone" dataKey="count" fill="#8884d8" />
-            <XAxis />
-        </AreaChart>
+        <ResponsiveContainer width="100%" height={300}>
+            <AreaChart data={transactionsData}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <YAxis domain={[0, Math.max(...transactionsData.map(item => item.count))]} />
+                <Tooltip content={<CustomTooltip />} />
+                <Area type="monotone" dataKey="count" fill="#8884d8" />
+                <XAxis />
+            </AreaChart>
+        </ResponsiveContainer>
     );
 };
 

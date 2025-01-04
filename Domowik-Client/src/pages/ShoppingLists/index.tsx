@@ -4,6 +4,7 @@ import { Col, Row } from 'antd';
 import AddNewShoppingList from './Add/AddNewShoppingList';
 import ShoppingLists from './ShoppingLists';
 import ShoppingListsPlaceholder from './Placeholders/ShoppingListsPlaceholder';
+import { useEffect, useState } from 'react';
 
 const Index: React.FC = () => {
   const { data: shoppingLists, isLoading } = useQuery(
@@ -11,11 +12,33 @@ const Index: React.FC = () => {
     getShoppingLists,
   );
 
+  const [colSpan, setColSpan] = useState(8)
+  const [colOffset, setColOffest] = useState(8)
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 720) {
+        setColSpan(20)
+        setColOffest(4)
+      } else {
+        setColSpan(8)
+        setColOffest(8)
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   if (isLoading) return <ShoppingListsPlaceholder />;
 
   return (
     <Row>
-      <Col span={8} offset={8}>
+      <Col span={colSpan} offset={colOffset}>
         <div className="flex justify-between items-center mb-10">
           <h2 className="text-3xl font-bold">Twoje listy zakupów</h2>
           <AddNewShoppingList />
@@ -26,7 +49,7 @@ const Index: React.FC = () => {
           ''
         )}
       </Col>
-    </Row>
+    </Row >
   );
 };
 

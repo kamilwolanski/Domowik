@@ -44,7 +44,7 @@ function CalendarApp() {
   }, []);
 
   return (
-    <div className='ps-48'>
+    <div className='ps-20'>
       <ScheduleXCalendar calendarApp={calendar} />
     </div>
   );

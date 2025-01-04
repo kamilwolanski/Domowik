@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from 'antd';
 import { IoAddCircleSharp } from 'react-icons/io5';
 import AddNewShoppingListForm from './AddNewShoppingListForm';
 
 const AddNewShoppingList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalWidth, setModalWidth] = useState(500)
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -17,6 +18,23 @@ const AddNewShoppingList = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 720) {
+        setModalWidth(364)
+      } else {
+        setModalWidth(500)
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <>
@@ -35,7 +53,7 @@ const AddNewShoppingList = () => {
         onCancel={handleCancel}
         cancelButtonProps={{ style: { display: 'none' } }}
         okButtonProps={{ style: { display: 'none' } }}
-        style={{ left: 80 }}
+        width={modalWidth}
       >
         <AddNewShoppingListForm handleCancel={handleCancel} />
       </Modal>

@@ -12,6 +12,9 @@ import FamilyListPlaceholder from './Placeholders/FamilyListPlaceholder';
 
 const Family: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalWidth, setModalWidth] = useState(500)
+  const [colSpan, setColSpan] = useState(8)
+  const [colOffset, setColOffest] = useState(8)
 
   const { isLoading, isError, data } = useQuery({
     queryKey: 'family',
@@ -37,17 +40,16 @@ const Family: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const [colSpan, setColSpan] = useState(8)
-  const [colOffset, setColOffest] = useState(8)
-
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 720) {
         setColSpan(20)
         setColOffest(4)
+        setModalWidth(364)
       } else {
         setColSpan(8)
         setColOffest(8)
+        setModalWidth(500)
       }
     };
 
@@ -115,7 +117,7 @@ const Family: React.FC = () => {
         onCancel={handleCancel}
         cancelButtonProps={{ style: { display: 'none' } }}
         okButtonProps={{ style: { display: 'none' } }}
-        style={{ left: 80 }}
+        width={modalWidth}
       >
         <CreateFamilyForm handleCancel={handleCancel} />
       </Modal>

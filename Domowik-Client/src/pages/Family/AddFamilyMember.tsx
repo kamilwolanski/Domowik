@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IoAddCircleSharp } from 'react-icons/io5';
 //import AddFamilyMemberForm from './AddFamilyMemberForm';
 import { getOrCreateInvitation } from '../../Api/Invitation';
@@ -8,6 +8,7 @@ import { useMutation } from 'react-query';
 const AddFamilyMember = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [invitationLink, setInvitationLink] = useState('');
+  const [modalWidth, setModalWidth] = useState(500)
   const getOrCreateInvitationMutation = useMutation(getOrCreateInvitation);
 
   const showModal = () => {
@@ -24,6 +25,23 @@ const AddFamilyMember = () => {
       },
     });
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 720) {
+        setModalWidth(364)
+      } else {
+        setModalWidth(500)
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const handleOk = () => {
     setIsModalOpen(false);
@@ -75,7 +93,7 @@ const AddFamilyMember = () => {
           onCancel={handleCancel}
           cancelButtonProps={{ style: { display: 'none' } }}
           okButtonProps={{ style: { display: 'none' } }}
-          style={{ left: 80 }}
+          width={modalWidth}
         >
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">

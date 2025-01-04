@@ -2,6 +2,7 @@ import { Modal } from 'antd';
 import EditShoppingListForm from './EditShoppingListForm';
 import { MdEdit } from 'react-icons/md';
 import { ShoppingList } from '../../../Api/ShoppingLists/types';
+import { useEffect, useState } from 'react';
 
 interface IEditShoppingList {
   shoppingListEl: ShoppingList;
@@ -25,6 +26,26 @@ const EditShoppingList: React.FC<IEditShoppingList> = ({
   const handleCancel = () => {
     setIsEditModalOpen(false);
   };
+
+  const [modalWidth, setModalWidth] = useState(500)
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 720) {
+        setModalWidth(364)
+      } else {
+        setModalWidth(500)
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <>
       <button onClick={showModal} className="w-full text-left">
@@ -38,7 +59,7 @@ const EditShoppingList: React.FC<IEditShoppingList> = ({
         onCancel={handleCancel}
         cancelButtonProps={{ style: { display: 'none' } }}
         okButtonProps={{ style: { display: 'none' } }}
-        style={{ left: 80 }}
+        width={modalWidth}
       >
         <EditShoppingListForm
           handleCancel={handleCancel}

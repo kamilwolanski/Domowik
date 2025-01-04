@@ -1,6 +1,6 @@
 import { CiEdit } from 'react-icons/ci';
 import { Modal } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import EditUserForm from './EditUserForm';
 
 interface IEditUser {
@@ -13,6 +13,7 @@ interface IEditUser {
 
 const EditUser: React.FC<IEditUser> = ({ user }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalWidth, setModalWidth] = useState(500)
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -26,6 +27,23 @@ const EditUser: React.FC<IEditUser> = ({ user }) => {
     setIsModalOpen(false);
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 720) {
+        setModalWidth(364)
+      } else {
+        setModalWidth(500)
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <>
       <CiEdit size={25} color="black" onClick={showModal} />
@@ -36,7 +54,7 @@ const EditUser: React.FC<IEditUser> = ({ user }) => {
         onCancel={handleCancel}
         cancelButtonProps={{ style: { display: 'none' } }}
         okButtonProps={{ style: { display: 'none' } }}
-        style={{ left: 80 }}
+        width={modalWidth}
       >
         <EditUserForm handleCancel={handleCancel} user={user} />
       </Modal>

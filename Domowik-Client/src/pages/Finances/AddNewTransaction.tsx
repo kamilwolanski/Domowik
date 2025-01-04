@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { IoAddCircleSharp } from 'react-icons/io5';
 import { Modal } from 'antd';
 import AddNewTransactionForm from './AddNewTransactionForm';
@@ -12,7 +12,25 @@ const AddNewTransaction: React.FC<IAddNewTransaction> = ({
   transactionCategoriesData,
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalWidth, setModalWidth] = useState(500)
   const [isIncome, setIsIncome] = useState(true);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 720) {
+        setModalWidth(364)
+      } else {
+        setModalWidth(500)
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -45,22 +63,20 @@ const AddNewTransaction: React.FC<IAddNewTransaction> = ({
         onCancel={handleCancel}
         cancelButtonProps={{ style: { display: 'none' } }}
         okButtonProps={{ style: { display: 'none' } }}
-        style={{ left: 80 }}
+        width={modalWidth}
       >
         <div className="flex justify-center my-4">
           <button
             onClick={() => setIsIncome(true)}
-            className={`px-6 py-2 rounded-lg font-semibold ${
-              isIncome ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'
-            } hover:bg-blue-700 transition-colors duration-200`}
+            className={`px-6 py-2 rounded-lg font-semibold ${isIncome ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'
+              } hover:bg-blue-700 transition-colors duration-200`}
           >
             Dochód
           </button>
           <button
             onClick={() => setIsIncome(false)}
-            className={`px-6 py-2 rounded-lg font-semibold ml-2 ${
-              !isIncome ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'
-            } hover:bg-blue-700 transition-colors duration-200`}
+            className={`px-6 py-2 rounded-lg font-semibold ml-2 ${!isIncome ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-800'
+              } hover:bg-blue-700 transition-colors duration-200`}
           >
             Wydatek
           </button>
