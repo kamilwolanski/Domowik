@@ -3,17 +3,22 @@ import { Col, Row } from 'antd';
 import { Modal } from 'antd';
 import CreateFamilyForm from './CreateFamilyForm';
 import { useQuery } from 'react-query';
-import { getUser, getUserFamily } from '../../Api';
+import { getUser } from '../../Api';
 import FamilyList from './FamilyList';
 import AddFamilyMember from './AddFamilyMember';
 import { Role } from './types';
 import DeleteFamily from './DeleteFamily/DeleteFamily';
 import FamilyListPlaceholder from './Placeholders/FamilyListPlaceholder';
+import { getUserFamily } from '../../Api/Family';
 
 const Family: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const { isLoading, isError, data } = useQuery({
+  const {
+    isLoading,
+    isError,
+    data: family,
+  } = useQuery({
     queryKey: 'family',
     queryFn: getUserFamily,
     useErrorBoundary: true,
@@ -46,10 +51,10 @@ const Family: React.FC = () => {
     <div className="h-full relative">
       <Row>
         <Col span={8} offset={8}>
-          {data?.data.id ? (
+          {family.id ? (
             <>
               <div className="flex justify-between items-center mb-10">
-                <h1 className="text-3xl font-bold">{data?.data.name}</h1>
+                <h1 className="text-3xl font-bold">{family.name}</h1>
                 {isHeadOfFamily && (
                   <div className="mt-5">
                     <AddFamilyMember />
@@ -58,10 +63,7 @@ const Family: React.FC = () => {
               </div>
               <div className="col-span-12 md:col-span-10 md:col-start-2">
                 <div className="family-list-wrapper mt-3">
-                  <FamilyList
-                    members={data.data.members}
-                    user={userData?.data}
-                  />
+                  <FamilyList members={family.members} user={userData?.data} />
                 </div>
               </div>
             </>

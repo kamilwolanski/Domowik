@@ -22,7 +22,6 @@ const EditShoppingListForm: React.FC<IEditShoppingListForm> = ({
   const updateShopppingListMutation = useMutation(updateShoppingList);
 
   const handleSubmit = (values: typeof initialValues) => {
-    console.log('weszlo');
     updateShopppingListMutation.mutate(
       {
         id: shoppingListEl.id,
