@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import { CiLogout } from 'react-icons/ci';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -27,6 +27,7 @@ const PrivateLayout: React.FC = () => {
     'user',
     getUser,
   );
+
 
   type MenuItem = Required<MenuProps>['items'][number];
 
@@ -107,7 +108,16 @@ const PrivateLayout: React.FC = () => {
 
   return (
     <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Sider trigger={null} collapsible collapsed={collapsed}
+        style={{
+          position: 'fixed',
+          top: 64,
+          left: 0,
+          bottom: 0,
+          overflowY: 'auto',
+          height: '100vh',
+        }}
+      >
         <Logo />
         {!userDataLoading && (
           <Menu
@@ -121,10 +131,14 @@ const PrivateLayout: React.FC = () => {
       <Layout>
         <Header
           style={{
+            position: 'sticky',
+            top: 0,
             padding: 0,
+            zIndex: 10,
             background: colorBgContainer,
             display: 'flex',
             alignItems: 'center',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
           }}
         >
           <Button
@@ -152,7 +166,15 @@ const PrivateLayout: React.FC = () => {
         >
           <Outlet />
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
+        <Footer style={{
+          position: 'sticky',
+          bottom: 0,
+          zIndex: 10,
+          backgroundColor: '#000',
+          padding: '10px 20px',
+          textAlign: 'center',
+          boxShadow: '0 -4px 6px rgba(0, 0, 0, 0.1)',
+        }}>
           Copyright ©{new Date().getFullYear()} Created by JKM
         </Footer>
       </Layout>

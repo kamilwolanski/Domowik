@@ -43,7 +43,7 @@ const Family: React.FC = () => {
   const isHeadOfFamily = userData?.data.roleId === Role.Head;
 
   return (
-    <div className="h-full relative">
+    <div>
       <Row>
         <Col span={8} offset={8}>
           {data?.data.id ? (
