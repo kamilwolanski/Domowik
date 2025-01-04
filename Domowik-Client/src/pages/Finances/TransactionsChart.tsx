@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Finance } from './types';
 import { AreaChart, Area, Tooltip, XAxis, YAxis, CartesianGrid } from 'recharts';
+
+interface Finance {
+    name: string;
+    count: number;
+}
 
 interface ITransactionList {
     transactionList: Finance[];
 }
 
 const TransactionsChart: React.FC<ITransactionList> = ({ transactionList }) => {
-    const [balance, setBalance] = useState(0);
-    const [transactionsData, setTransactionsData] = useState([]);
+    const [transactionsData, setTransactionsData] = useState<Finance[]>([]);
 
     const updateBalance = () => {
         let newBalance = 0;
@@ -19,22 +22,14 @@ const TransactionsChart: React.FC<ITransactionList> = ({ transactionList }) => {
                 count: newBalance += item.count
             }))
         ];
-        setBalance(newBalance);
         setTransactionsData(updatedTransactions);
     };
-
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString();
-    };
-
-    // const formatedData = transactionsData.map(formatDate(it.createdDate))
 
     useEffect(() => {
         updateBalance();
     }, [transactionList]);
 
-    const CustomTooltip = ({ active, payload, label }) => {
+    const CustomTooltip = ({ active, payload, label }: any) => {
         if (active && payload && payload.length) {
             const { name, count } = payload[0].payload;
             return (
@@ -48,12 +43,12 @@ const TransactionsChart: React.FC<ITransactionList> = ({ transactionList }) => {
     };
 
     return (
-        <AreaChart width={500} height={400} data={transactionList}>
+        <AreaChart width={500} height={400} data={transactionsData}>
             <CartesianGrid strokeDasharray="3 3" />
             <YAxis domain={[0, Math.max(...transactionsData.map(item => item.count))]} />
             <Tooltip content={<CustomTooltip />} />
             <Area type="monotone" dataKey="count" fill="#8884d8" />
-            <XAxis dataKey="createdDate" />
+            <XAxis />
         </AreaChart>
     );
 };
