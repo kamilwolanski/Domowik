@@ -90,3 +90,13 @@ input[type='date'] {
 .scrollbar-thin {
   scrollbar-width: thin;
 }
+
+.xx {
+  width: calc(100% - 2px);
+  grid-row: 1;
+  display: flex;
+  height: 100%;
+  border-left: 4px solid var(--sx-color-primary);
+  color: var(--sx-color-on-primary-container);
+  background-color: var(--sx-color-primary-container);
+}

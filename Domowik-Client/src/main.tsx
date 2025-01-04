@@ -1,4 +1,5 @@
 import React from 'react';
+import { ConfigProvider } from 'antd';
 import ReactDOM from 'react-dom/client';
 import { ErrorBoundary } from 'react-error-boundary';
 import App from './App.tsx';
@@ -8,6 +9,16 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import NotificationProvider from './Components/Notification/NotificationProvider.tsx';
 import ErrorGeneric from './Components/Errors/ErrorGeneric.tsx';
+import locale from 'antd/locale/pl_PL';
+import dayjs from 'dayjs';
+
+import 'dayjs/locale/pl';
+import timezone from 'dayjs/plugin/timezone';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.locale('pl');
 
 const queryClient = new QueryClient();
 
@@ -20,7 +31,9 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       >
         <NotificationProvider>
           <BrowserRouter>
-            <App />
+            <ConfigProvider locale={locale}>
+              <App />
+            </ConfigProvider>
             <ReactQueryDevtools initialIsOpen />
           </BrowserRouter>
         </NotificationProvider>

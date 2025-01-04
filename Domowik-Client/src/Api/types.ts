@@ -12,18 +12,10 @@ export type RegisterBody = {
   dateOfBirth: string;
 };
 
-export type CreateFamily = {
-  name: string;
-};
-
 export type EditUser = {
   firstName: string;
   lastName: string;
   dateOfBirth: string;
-};
-
-export type AddUser = {
-  email: string;
 };
 
 export type AddTransaction = {
