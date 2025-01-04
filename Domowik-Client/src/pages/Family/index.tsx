@@ -74,11 +74,19 @@ const Family: React.FC = () => {
   return (
     <div>
       <Row>
+<<<<<<< HEAD
         <Col span={colSpan} offset={colOffset}>
           {family.id ? (
             <>
               <div className="flex justify-between items-center mb-10">
                 <h1 className="text-3xl font-bold pr-12">{family.name}</h1>
+=======
+        <Col span={8} offset={8}>
+          {family.id ? (
+            <>
+              <div className="flex justify-between items-center mb-10">
+                <h1 className="text-3xl font-bold">{family.name}</h1>
+>>>>>>> 83efabf ([client, server] calendar get events, edit and dfelete)
                 {isHeadOfFamily && (
                   <div className="mt-5">
                     <AddFamilyMember />

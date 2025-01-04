@@ -28,6 +28,7 @@ function CalendarApp() {
   return (
     <div className="h-full relative">
       <Row style={{ height: '100vh' }}>
+<<<<<<< HEAD
         <Col xs={{ span: 24 }} md={{ span: 8, offset: 8 }}>
           <div className="flex justify-between items-center mb-10">
             <h2 className="text-3xl font-bold">Kalendarz</h2>
@@ -41,6 +42,21 @@ function CalendarApp() {
           md={{ span: 16, offset: 4 }}
           style={{ height: '80%', overflowY: 'auto' }}
         >
+=======
+        <Col span={8} offset={8}>
+          <div className="px-4">
+            <div className=" mx-auto">
+              <div className="flex justify-between items-center mb-10">
+                <h1 className="text-3xl font-bold">Kalendarz</h1>
+                {family?.members ? (
+                  <AddCalendarEvent familyMembers={family?.members} />
+                ) : null}
+              </div>
+            </div>
+          </div>
+        </Col>
+        <Col span={16} offset={4} style={{ height: '80%', overflowY: 'auto' }}>
+>>>>>>> 83efabf ([client, server] calendar get events, edit and dfelete)
           {calendarEvents && family?.members && (
             <Scheduler
               calendarEvents={calendarEvents}
