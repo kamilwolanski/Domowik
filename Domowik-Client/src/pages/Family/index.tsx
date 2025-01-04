@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { Modal } from 'antd';
 import CreateFamilyForm from './CreateFamilyForm';
@@ -37,6 +37,28 @@ const Family: React.FC = () => {
     setIsModalOpen(false);
   };
 
+  const [colSpan, setColSpan] = useState(8)
+  const [colOffset, setColOffest] = useState(8)
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 720) {
+        setColSpan(20)
+        setColOffest(4)
+      } else {
+        setColSpan(8)
+        setColOffest(8)
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   if (isLoading || userDataLoading) return <FamilyListPlaceholder />;
   if (isError) return <h5>Błąd</h5>;
 
@@ -45,11 +67,11 @@ const Family: React.FC = () => {
   return (
     <div>
       <Row>
-        <Col span={8} offset={8}>
+        <Col span={colSpan} offset={colOffset}>
           {data?.data.id ? (
             <>
               <div className="flex justify-between items-center mb-10">
-                <h1 className="text-3xl font-bold">{data?.data.name}</h1>
+                <h1 className="text-3xl font-bold pr-12">{data?.data.name}</h1>
                 {isHeadOfFamily && (
                   <div className="mt-5">
                     <AddFamilyMember />

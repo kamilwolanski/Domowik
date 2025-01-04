@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import { CiLogout } from 'react-icons/ci';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -19,6 +19,8 @@ const { Header, Sider, Content, Footer } = Layout;
 
 const PrivateLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false)
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -28,6 +30,28 @@ const PrivateLayout: React.FC = () => {
     getUser,
   );
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 720) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const closeMenuOnClick = useCallback(() => {
+    if (isMobile && !collapsed) {
+      setCollapsed(true);
+    }
+  }, [isMobile, collapsed]);
 
   type MenuItem = Required<MenuProps>['items'][number];
 
@@ -116,6 +140,7 @@ const PrivateLayout: React.FC = () => {
           bottom: 0,
           overflowY: 'auto',
           height: '100vh',
+          zIndex: 10,
         }}
       >
         <Logo />
@@ -162,7 +187,9 @@ const PrivateLayout: React.FC = () => {
             minHeight: 280,
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
+            filter: isMobile && !collapsed ? 'blur(8px) grayscale(100%)' : 'none',
           }}
+          onClick={closeMenuOnClick}
         >
           <Outlet />
         </Content>
