@@ -52,6 +52,20 @@ public class DomowikSeeder
                     _dbContext.Users.Add(user);
                     _dbContext.SaveChanges();
 
+                    user = new User()
+                    {
+                        FirstName = "Mikołaj",
+                        LastName = "Zieliński",
+                        DateOfBirth = new DateTime(2000, 10, 14),
+                        Email = "Zielaczeg@gmail.com",
+                        RoleId = familyHeadRole.Id
+                    };
+                    hashedPassword = _passwordHasher.HashPassword(user, "Qwerty1!");
+                    user.PasswordHash = hashedPassword;
+
+                    _dbContext.Users.Add(user);
+                    _dbContext.SaveChanges();
+
                     var families = GetFamilies(user);
                     _dbContext.Families.AddRange(families);
                     _dbContext.SaveChanges();

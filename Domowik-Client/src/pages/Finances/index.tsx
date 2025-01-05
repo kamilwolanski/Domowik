@@ -1,9 +1,10 @@
 import { useQuery } from 'react-query';
-import { Col, Row } from 'antd';
+import { Col, Row, Pagination } from 'antd';
 import { getFinances } from '../../Api';
 import { getTransactionCategories } from '../../Api';
 import AddNewTransaction from './AddNewTransaction';
 import TransactionList from './TransactionList';
+import { useState } from 'react';
 
 const Finances = () => {
   const { data, isLoading } = useQuery('finances', getFinances);
@@ -12,7 +13,15 @@ const Finances = () => {
     isLoading: transactionCategoriesIsLoading,
   } = useQuery('transaction-categories', () => getTransactionCategories());
 
+  // Stan do paginacji
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 3;
+
   if (isLoading || transactionCategoriesIsLoading) return <p>Ładowanie...</p>;
+
+  // Obliczanie indeksów do cięcia transakcji
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
 
   return (
     <Row>
@@ -36,13 +45,25 @@ const Finances = () => {
               </span>
             </h2>
 
+            {/* Lista transakcji z paginacją */}
             <div className="transaction-list-wrapper mt-3">
-              <TransactionList transactionList={data?.data.transactions} />
+              <TransactionList transactionList={data?.data.transactions.slice(startIndex, endIndex)} />
             </div>
           </div>
         </div>
       </Col>
+      <Col span={1} offset={13}>
+      {/* Paginacja */}
+      <Pagination
+              current={currentPage}
+              pageSize={pageSize}
+              total={data?.data.transactions.length}
+              onChange={(page) => setCurrentPage(page)}
+              style={{ marginTop: '20px', textAlign: 'right' }}
+            />
+      </Col>
     </Row>
+    
   );
 };
 

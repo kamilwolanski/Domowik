@@ -11,6 +11,7 @@ import validationSchema from './validationSchema';
 import { addEvent } from '../../../Api/CalendarEvents';
 import useNotification from '../../../Components/Notification/useNotification';
 
+
 type AddFormInitialValues = {
   name: string;
   description: string;
@@ -22,7 +23,9 @@ interface IModalAddEvent {
   familyMembers: FamilyMember[];
 }
 const ModalAddEvent: React.FC<IModalAddEvent> = ({ familyMembers }) => {
-  const options = familyMembers.map((member) => {
+  const limitedFamilyMembers = familyMembers.slice(0, 5); // Ogranicz do pierwszych 5 członków
+
+  const options = limitedFamilyMembers.map((member) => {
     return {
       label: `${member.firstName} ${member.lastName}`,
       value: member.id,
@@ -156,6 +159,7 @@ const ModalAddEvent: React.FC<IModalAddEvent> = ({ familyMembers }) => {
                     onChange={(value) => setFieldValue('participantIds', value)}
                     placeholder="Wybierz uczestników"
                     options={options}
+                    dropdownStyle={{ maxHeight: 300, overflowY: 'auto' }}  // Dodaj to
                   />
                 </div>
 
