@@ -115,6 +115,7 @@ const ShoppingListsElement: React.FC<IShoppingListsElement> = ({
       </div>
     </Link>
   );
+  
 };
 
 export default ShoppingListsElement;

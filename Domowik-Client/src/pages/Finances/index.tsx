@@ -41,7 +41,6 @@ const Finances = () => {
 
   if (isLoading || transactionCategoriesIsLoading) return <p>Ładowanie...</p>;
 
-  // Obliczanie indeksów do cięcia transakcji
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
 
@@ -67,7 +66,6 @@ const Finances = () => {
               </span>
             </h2>
 
-            {/* Lista transakcji z paginacją */}
             <div className="transaction-list-wrapper mt-3">
               <TransactionList
                 transactionList={data?.data.transactions.slice(

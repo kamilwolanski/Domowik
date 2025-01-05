@@ -27,7 +27,7 @@ interface IModalAddEvent {
   familyMembers: FamilyMember[];
 }
 const ModalAddEvent: React.FC<IModalAddEvent> = ({ familyMembers }) => {
-  const limitedFamilyMembers = familyMembers.slice(0, 5); // Ogranicz do pierwszych 5 członków
+  const limitedFamilyMembers = familyMembers; // Ogranicz do pierwszych 5 członków
 
   const options = limitedFamilyMembers.map((member) => {
     return {

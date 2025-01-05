@@ -19,7 +19,6 @@ const ShoppingLists: React.FC<IShoppingLists> = ({ shoppingLists }) => {
     setCurrentPage(page);
   };
 
-  // Efekt sprawdzający, czy currentPage jest prawidłowy po zmianie listy
   useEffect(() => {
     const totalPages = Math.ceil(shoppingLists.length / itemsPerPage);
     if (currentPage > totalPages) {
