@@ -6,6 +6,9 @@ import ProductsToAdd from '../ProductsToAdd';
 import { useEffect, useState } from 'react';
 
 const Index = () => {
+  const [colSpan, setColSpan] = useState(9)
+  const [addColSpan, setAddColSpan] = useState(5)
+  const [colOffset, setColOffest] = useState(0)
   const { id } = useParams();
 
   const [showProductsToAdd, setShowProductsToAdd] = useState(() => {
@@ -22,17 +25,38 @@ const Index = () => {
   };
 
   useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 720) {
+        setColSpan(24)
+        setAddColSpan(24)
+        setColOffest(0)
+      } else {
+        setColSpan(9)
+        setAddColSpan(5)
+        setColOffest(0)
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
     sessionStorage.setItem('showProductsToAdd', showProductsToAdd.toString());
   }, [showProductsToAdd]);
 
   return (
     <>
       <Row className="justify-center">
-        <Col span={9} className="px-2">
+        <Col span={colSpan} offset={colOffset} className="px-2">
           <ShoppingList paramId={Number(id)} />
         </Col>
         {showProductsToAdd && (
-          <Col span={5} className="px-2">
+          <Col span={addColSpan} offset={colOffset} className="px-2">
             <ProductsToAdd
               closeProductsToAddWindow={closeProductsToAddWindow}
             />

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IoAddCircleSharp } from 'react-icons/io5';
 //import AddFamilyMemberForm from './AddFamilyMemberForm';
 import { getOrCreateInvitation } from '../../Api/Invitation';
@@ -8,6 +8,8 @@ import { useMutation } from 'react-query';
 const AddFamilyMember = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [invitationLink, setInvitationLink] = useState('');
+  const [modalWidth, setModalWidth] = useState(500)
+  const [isMobile, setIsMobile] = useState(false)
   const getOrCreateInvitationMutation = useMutation(getOrCreateInvitation);
 
   const showModal = () => {
@@ -24,6 +26,25 @@ const AddFamilyMember = () => {
       },
     });
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 720) {
+        setModalWidth(364)
+        setIsMobile(true)
+      } else {
+        setModalWidth(500)
+        setIsMobile(false)
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const handleOk = () => {
     setIsModalOpen(false);
@@ -59,11 +80,13 @@ const AddFamilyMember = () => {
     <>
       {/* Button to show the modal */}
       <button
-        className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+        className="flex items-center bg-blue-600 text-white px-2 md:px-4 py-2 rounded-full md:rounded-md hover:bg-blue-700"
         onClick={showModal}
       >
         <IoAddCircleSharp size={30} />
-        <span className="ml-2">Dodaj nowego domownika</span>
+        {!isMobile &&
+          <span className="ml-2">Dodaj nowego domownika</span>
+        }
       </button>
 
       {/* Modal */}
@@ -75,7 +98,7 @@ const AddFamilyMember = () => {
           onCancel={handleCancel}
           cancelButtonProps={{ style: { display: 'none' } }}
           okButtonProps={{ style: { display: 'none' } }}
-          style={{ left: 80 }}
+          width={modalWidth}
         >
           <div>
             <label className="block mb-2 text-sm font-medium text-gray-900">

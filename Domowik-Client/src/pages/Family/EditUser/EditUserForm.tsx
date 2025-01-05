@@ -78,11 +78,10 @@ const EditUserForm: React.FC<IEditUserForm> = ({ handleCancel, user }) => {
               <button
                 type="submit"
                 disabled={!isValid}
-                className={`px-4 py-2 rounded-lg focus:outline-none ${
-                  isValid
-                    ? 'bg-blue-600 text-white hover:bg-blue-700'
-                    : 'bg-gray-400 text-gray-600 cursor-not-allowed'
-                }`}
+                className={`px-4 py-2 rounded-lg focus:outline-none ${isValid
+                  ? 'bg-blue-600 text-white hover:bg-blue-700'
+                  : 'bg-gray-400 text-gray-600 cursor-not-allowed'
+                  }`}
               >
                 Edytuj
               </button>

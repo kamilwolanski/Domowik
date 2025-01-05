@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { Modal } from 'antd';
 import CreateFamilyForm from './CreateFamilyForm';
@@ -12,6 +12,9 @@ import FamilyListPlaceholder from './Placeholders/FamilyListPlaceholder';
 
 const Family: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalWidth, setModalWidth] = useState(500)
+  const [colSpan, setColSpan] = useState(8)
+  const [colOffset, setColOffest] = useState(8)
 
   const { isLoading, isError, data } = useQuery({
     queryKey: 'family',
@@ -37,19 +40,40 @@ const Family: React.FC = () => {
     setIsModalOpen(false);
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 720) {
+        setColSpan(24)
+        setColOffest(0)
+        setModalWidth(364)
+      } else {
+        setColSpan(8)
+        setColOffest(8)
+        setModalWidth(500)
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   if (isLoading || userDataLoading) return <FamilyListPlaceholder />;
   if (isError) return <h5>Błąd</h5>;
 
   const isHeadOfFamily = userData?.data.roleId === Role.Head;
 
   return (
-    <div className="h-full relative">
+    <div>
       <Row>
-        <Col span={8} offset={8}>
+        <Col span={colSpan} offset={colOffset}>
           {data?.data.id ? (
             <>
               <div className="flex justify-between items-center mb-10">
-                <h1 className="text-3xl font-bold">{data?.data.name}</h1>
+                <h1 className="text-3xl font-bold pr-12">{data?.data.name}</h1>
                 {isHeadOfFamily && (
                   <div className="mt-5">
                     <AddFamilyMember />
@@ -93,7 +117,7 @@ const Family: React.FC = () => {
         onCancel={handleCancel}
         cancelButtonProps={{ style: { display: 'none' } }}
         okButtonProps={{ style: { display: 'none' } }}
-        style={{ left: 80 }}
+        width={modalWidth}
       >
         <CreateFamilyForm handleCancel={handleCancel} />
       </Modal>

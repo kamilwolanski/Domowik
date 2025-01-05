@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import { CiLogout } from 'react-icons/ci';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -18,7 +18,9 @@ import { getUser } from '../Api';
 const { Header, Sider, Content, Footer } = Layout;
 
 const PrivateLayout: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false)
+  const [collapsed, setCollapsed] = useState(true);
+
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();
@@ -27,6 +29,32 @@ const PrivateLayout: React.FC = () => {
     'user',
     getUser,
   );
+
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 720) {
+        setIsMobile(true);
+        setCollapsed(true)
+      } else {
+        setIsMobile(false);
+        setCollapsed(false)
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  const closeMenuOnClick = useCallback(() => {
+    if (isMobile && !collapsed) {
+      setCollapsed(true);
+    }
+  }, [isMobile, collapsed]);
 
   type MenuItem = Required<MenuProps>['items'][number];
 
@@ -107,7 +135,17 @@ const PrivateLayout: React.FC = () => {
 
   return (
     <Layout>
-      <Sider trigger={null} collapsible collapsed={collapsed}>
+      <Sider trigger={null} collapsible collapsed={collapsed}
+        style={{
+          position: 'sticky',
+          top: 0,
+          left: 0,
+          bottom: 0,
+          overflowY: 'auto',
+          height: '100vh',
+          zIndex: 10,
+        }}
+      >
         <Logo />
         {!userDataLoading && (
           <Menu
@@ -121,10 +159,14 @@ const PrivateLayout: React.FC = () => {
       <Layout>
         <Header
           style={{
+            position: 'sticky',
+            top: 0,
             padding: 0,
+            zIndex: 10,
             background: colorBgContainer,
             display: 'flex',
             alignItems: 'center',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
           }}
         >
           <Button
@@ -148,11 +190,21 @@ const PrivateLayout: React.FC = () => {
             minHeight: 280,
             background: colorBgContainer,
             borderRadius: borderRadiusLG,
+            filter: isMobile && !collapsed ? 'blur(8px) grayscale(100%)' : 'none',
           }}
+          onClick={closeMenuOnClick}
         >
           <Outlet />
         </Content>
-        <Footer style={{ textAlign: 'center' }}>
+        <Footer style={{
+          position: 'sticky',
+          bottom: 0,
+          zIndex: 10,
+          backgroundColor: '#000',
+          padding: '10px 20px',
+          textAlign: 'center',
+          boxShadow: '0 -4px 6px rgba(0, 0, 0, 0.1)',
+        }}>
           Copyright ©{new Date().getFullYear()} Created by JKM
         </Footer>
       </Layout>

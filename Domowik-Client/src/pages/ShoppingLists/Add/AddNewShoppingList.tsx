@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from 'antd';
 import { IoAddCircleSharp } from 'react-icons/io5';
 import AddNewShoppingListForm from './AddNewShoppingListForm';
 
 const AddNewShoppingList = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalWidth, setModalWidth] = useState(500)
+  const [isMobile, setIsMobile] = useState(false)
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -18,14 +20,35 @@ const AddNewShoppingList = () => {
     setIsModalOpen(false);
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 720) {
+        setModalWidth(364)
+        setIsMobile(true)
+      } else {
+        setModalWidth(500)
+        setIsMobile(false)
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   return (
     <>
       <button
         onClick={showModal}
-        className="flex items-center bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        className="flex items-center bg-blue-600 text-white py-2 px-2 md:px-4 rounded-full md:rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
       >
         <IoAddCircleSharp size={30} />
-        <span className="ml-2">Stwórz nową listę</span>
+        {!isMobile &&
+          <span className="ml-2">Stwórz nową listę</span>
+        }
       </button>
 
       <Modal
@@ -35,7 +58,7 @@ const AddNewShoppingList = () => {
         onCancel={handleCancel}
         cancelButtonProps={{ style: { display: 'none' } }}
         okButtonProps={{ style: { display: 'none' } }}
-        style={{ left: 80 }}
+        width={modalWidth}
       >
         <AddNewShoppingListForm handleCancel={handleCancel} />
       </Modal>

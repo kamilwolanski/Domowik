@@ -1,6 +1,6 @@
 import { ImCross } from 'react-icons/im';
 import { Modal } from 'antd';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useMutation, useQueryClient } from 'react-query';
 import { removeFamilyMember } from '../../../Api';
 
@@ -14,13 +14,30 @@ interface ILeaveFamily {
 
 const LeaveFamily: React.FC<ILeaveFamily> = ({ member, userId }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [modalWidth, setModalWidth] = useState(500)
   const queryClient = useQueryClient();
   const removeFamilyMemberMutation = useMutation(removeFamilyMember);
 
   const showModal = () => {
     setIsModalOpen(true);
   };
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 720) {
+        setModalWidth(364)
+      } else {
+        setModalWidth(500)
+      }
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const handleOk = () => {
     removeFamilyMemberMutation.mutate(member.id, {
@@ -56,7 +73,7 @@ const LeaveFamily: React.FC<ILeaveFamily> = ({ member, userId }) => {
         onCancel={handleCancel}
         cancelButtonProps={{ style: { display: 'none' } }}
         okButtonProps={{ style: { display: 'none' } }}
-        style={{ left: 80 }}
+        width={modalWidth}
       >
         {member.id !== userId ? (
           <h3>
