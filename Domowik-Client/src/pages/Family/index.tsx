@@ -13,9 +13,9 @@ import { getUserFamily } from '../../Api/Family';
 
 const Family: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalWidth, setModalWidth] = useState(500)
-  const [colSpan, setColSpan] = useState(8)
-  const [colOffset, setColOffest] = useState(8)
+  const [modalWidth, setModalWidth] = useState(500);
+  const [colSpan, setColSpan] = useState(8);
+  const [colOffset, setColOffest] = useState(8);
 
   const {
     isLoading,
@@ -48,21 +48,21 @@ const Family: React.FC = () => {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 720) {
-        setColSpan(24)
-        setColOffest(0)
-        setModalWidth(364)
+        setColSpan(24);
+        setColOffest(0);
+        setModalWidth(364);
       } else {
-        setColSpan(8)
-        setColOffest(8)
-        setModalWidth(500)
+        setColSpan(8);
+        setColOffest(8);
+        setModalWidth(500);
       }
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     handleResize();
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -74,19 +74,11 @@ const Family: React.FC = () => {
   return (
     <div>
       <Row>
-<<<<<<< HEAD
         <Col span={colSpan} offset={colOffset}>
-          {data?.data.id ? (
-            <>
-              <div className="flex justify-between items-center mb-10">
-                <h1 className="text-3xl font-bold pr-12">{data?.data.name}</h1>
-=======
-        <Col span={8} offset={8}>
           {family.id ? (
             <>
               <div className="flex justify-between items-center mb-10">
-                <h1 className="text-3xl font-bold">{family.name}</h1>
->>>>>>> 83efabf ([client, server] calendar get events, edit and dfelete)
+                <h1 className="text-3xl font-bold pr-12">{family.name}</h1>
                 {isHeadOfFamily && (
                   <div className="mt-5">
                     <AddFamilyMember />

@@ -3,7 +3,7 @@ import dayjs from 'dayjs';
 import { Modal, Button, DatePicker, Select } from 'antd';
 import { useMutation, useQueryClient } from 'react-query';
 import { IoAddCircleSharp } from 'react-icons/io5';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FamilyMember } from '../../Family/types';
 import TextInput from '../../../Components/FormikInputs/FormikTextInput';
 import TextArea from '../../../Components/FormikInputs/FormikTextArea';
@@ -33,6 +33,25 @@ const ModalAddEvent: React.FC<IModalAddEvent> = ({ familyMembers }) => {
   const [isVisible, setIsVisible] = useState(false);
   const queryClient = useQueryClient();
   const addEventMutation = useMutation(addEvent);
+
+  const [modalWidth, setModalWidth] = useState(500);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 720) {
+        setModalWidth(364);
+      } else {
+        setModalWidth(500);
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const initialValues: AddFormInitialValues = {
     name: '',
@@ -79,11 +98,12 @@ const ModalAddEvent: React.FC<IModalAddEvent> = ({ familyMembers }) => {
   return (
     <>
       <button
-        className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+        className="flex items-center bg-blue-600 text-white px-2 md:px-4 py-2 hover:bg-blue-700 rounded-full md:rounded-md"
         onClick={handleOpenModal}
       >
         <IoAddCircleSharp size={30} />
-        <span className="ml-2">Dodaj nowe wydarzenie</span>
+
+        <span className="ml-2 hidden md:block">Dodaj nowe wydarzenie</span>
       </button>
 
       <Modal
@@ -91,6 +111,7 @@ const ModalAddEvent: React.FC<IModalAddEvent> = ({ familyMembers }) => {
         open={isVisible}
         onCancel={handleCloseModal}
         footer={null}
+        width={modalWidth}
       >
         <Formik
           initialValues={initialValues}
