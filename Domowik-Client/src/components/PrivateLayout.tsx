@@ -18,8 +18,8 @@ import { getUser } from '../Api';
 const { Header, Sider, Content, Footer } = Layout;
 
 const PrivateLayout: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
   const [isMobile, setIsMobile] = useState(false)
+  const [collapsed, setCollapsed] = useState(true);
 
   const {
     token: { colorBgContainer, borderRadiusLG },
@@ -30,12 +30,15 @@ const PrivateLayout: React.FC = () => {
     getUser,
   );
 
+
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 720) {
         setIsMobile(true);
+        setCollapsed(true)
       } else {
         setIsMobile(false);
+        setCollapsed(false)
       }
     };
 
@@ -134,8 +137,8 @@ const PrivateLayout: React.FC = () => {
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}
         style={{
-          position: 'fixed',
-          top: 64,
+          position: 'sticky',
+          top: 0,
           left: 0,
           bottom: 0,
           overflowY: 'auto',

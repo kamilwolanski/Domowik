@@ -27,9 +27,9 @@ const Index = () => {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 720) {
-        setColSpan(20)
-        setAddColSpan(20)
-        setColOffest(4)
+        setColSpan(24)
+        setAddColSpan(24)
+        setColOffest(0)
       } else {
         setColSpan(9)
         setAddColSpan(5)

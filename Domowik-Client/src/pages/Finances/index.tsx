@@ -20,8 +20,8 @@ const Finances = () => {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 720) {
-        setColSpan(20)
-        setColOffest(4)
+        setColSpan(24)
+        setColOffest(0)
       } else {
         setColSpan(8)
         setColOffest(8)

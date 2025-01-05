@@ -43,8 +43,8 @@ const Family: React.FC = () => {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 720) {
-        setColSpan(20)
-        setColOffest(4)
+        setColSpan(24)
+        setColOffest(0)
         setModalWidth(364)
       } else {
         setColSpan(8)
