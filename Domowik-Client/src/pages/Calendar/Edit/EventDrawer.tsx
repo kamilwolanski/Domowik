@@ -146,25 +146,28 @@ const EventDrawer: React.FC<IEventDrawer> = ({
                       Uczestnicy
                     </label>
                     <Select
-                      mode="multiple"
-                      value={values.participantIds}
-                      labelInValue
-                      className="w-full focus:outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-blue-500 block"
-                      onChange={(value) => {
-                        console.log('value', value);
-                        setFieldValue(
-                          'participantIds',
-                          value.map((e) => {
-                            return {
-                              label: e.label,
-                              value: e.value,
-                            };
-                          }),
-                        );
-                      }}
-                      placeholder="Wybierz uczestników"
-                      options={options}
-                    />
+                        mode="multiple"
+                        value={values.participantIds}
+                        labelInValue
+                        className="w-full focus:outline-none bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-blue-500 block"
+                        onChange={(value) => {
+                          setFieldValue(
+                            'participantIds',
+                            value.map((e) => {
+                              return {
+                                label: e.label,
+                                value: e.value,
+                              };
+                            }),
+                          );
+                        }}
+                        placeholder="Wybierz uczestników"
+                        options={options}
+                        dropdownStyle={{
+                          maxHeight: 400,  // Ustawiamy większą wysokość, aby testować przewijanie
+                          overflowY: 'auto',  // Właściwy sposób ustawiania przewijania
+                        }}
+                      />
                   </div>
                 </div>
 
