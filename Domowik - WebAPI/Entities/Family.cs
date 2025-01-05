@@ -14,6 +14,7 @@ namespace Domowik___WebAPI.Entities
 
         public List<ShoppingList> ShoppingLists { get; set; }
         public List<Transaction> Transactions { get; set; }
-        
+        public ICollection<CalendarEvent> Events { get; set; }
+
     }
 }

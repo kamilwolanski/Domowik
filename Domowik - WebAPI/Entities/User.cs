@@ -14,6 +14,7 @@
 
         public int? FamilyId { get; set; }
         public Family? Family { get; set; }
+        public ICollection<CalendarEvent> CreatedEvents { get; set; }
 
     }
 }

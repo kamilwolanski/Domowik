@@ -1,51 +1,54 @@
-import { useCalendarApp, ScheduleXCalendar } from '@schedule-x/react';
-import {
-  createViewDay,
-  createViewMonthAgenda,
-  createViewMonthGrid,
-  createViewWeek,
-} from '@schedule-x/calendar';
-import { createEventsServicePlugin } from '@schedule-x/events-service';
-import { createEventModalPlugin } from '@schedule-x/event-modal';
-import { createDragAndDropPlugin } from '@schedule-x/drag-and-drop';
-
 import '@schedule-x/theme-default/dist/index.css';
-import { useEffect, useState } from 'react';
+import { useQuery } from 'react-query';
+import { getCalendarEvents } from '../../Api/CalendarEvents';
+import { Col, Row } from 'antd';
+import AddCalendarEvent from './Add/AddCalendarEvent';
+import { getUserFamily } from '../../Api/Family';
+import { AxiosError } from 'axios';
+import { Family } from '../../Api/Family/types';
+import Scheduler from './Scheduler';
 
 function CalendarApp() {
-  const eventsService = useState(() => createEventsServicePlugin())[0];
-
-  const calendar = useCalendarApp({
-    views: [
-      createViewDay(),
-      createViewWeek(),
-      createViewMonthGrid(),
-      createViewMonthAgenda(),
-    ],
-    events: [
-      {
-        id: '1',
-        title: 'Urodziny',
-        start: '2024-12-19 08:00',
-        end: '2024-12-19 10:00',
-      },
-    ],
-    plugins: [
-      eventsService,
-      createEventModalPlugin(),
-      createDragAndDropPlugin(),
-    ],
-    locale: 'pl-PL',
+  const { data: calendarEvents, isLoading } = useQuery({
+    queryKey: 'calendar-events',
+    queryFn: getCalendarEvents,
+    useErrorBoundary: true,
+  });
+  const { data: family, isLoading: isLoadingFamily } = useQuery<
+    Family,
+    AxiosError<string>
+  >({
+    queryKey: 'family',
+    queryFn: getUserFamily,
+    useErrorBoundary: true,
   });
 
-  useEffect(() => {
-    // get all events
-    eventsService.getAll();
-  }, []);
+  if (isLoading || isLoadingFamily) return <p>Loading...</p>;
 
   return (
-    <div>
-      <ScheduleXCalendar calendarApp={calendar} />
+    <div className="h-full relative">
+      <Row style={{ height: '100vh' }}>
+        <Col xs={{ span: 24 }} md={{ span: 8, offset: 8 }}>
+          <div className="flex justify-between items-center mb-10">
+            <h2 className="text-3xl font-bold">Kalendarz</h2>
+            {family?.members ? (
+              <AddCalendarEvent familyMembers={family?.members} />
+            ) : null}
+          </div>
+        </Col>
+        <Col
+          xs={{ span: 24 }}
+          md={{ span: 16, offset: 4 }}
+          style={{ height: '80%', overflowY: 'auto' }}
+        >
+          {calendarEvents && family?.members && (
+            <Scheduler
+              calendarEvents={calendarEvents}
+              familyMembers={family?.members}
+            />
+          )}
+        </Col>
+      </Row>
     </div>
   );
 }

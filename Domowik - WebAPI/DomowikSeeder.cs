@@ -55,8 +55,10 @@ public class DomowikSeeder
                     var families = GetFamilies(user);
                     _dbContext.Families.AddRange(families);
                     _dbContext.SaveChanges();
+
                 }
             }
+            SeedCalendarEvents();
         }
     }
 
@@ -253,6 +255,49 @@ public class DomowikSeeder
             _dbContext.SaveChanges();
         }
     }
+    private void SeedCalendarEvents()
+    {
+        if (!_dbContext.CalendarEvents.Any())
+        {
+            var families = _dbContext.Families.ToList();
+            var users = _dbContext.Users.ToList();
+
+            var calendarEvents = new List<CalendarEvent>
+        {
+            new CalendarEvent
+            {
+                Name = "Wakacje",
+                Description = "Relaks na plaży",
+                StartDateTime = new DateTime(2024, 8, 15, 9, 0, 0),
+                EndDateTime = new DateTime(2024, 8, 15, 18, 0, 0),
+                FamilyId = null,
+                OrganizerId = users[0].Id
+            },
+            new CalendarEvent
+            {
+                Name = "Rodzinny obiad",
+                Description = "Spotkanie z dziadkami",
+                StartDateTime = new DateTime(2024, 8, 16, 9, 0, 0),
+                EndDateTime = new DateTime(2024, 8, 16, 18, 0, 0),
+                FamilyId = null,
+                OrganizerId = users[0].Id
+            },
+            new CalendarEvent
+            {
+                Name = "Wycieczka do parku",
+                Description = "Spływ kajakami",
+                StartDateTime = new DateTime(2024, 8, 17, 9, 0, 0),
+                EndDateTime = new DateTime(2024, 8, 17, 18, 0, 0),
+                FamilyId = null,
+                OrganizerId = users[0].Id
+            }
+        };
+
+            _dbContext.CalendarEvents.AddRange(calendarEvents);
+            _dbContext.SaveChanges();
+        }
+    }
+
 
 
     private IEnumerable<Role> GetRoles()
