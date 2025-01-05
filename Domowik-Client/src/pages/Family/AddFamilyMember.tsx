@@ -9,6 +9,7 @@ const AddFamilyMember = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [invitationLink, setInvitationLink] = useState('');
   const [modalWidth, setModalWidth] = useState(500)
+  const [isMobile, setIsMobile] = useState(false)
   const getOrCreateInvitationMutation = useMutation(getOrCreateInvitation);
 
   const showModal = () => {
@@ -30,8 +31,10 @@ const AddFamilyMember = () => {
     const handleResize = () => {
       if (window.innerWidth < 720) {
         setModalWidth(364)
+        setIsMobile(true)
       } else {
         setModalWidth(500)
+        setIsMobile(false)
       }
     };
 
@@ -77,11 +80,13 @@ const AddFamilyMember = () => {
     <>
       {/* Button to show the modal */}
       <button
-        className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+        className="flex items-center bg-blue-600 text-white px-2 md:px-4 py-2 rounded-full md:rounded-md hover:bg-blue-700"
         onClick={showModal}
       >
         <IoAddCircleSharp size={30} />
-        <span className="ml-2">Dodaj nowego domownika</span>
+        {!isMobile &&
+          <span className="ml-2">Dodaj nowego domownika</span>
+        }
       </button>
 
       {/* Modal */}

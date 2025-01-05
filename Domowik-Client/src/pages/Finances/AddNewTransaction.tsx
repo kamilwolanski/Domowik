@@ -14,13 +14,16 @@ const AddNewTransaction: React.FC<IAddNewTransaction> = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalWidth, setModalWidth] = useState(500)
   const [isIncome, setIsIncome] = useState(true);
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 720) {
         setModalWidth(364)
+        setIsMobile(true)
       } else {
         setModalWidth(500)
+        setIsMobile(false)
       }
     };
 
@@ -50,10 +53,12 @@ const AddNewTransaction: React.FC<IAddNewTransaction> = ({
     <>
       <button
         onClick={showModal}
-        className="flex items-center bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
+        className="flex items-center bg-blue-600 text-white py-2 px-2 md:px-4 rounded-full md:rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400"
       >
         <IoAddCircleSharp size={30} />
-        <span className="ml-2">Dodaj nową transakcję</span>
+        {!isMobile &&
+          <span className="ml-2">Dodaj nową transakcję</span>
+        }
       </button>
 
       <Modal
