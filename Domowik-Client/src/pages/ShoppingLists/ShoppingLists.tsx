@@ -1,29 +1,34 @@
+import { useEffect, useState } from 'react';
+import { Pagination } from 'antd';
 import { ShoppingList } from '../../Api/ShoppingLists/types';
 import ShoppingListsElement from './ShoppingListsElement';
-import { useState } from 'react';
-import { Pagination } from 'antd'; // Importowanie komponentu Pagination z Ant Design
 
 interface IShoppingLists {
   shoppingLists: ShoppingList[];
 }
 
 const ShoppingLists: React.FC<IShoppingLists> = ({ shoppingLists }) => {
-  const itemsPerPage = 4; // Liczba elementów na jednej stronie
-  const [currentPage, setCurrentPage] = useState(1); // Stan aktualnej strony
-  
-  // Obliczanie indeksów początkowego i końcowego elementu na podstawie bieżącej strony
+  const itemsPerPage = 4;
+  const [currentPage, setCurrentPage] = useState(1);
+
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = shoppingLists.slice(indexOfFirstItem, indexOfLastItem); // Pobieranie tylko elementów dla bieżącej strony
+  const currentItems = shoppingLists.slice(indexOfFirstItem, indexOfLastItem);
 
-  // Funkcja do przechodzenia między stronami
   const onPageChange = (page: number) => {
     setCurrentPage(page);
   };
 
+  // Efekt sprawdzający, czy currentPage jest prawidłowy po zmianie listy
+  useEffect(() => {
+    const totalPages = Math.ceil(shoppingLists.length / itemsPerPage);
+    if (currentPage > totalPages) {
+      setCurrentPage(totalPages > 0 ? totalPages : 1);
+    }
+  }, [shoppingLists, currentPage, itemsPerPage]);
+
   return (
     <div className="mt-10">
-      {/* Wyświetlanie aktualnych elementów */}
       {currentItems.map((shoppingList) => (
         <ShoppingListsElement
           shoppingListEl={shoppingList}
@@ -31,15 +36,16 @@ const ShoppingLists: React.FC<IShoppingLists> = ({ shoppingLists }) => {
         />
       ))}
 
-      {/* Paginacja z Ant Design */}
-      <Pagination
-        current={currentPage} // Aktualna strona
-        total={shoppingLists.length} // Całkowita liczba elementów
-        pageSize={itemsPerPage} // Liczba elementów na stronie
-        onChange={onPageChange} // Funkcja wywoływana po zmianie strony
-        showSizeChanger={false} // Opcjonalnie, można dodać wybór liczby elementów na stronę
-        className="ant-pagination-end" // Klasa do stosowania własnych stylów
-      />
+      {shoppingLists.length > itemsPerPage && (
+        <Pagination
+          current={currentPage}
+          total={shoppingLists.length}
+          pageSize={itemsPerPage}
+          onChange={onPageChange}
+          showSizeChanger={false}
+          className="ant-pagination-end"
+        />
+      )}
     </div>
   );
 };
