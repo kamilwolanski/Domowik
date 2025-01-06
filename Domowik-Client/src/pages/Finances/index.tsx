@@ -1,10 +1,10 @@
 import { useQuery } from 'react-query';
-import { Col, Row } from 'antd';
+import { Col, Row, Pagination } from 'antd';
 import { getFinances } from '../../Api';
 import { getTransactionCategories } from '../../Api';
 import AddNewTransaction from './AddNewTransaction';
 import TransactionList from './TransactionList';
-import TransactionsChart from './TransactionsChart'
+import TransactionsChart from './TransactionsChart';
 import { useEffect, useState } from 'react';
 
 const Finances = () => {
@@ -14,29 +14,35 @@ const Finances = () => {
     isLoading: transactionCategoriesIsLoading,
   } = useQuery('transaction-categories', () => getTransactionCategories());
 
-  const [colSpan, setColSpan] = useState(8)
-  const [colOffset, setColOffest] = useState(8)
+  const [colSpan, setColSpan] = useState(8);
+  const [colOffset, setColOffest] = useState(8);
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 720) {
-        setColSpan(24)
-        setColOffest(0)
+        setColSpan(24);
+        setColOffest(0);
       } else {
-        setColSpan(8)
-        setColOffest(8)
+        setColSpan(8);
+        setColOffest(8);
       }
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     handleResize();
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
+  // Stan do paginacji
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 3;
 
   if (isLoading || transactionCategoriesIsLoading) return <p>Ładowanie...</p>;
+
+  const startIndex = (currentPage - 1) * pageSize;
+  const endIndex = startIndex + pageSize;
 
   return (
     <Row>
@@ -52,25 +58,43 @@ const Finances = () => {
             <h2 className="mt-5 text-xl">
               Stan konta:{' '}
               <span
-                className={`font-bold text-2xl ${data?.data.budget > 0 ? 'text-green-700' : 'text-red-600'
-                  }`}
+                className={`font-bold text-2xl ${
+                  data?.data.budget > 0 ? 'text-green-700' : 'text-red-600'
+                }`}
               >
                 {data?.data.budget}
               </span>
             </h2>
 
             <div className="transaction-list-wrapper mt-3">
-              <TransactionList transactionList={data?.data.transactions} />
+              <TransactionList
+                transactionList={data?.data.transactions.slice(
+                  startIndex,
+                  endIndex,
+                )}
+              />
             </div>
           </div>
         </div>
-
-        {data?.data.transactions &&
+      </Col>
+      <Col span={colSpan} offset={colOffset}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
+      {/* Paginacja */}
+      <Pagination
+          current={currentPage}
+          pageSize={pageSize}
+          total={data?.data.transactions.length}
+          onChange={(page) => setCurrentPage(page)}
+          style={{ marginTop: '20px', textAlign: 'right' }}
+        />
+        </div>
+      </Col>
+      <Col span={colSpan} offset={colOffset}>
+        {data?.data.transactions && (
           <div className="pt-16">
             <TransactionsChart transactionList={data?.data.transactions} />
           </div>
-        }
-
+        )}
       </Col>
     </Row>
   );

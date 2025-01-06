@@ -90,3 +90,9 @@ input[type='date'] {
 .scrollbar-thin {
   scrollbar-width: thin;
 }
+
+@media (max-width: 767px) {
+  .sx__event-modal {
+    width: 250px;
+  }
+}

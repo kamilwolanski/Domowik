@@ -4,6 +4,7 @@ using Domowik___WebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,13 +12,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domowik___WebAPI.Migrations
 {
     [DbContext(typeof(DomowikDbContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241231152334_CalendarEvent")]
+    partial class CalendarEvent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.36")
+                .HasAnnotation("ProductVersion", "6.0.26")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -131,32 +133,6 @@ namespace Domowik___WebAPI.Migrations
                     b.HasIndex("SenderId");
 
                     b.ToTable("Invitations");
-                });
-
-            modelBuilder.Entity("Domowik___WebAPI.Entities.Note", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Notes");
                 });
 
             modelBuilder.Entity("Domowik___WebAPI.Entities.Product", b =>
@@ -443,17 +419,6 @@ namespace Domowik___WebAPI.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("Domowik___WebAPI.Entities.Note", b =>
-                {
-                    b.HasOne("Domowik___WebAPI.Entities.User", "User")
-                        .WithMany("Notes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Domowik___WebAPI.Entities.Product", b =>
                 {
                     b.HasOne("Domowik___WebAPI.Entities.ProductCategory", "ProductCategory")
@@ -556,11 +521,6 @@ namespace Domowik___WebAPI.Migrations
             modelBuilder.Entity("Domowik___WebAPI.Entities.ShoppingList", b =>
                 {
                     b.Navigation("ShoppingListProducts");
-                });
-
-            modelBuilder.Entity("Domowik___WebAPI.Entities.User", b =>
-                {
-                    b.Navigation("Notes");
                 });
 #pragma warning restore 612, 618
         }
