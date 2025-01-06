@@ -91,12 +91,8 @@ input[type='date'] {
   scrollbar-width: thin;
 }
 
-.xx {
-  width: calc(100% - 2px);
-  grid-row: 1;
-  display: flex;
-  height: 100%;
-  border-left: 4px solid var(--sx-color-primary);
-  color: var(--sx-color-on-primary-container);
-  background-color: var(--sx-color-primary-container);
+@media (max-width: 767px) {
+  .sx__event-modal {
+    width: 250px;
+  }
 }

@@ -106,10 +106,6 @@ const CustomEventModal: React.FC<ICustomEventModal> = ({
   };
 
   const canDisplay = () => {
-    console.log(
-      'calendarEventData?.organizer.id',
-      calendarEventData?.organizer.id,
-    );
     if (
       userDataRoleId === 3 ||
       calendarEventData?.organizer.id === userData?.data.id

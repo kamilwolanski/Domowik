@@ -55,7 +55,7 @@ const TransactionList: React.FC<ITransactionList> = ({ transactionList }) => {
                     <p className="mb-0 font-semibold">{item.name}:</p>
 
                     <p
-                      className="font-bold mb-0 count ms-2"
+                      className="font-bold mb-0 ms-2 text-xl"
                       style={
                         item.count >= 0 ? { color: 'green' } : { color: 'red' }
                       }
