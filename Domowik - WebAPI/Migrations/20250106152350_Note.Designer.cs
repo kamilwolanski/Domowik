@@ -4,6 +4,7 @@ using Domowik___WebAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Domowik___WebAPI.Migrations
 {
     [DbContext(typeof(DomowikDbContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20250106152350_Note")]
+    partial class Note
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,61 +23,6 @@ namespace Domowik___WebAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("CalendarEventUser", b =>
-                {
-                    b.Property<int>("CreatedEventsId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MembersId")
-                        .HasColumnType("int");
-
-                    b.HasKey("CreatedEventsId", "MembersId");
-
-                    b.HasIndex("MembersId");
-
-                    b.ToTable("CalendarEventUser");
-                });
-
-            modelBuilder.Entity("Domowik___WebAPI.Entities.CalendarEvent", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<DateTime>("EndDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int?>("FamilyId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int?>("OrganizerId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("FamilyId");
-
-                    b.HasIndex("OrganizerId");
-
-                    b.ToTable("CalendarEvents");
-                });
 
             modelBuilder.Entity("Domowik___WebAPI.Entities.Family", b =>
                 {
@@ -379,40 +326,6 @@ namespace Domowik___WebAPI.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("CalendarEventUser", b =>
-                {
-                    b.HasOne("Domowik___WebAPI.Entities.CalendarEvent", null)
-                        .WithMany()
-                        .HasForeignKey("CreatedEventsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Domowik___WebAPI.Entities.User", null)
-                        .WithMany()
-                        .HasForeignKey("MembersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domowik___WebAPI.Entities.CalendarEvent", b =>
-                {
-                    b.HasOne("Domowik___WebAPI.Entities.Family", "Family")
-                        .WithMany("Events")
-                        .HasForeignKey("FamilyId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Domowik___WebAPI.Entities.User", "Organizer")
-                        .WithMany()
-                        .HasForeignKey("OrganizerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Family");
-
-                    b.Navigation("Organizer");
-                });
-
             modelBuilder.Entity("Domowik___WebAPI.Entities.Family", b =>
                 {
                     b.HasOne("Domowik___WebAPI.Entities.User", "Head")
@@ -539,8 +452,6 @@ namespace Domowik___WebAPI.Migrations
 
             modelBuilder.Entity("Domowik___WebAPI.Entities.Family", b =>
                 {
-                    b.Navigation("Events");
-
                     b.Navigation("Members");
 
                     b.Navigation("ShoppingLists");

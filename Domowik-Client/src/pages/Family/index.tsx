@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { Modal } from 'antd';
-import CreateFamilyForm from './CreateFamilyForm';
 import { useQuery } from 'react-query';
 import { getUser } from '../../Api';
+import FamilyListPlaceholder from './Placeholders/FamilyListPlaceholder';
 import FamilyList from './FamilyList';
 import AddFamilyMember from './AddFamilyMember';
 import { Role } from './types';
 import DeleteFamily from './DeleteFamily/DeleteFamily';
-import FamilyListPlaceholder from './Placeholders/FamilyListPlaceholder';
+import CreateFamilyForm from './CreateFamilyForm';
 import { getUserFamily } from '../../Api/Family';
 
 const Family: React.FC = () => {

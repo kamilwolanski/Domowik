@@ -31,6 +31,20 @@ public class DomowikSeeder
                 _dbContext.SaveChanges();
             }
 
+            if (!_dbContext.Notes.Any())
+            {
+                var userToSeed = _dbContext.Users.FirstOrDefault(u => u.Id == 1);
+                var note = new Note
+                {
+                    Title = "TestTitle",
+                    Content = "TestContent",
+                    UserId = userToSeed.Id,
+                };
+
+                _dbContext.Notes.Add(note);
+                _dbContext.SaveChanges();
+            }
+
             SeedProductCategoriesAndProducts();
 
             if (!_dbContext.Users.Any(u => u.Email == "kwolanski3@gmail.com"))

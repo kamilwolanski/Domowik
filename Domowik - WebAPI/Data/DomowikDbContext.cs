@@ -17,6 +17,7 @@ namespace Domowik___WebAPI.Data
         public DbSet<ShoppingListProduct> ShoppingListProducts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
+        public DbSet<Note> Notes { get; set; }
 
         public DbSet<CalendarEvent> CalendarEvents { get; set; }
 
@@ -25,6 +26,11 @@ namespace Domowik___WebAPI.Data
             modelBuilder.Entity<User>()
                 .Property(u => u.Email)
                 .IsRequired();
+
+            modelBuilder.Entity<Note>()
+               .HasOne(u => u.User)
+               .WithMany(f => f.Notes)
+               .HasForeignKey(u => u.UserId);
 
             modelBuilder.Entity<Role>()
                 .Property(u => u.Name)

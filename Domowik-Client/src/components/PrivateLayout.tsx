@@ -6,6 +6,7 @@ import {
   MenuUnfoldOutlined,
   HomeOutlined,
   PieChartOutlined,
+  BookOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu, Button, theme } from 'antd';
 import Logo from './Logo';
@@ -121,6 +122,13 @@ const PrivateLayout: React.FC = () => {
       ),
 
       userData?.data.familyId ? false : true,
+    ),
+    getItem(
+      'Notatki',
+      '/notes',
+      <NavLink to="/notes">
+        <BookOutlined />
+      </NavLink>,
     ),
     getItem(
       'Wyloguj się',
