@@ -46,9 +46,16 @@ namespace Domowik___WebAPI.Controllers
 
             var note = notes.FirstOrDefault(e => e.Id == id);
 
+            var noteDto = new NoteDto
+            {
+                Id = note.Id,
+                Title = note.Title,
+                Content = note.Content,
+            };
+
             if (note == null) return NotFound();
 
-            return Ok(note);
+            return Ok(noteDto);
 
         }
 
