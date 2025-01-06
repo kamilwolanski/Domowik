@@ -26,6 +26,7 @@ const CreateFamilyForm: React.FC<ICreateFamilyForm> = ({ handleCancel }) => {
       {
         onSuccess: () => {
           queryClient.invalidateQueries({ queryKey: ['family'] });
+          queryClient.invalidateQueries({ queryKey: ['user'] });
           formikHelpers.resetForm();
           handleCancel();
         },
