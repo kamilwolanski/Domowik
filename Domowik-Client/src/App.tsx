@@ -15,6 +15,7 @@ import Invitation from './Pages/Invitation';
 import InvitationConfirm from './Pages/Invitation/InvitationConfirm';
 import NotFound from './Components/Errors/NotFound';
 import Notes from './pages/Notes';
+import Note from './pages/Notes/Note';
 
 const App = () => {
   return (
@@ -39,6 +40,7 @@ const App = () => {
             <Route path="/finances" element={<Finances />} />
             <Route path="/calendar" element={<Calendar />} />
             <Route path="/notes" element={<Notes />} />
+            <Route path="/notes/:id" element={<Note />} />
           </Route>
         </Route>
         <Route path="/" element={<Navigate replace to="/family" />} />

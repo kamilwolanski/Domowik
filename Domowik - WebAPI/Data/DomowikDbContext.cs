@@ -5,7 +5,7 @@ namespace Domowik___WebAPI.Data
 {
     public class DomowikDbContext : DbContext
     {
-        private string _connectionString = "Data Source=DESKTOP-N8V5MQE\\SQLEXPRESS;Initial Catalog=DomowikDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
+        private string _connectionString = "Data Source=DESKTOP-GD49QBC\\SQLEXPRESS;Initial Catalog=DomowikDb;Integrated Security=True;Connect Timeout=30;Encrypt=False;Trust Server Certificate=False;Application Intent=ReadWrite;Multi Subnet Failover=False";
 
         public DbSet<Family> Families { get; set; }
         public DbSet<User> Users { get; set; }
@@ -18,12 +18,18 @@ namespace Domowik___WebAPI.Data
         public DbSet<ShoppingListProduct> ShoppingListProducts { get; set; }
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<Invitation> Invitations { get; set; }
+        public DbSet<Note> Notes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<User>()
                 .Property(u => u.Email)
                 .IsRequired();
+
+            modelBuilder.Entity<Note>()
+               .HasOne(u => u.User)
+               .WithMany(f => f.Notes)
+               .HasForeignKey(u => u.UserId);
 
             modelBuilder.Entity<Role>()
                 .Property(u => u.Name)

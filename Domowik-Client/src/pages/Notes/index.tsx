@@ -1,8 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
-import NotePlaceholder from './Placeholders/NotePlaceholder';
+import { useQuery } from 'react-query';
+import { getNotes } from '../../Api/Notes';
+import Notes from './Notes';
+import AddNewNote from './add/addNewNote';
 
-const Notes: React.FC = () => {
+const Index: React.FC = () => {
+    const { data: notes, isLoading } = useQuery(
+        'notes',
+        getNotes,
+    );
+
     const [colSpan, setColSpan] = useState(8)
     const [colOffset, setColOffest] = useState(8)
 
@@ -29,11 +37,19 @@ const Notes: React.FC = () => {
         <div>
             <Row>
                 <Col span={colSpan} offset={colOffset}>
-                    <NotePlaceholder />
+                    <div className="flex justify-between items-center mb-10">
+                        <h2 className="text-3xl font-bold">Twoje notatki</h2>
+                        <AddNewNote />
+                    </div>
+                    {notes && notes?.length > 0 ? (
+                        <Notes notes={notes} />
+                    ) : (
+                        ''
+                    )}
                 </Col>
             </Row>
         </div>
     );
 };
 
-export default Notes;
+export default Index;

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Col, Row } from 'antd';
 import { Modal } from 'antd';
-import CreateFamilyForm from './CreateFamilyForm';
 import { useQuery } from 'react-query';
 import { getUser, getUserFamily } from '../../Api';
-import FamilyList from './FamilyList';
-import AddFamilyMember from './AddFamilyMember';
-import { Role } from './types';
-import DeleteFamily from './DeleteFamily/DeleteFamily';
 import FamilyListPlaceholder from './Placeholders/FamilyListPlaceholder';
+import { Role } from './types';
+import AddFamilyMember from './AddFamilyMember';
+import FamilyList from './FamilyList';
+import DeleteFamily from './DeleteFamily/DeleteFamily';
+import CreateFamilyForm from './CreateFamilyForm';
 
 const Family: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
