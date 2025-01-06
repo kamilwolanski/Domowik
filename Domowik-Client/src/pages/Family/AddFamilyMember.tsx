@@ -7,8 +7,8 @@ import { useMutation } from 'react-query';
 const AddFamilyMember = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [invitationLink, setInvitationLink] = useState('');
-  const [modalWidth, setModalWidth] = useState(500)
-  const [isMobile, setIsMobile] = useState(false)
+  const [modalWidth, setModalWidth] = useState(500);
+  const [isMobile, setIsMobile] = useState(false);
   const getOrCreateInvitationMutation = useMutation(getOrCreateInvitation);
 
   const showModal = () => {
@@ -29,19 +29,19 @@ const AddFamilyMember = () => {
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 720) {
-        setModalWidth(364)
-        setIsMobile(true)
+        setModalWidth(364);
+        setIsMobile(true);
       } else {
-        setModalWidth(500)
-        setIsMobile(false)
+        setModalWidth(500);
+        setIsMobile(false);
       }
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     handleResize();
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -83,9 +83,7 @@ const AddFamilyMember = () => {
         onClick={showModal}
       >
         <IoAddCircleSharp size={30} />
-        {!isMobile &&
-          <span className="ml-2">Dodaj nowego domownika</span>
-        }
+        {!isMobile && <span className="ml-2">Dodaj nowego domownika</span>}
       </button>
 
       {/* Modal */}

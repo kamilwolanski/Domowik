@@ -3,11 +3,7 @@ import dayjs from 'dayjs';
 import { Modal, Button, DatePicker, Select } from 'antd';
 import { useMutation, useQueryClient } from 'react-query';
 import { IoAddCircleSharp } from 'react-icons/io5';
-<<<<<<< HEAD
 import { useEffect, useState } from 'react';
-=======
-import { useState } from 'react';
->>>>>>> 83efabf ([client, server] calendar get events, edit and dfelete)
 import { FamilyMember } from '../../Family/types';
 import TextInput from '../../../Components/FormikInputs/FormikTextInput';
 import TextArea from '../../../Components/FormikInputs/FormikTextArea';
@@ -41,7 +37,6 @@ const ModalAddEvent: React.FC<IModalAddEvent> = ({ familyMembers }) => {
   const queryClient = useQueryClient();
   const addEventMutation = useMutation(addEvent);
 
-<<<<<<< HEAD
   const [modalWidth, setModalWidth] = useState(500);
 
   useEffect(() => {
@@ -61,8 +56,6 @@ const ModalAddEvent: React.FC<IModalAddEvent> = ({ familyMembers }) => {
     };
   }, []);
 
-=======
->>>>>>> 83efabf ([client, server] calendar get events, edit and dfelete)
   const initialValues: AddFormInitialValues = {
     name: '',
     description: '',
@@ -108,20 +101,12 @@ const ModalAddEvent: React.FC<IModalAddEvent> = ({ familyMembers }) => {
   return (
     <>
       <button
-<<<<<<< HEAD
         className="flex items-center bg-blue-600 text-white px-2 md:px-4 py-2 hover:bg-blue-700 rounded-full md:rounded-md"
         onClick={handleOpenModal}
       >
         <IoAddCircleSharp size={30} />
 
         <span className="ml-2 hidden md:block">Dodaj nowe wydarzenie</span>
-=======
-        className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-        onClick={handleOpenModal}
-      >
-        <IoAddCircleSharp size={30} />
-        <span className="ml-2">Dodaj nowe wydarzenie</span>
->>>>>>> 83efabf ([client, server] calendar get events, edit and dfelete)
       </button>
 
       <Modal
@@ -129,10 +114,7 @@ const ModalAddEvent: React.FC<IModalAddEvent> = ({ familyMembers }) => {
         open={isVisible}
         onCancel={handleCloseModal}
         footer={null}
-<<<<<<< HEAD
         width={modalWidth}
-=======
->>>>>>> 83efabf ([client, server] calendar get events, edit and dfelete)
       >
         <Formik
           initialValues={initialValues}

@@ -24,9 +24,9 @@ const FamilyList: React.FC<IFamilyList> = ({ members, user }) => {
       dataSource={members}
       loading={false}
       pagination={{
-      pageSize: 4, 
-      showSizeChanger: false, 
-      hideOnSinglePage: true, 
+        pageSize: 4,
+        showSizeChanger: false,
+        hideOnSinglePage: true,
       }}
       renderItem={(item) => (
         <List.Item
