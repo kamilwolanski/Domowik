@@ -76,22 +76,25 @@ const Finances = () => {
             </div>
           </div>
         </div>
-
-        {data?.data.transactions && (
-          <div className="pt-16">
-            <TransactionsChart transactionList={data?.data.transactions} />
-          </div>
-        )}
       </Col>
-      <Col span={1} offset={13}>
-        {/* Paginacja */}
-        <Pagination
+      <Col span={colSpan} offset={colOffset}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end'}}>
+      {/* Paginacja */}
+      <Pagination
           current={currentPage}
           pageSize={pageSize}
           total={data?.data.transactions.length}
           onChange={(page) => setCurrentPage(page)}
           style={{ marginTop: '20px', textAlign: 'right' }}
         />
+        </div>
+      </Col>
+      <Col span={colSpan} offset={colOffset}>
+        {data?.data.transactions && (
+          <div className="pt-16">
+            <TransactionsChart transactionList={data?.data.transactions} />
+          </div>
+        )}
       </Col>
     </Row>
   );
